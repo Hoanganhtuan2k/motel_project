@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý phòng trọ</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+<div th:insert="~{parts/navigation::navigation}"></div>
+
+<h1>Welcome, <span th:text="${userLogin}"></span>! Quản lý phòng trọ của bạn</h1>
+
+<!-- Form Logout -->
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Logout">
+</form>
+
+<!-- Bảng danh sách phòng trọ -->
+<table>
+    <tr>
+        <th>Tiêu đề</th><!--title-->
+        <th>Mô tả</th><!--description-->
+        <th>Giá</th><!--price-->
+        <th>Diện tích</th><!--area-->
+        <th>Địa chỉ</th><!--address-->
+        <th>Ảnh</th><!--images-->
+        <th>Ngày tạo</th><!--createdAt-->
+    </tr>
+    <th:block th:each="room : ${userRooms}">
+        <tr>
+            <td th:text="${room.title}"></td>
+            <td th:text="${room.description}"></td>
+            <td th:text="${room.price}"></td>
+            <td th:text="${room.area}"></td>
+            <td th:text="${room.address}"></td>
+            <td th:text="${room.images}"></td>
+            <td th:text="${room.createdAt}"></td>
+
+            <td><button><a th:href="@{|/rooms/edit/${room.id}|}">Edit</a></button></td>
+            <td><button><a th:href="@{|/rooms/detail/${room.id}|}">Detail</a></button></td>
+            <td><button><a th:href="@{|/rooms/detail/${room.id}|}">Create post</a></button></td>
+            <td sec:authorize="hasRole('ADMIN')"><button><a th:href="@{|/rooms/delete/${room.id}|}">Delete</a></button></td>
+        </tr>
+    </th:block>
+</table>
+
+<!-- Nút thêm phòng trọ mới -->
+<a href="/rooms/create">Thêm phòng trọ mới</a>
+
+<div th:insert="~{parts/footer :: footer}"></div>
+</body>
+</html>

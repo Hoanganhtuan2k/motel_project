@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Motel</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form Styles */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        /* Button Styles */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Links */
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Image Thumbnails */
+        img {
+            display: inline-block;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100px;
+            height: auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            button {
+                width: 100%;
+                padding: 12px;
+            }
+
+            img {
+                width: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Edit Motel</h1>
+</header>
+<div class="container">
+    <!-- Edit Motel Form -->
+    <form th:object="${roomToEdit}" th:action="@{/motels/update}" th:method="post">
+        <!-- Hidden field for motel ID -->
+        <input type="hidden" id="id" name="id" th:field="*{id}">
+
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" th:field="*{title}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="4" th:field="*{description}" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" id="price" name="price" th:field="*{price}" step="0.01" required>
+        </div>
+
+        <div class="form-group">
+            <label for="area">Area (m²)</label>
+            <input type="number" id="area" name="area" th:field="*{area}" step="0.01" required>
+        </div>
+
+        <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" id="address" name="address" th:field="*{address}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="locationId">Location ID</label>
+            <input type="number" id="locationId" name="locationId" th:field="*{locationId}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="ownerId">Owner ID</label>
+            <input type="number" id="ownerId" name="ownerId" th:field="*{ownerId}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="images">Images</label>
+            <input type="file" id="images" name="images" multiple>
+            <div>
+                <!-- Display current images -->
+                <p>Current Images:</p>
+                <div th:each="image : ${bookToEdit.images}">
+                    <img th:src="@{${image}}" alt="Motel Image">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="isRented">Is Rented</label>
+            <select id="isRented" name="isRented" th:field="*{isRented}">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="rentedFrom">Rented From</label>
+            <input type="date" id="rentedFrom" name="rentedFrom" th:field="*{rentedFrom}">
+        </div>
+
+        <div class="form-group">
+            <label for="rentedUntil">Rented Until</label>
+            <input type="date" id="rentedUntil" name="rentedUntil" th:field="*{rentedUntil}">
+        </div>
+
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <!-- Back to Motel List -->
+    <a href="/motels">Back to Motel List</a>
+</div>
+</body>
+</html>

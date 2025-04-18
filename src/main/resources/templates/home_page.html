@@ -2,16 +2,37 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Trang chủ cho thuê phòng trọ</title>
     <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
 <div th:insert="~{parts/navigation::navigation}"></div>
-<h1>This is home page</h1>
-<h2>To proceed with books please authorise</h2>
-<a href="/login">Login</a>
-<p>Don't have account? Please register</p>
-<a href="/registration">Registration</a>
+
+<!-- Tiêu đề chính -->
+<h1>Trang chủ cho thuê nhà trọ</h1>
+<h2>Dễ dàng tìm kiếm phòng trọ phù hợp</h2>
+
+<!-- Khu vực bài viết -->
+<section id="posts">
+    <h2>Danh sách bài viết</h2>
+    <!-- Danh sách bài đăng -->
+    <div th:each="post : ${posts}">
+        <h3 th:text="${post.title}">[Tiêu đề bài viết]</h3>
+        <p th:text="${post.description}">[Mô tả ngắn]</p>
+        <p><b>Giá thuê:</b> <span th:text="${post.price}">[Giá thuê]</span></p>
+        <p><b>Địa chỉ:</b> <span th:text="${post.address}">[Địa chỉ]</span></p>
+        <p><b>Liên hệ:</b> <span th:text="${post.contact}">[Thông tin liên hệ]</span></p>
+        <hr>
+    </div>
+</section>
+
+<!-- Khu vực đăng nhập và đăng ký -->
+<section id="auth">
+    <p>Bạn muốn đăng bài? Vui lòng đăng nhập!</p>
+    <a href="/login">Đăng nhập</a>
+    <p>Nếu chưa có tài khoản, vui lòng <a href="/registration">Đăng ký</a>.</p>
+</section>
+
 <div th:insert="~{parts/footer :: footer}"></div>
 </body>
 </html>
