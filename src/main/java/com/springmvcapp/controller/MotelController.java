@@ -22,18 +22,18 @@ public class MotelController {
     public static final String USER_LOGIN = "userLogin";
     private final MotelService motelService;
 
-    @GetMapping
-    public String showMotels(Model model,
-                             @AuthenticationPrincipal UserDetails userDetails) {
-        // Return the name of the view (e.g., motels.html)
-        String username = userDetails.getUsername();
-
-        model.addAttribute(USER_LOGIN, username);
-
-        List<MotelModel> books = motelService.getAllMotels();
-        model.addAttribute("userRooms", books);
-        return "motel";
-    }
+//    @GetMapping
+//    public String showMotels(Model model,
+//                             @AuthenticationPrincipal UserDetails userDetails) {
+//        // Return the name of the view (e.g., motels.html)
+//        String username = userDetails.getUsername();
+//
+//        model.addAttribute(USER_LOGIN, username);
+//
+//        List<MotelModel> books = motelService.getAllMotels();
+//        model.addAttribute("userRooms", books);
+//        return "motel";
+//    }
 
 //    @GetMapping("/edit/{title}")
 //    public String getEditBookPage(Model model, @PathVariable String title) {
@@ -44,8 +44,8 @@ public class MotelController {
 
     @GetMapping("/rooms/edit/{id}")
     public String editRoom(@PathVariable Long id, Model model) {
-        MotelModel room = MotelService.findById(id); // Replace with actual method to fetch the room
-        model.addAttribute("roomToEdit", room); // Bind the object to the Thymeleaf template
+//        MotelModel room = MotelService.findById(id); // Replace with actual method to fetch the room
+//        model.addAttribute("roomToEdit", room); // Bind the object to the Thymeleaf template
         return "motel_templates/edit_motel"; // Name of the Thymeleaf template (editRoom.html)
     }
 }
