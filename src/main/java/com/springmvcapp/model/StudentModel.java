@@ -16,13 +16,12 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class StudentModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name; // Tên sinh viên
-    private String email; // Email
-    private String phone; // Số điện thoại
-    private String password; // Mật khẩu (được mã hóa)
-    private String reviews; // Liên kết danh sách đánh giá của sinh viên
-    private LocalDateTime registeredAt; // Ngày đăng ký tài khoản
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+  private String fullName;
+  private String phone;
+  private String email;
+  private String currentContractId; // hợp đồng đang có hiệu lực (nếu có)
 }

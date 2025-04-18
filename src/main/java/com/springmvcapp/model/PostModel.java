@@ -1,5 +1,6 @@
 package com.springmvcapp.model;
 
+import com.springmvcapp.status.PostStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,11 +20,12 @@ public class PostModel {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  private Long ownerId; // Liên kết với chủ trọ (Khóa ngoại)
-  private String title; // Tiêu đề bài viết
-  private String content; // Nội dung bài viết
-  private Long motelId; // Liên kết với phòng trọ (Khóa ngoại)
-  private LocalDateTime createdAt; // Ngày tạo bài đăng
-  private LocalDateTime updatedAt; // Ngày chỉnh sửa bài đăng
+  private String title;
+  private String content;
+  private String adminId;          // người đăng bài
+  private String relatedRoomId;    // nếu bài viết liên quan đến 1 phòng cụ thể
+  private PostStatus status;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 
 }

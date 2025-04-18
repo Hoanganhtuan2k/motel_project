@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Chi tiết bài đăng</title>
+  <link rel="stylesheet" href="/styles/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .post-info p {
+      margin: 12px 0;
+      font-size: 16px;
+    }
+
+    .post-label {
+      font-weight: bold;
+      color: #555;
+    }
+
+    .back-button {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<div th:insert="~{parts/navigation::navigation}"></div>
+
+<div class="container">
+  <h1>Chi tiết bài đăng</h1>
+
+  <div class="post-info">
+    <!-- Tiêu đề -->
+    <p>
+      <span class="post-label">Tên nhà trọ:</span>
+      <span th:text="${post.title}">[Tên nhà trọ]</span>
+    </p>
+
+    <!-- Nội dung -->
+    <p>
+      <span class="post-label">Nội dung:</span>
+      <span th:text="${post.content}">[Nội dung]</span>
+    </p>
+
+    <!-- Người đăng -->
+    <p>
+      <span class="post-label">Người đăng:</span>
+      <span th:text="${post.adminId}">[Người đăng]</span>
+    </p>
+
+    <!-- Phòng liên quan -->
+    <p th:if="${post.relatedRoomId != null}">
+      <span class="post-label">Phòng liên quan:</span>
+      <span th:text="${post.relatedRoomId}">[Mã phòng]</span>
+    </p>
+
+    <!-- Trạng thái bài viết -->
+    <p>
+      <span class="post-label">Trạng thái bài viết:</span>
+      <span th:text="${post.status}">[Trạng thái]</span>
+    </p>
+
+    <!-- Ngày đăng -->
+    <p>
+      <span class="post-label">Ngày đăng:</span>
+      <span th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy HH:mm')}">[Ngày đăng]</span>
+    </p>
+
+    <!-- Ngày cập nhật -->
+    <p>
+      <span class="post-label">Cập nhật lần cuối:</span>
+      <span th:text="${#temporals.format(post.updatedAt, 'dd/MM/yyyy HH:mm')}">[Cập nhật lần cuối]</span>
+    </p>
+
+    <!-- Vị trí -->
+    <div class="location-section">
+      <h2>Vị trí</h2>
+      <div class="map-container" id="map_div" style="width: 800px; height: 700px;"></div>
+    </div>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {
+        "packages":["map"],
+        "mapsApiKey": "AIzaSyCIRm_C3Q2OIZ4RjeXxDmGA-haQ0hNBGRQ"
+      });
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          // ['Lat', 'Long', 'Name'],
+          // [19.0760,  72.8777, 'Mumbai'],
+          // [18.5204, 73.8567, 'Pune'],
+          // [19.1176, 72.9060, 'Powai'],
+          ['Lat', 'Long', 'Name'],
+          [21.0285, 105.8542, 'Hà Nội'],
+        ]);
+
+        var map = new google.visualization.Map(document.getElementById('map_div'));
+        map.draw(data, {
+          showTooltip: true,
+          showInfoWindow: true
+        });
+      }
+    </script>
+  </div>
+
+  <div class="back-button">
+    <a th:href="@{/}" class="btn">← Quay về trang chủ</a>
+  </div>
+</div>
+
+
+<div th:insert="~{parts/footer :: footer}"></div>
+
+</body>
+</html>

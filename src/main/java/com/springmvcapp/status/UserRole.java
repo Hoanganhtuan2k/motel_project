@@ -1,4 +1,4 @@
-package com.springmvcapp.model;
+package com.springmvcapp.status;
 
 public enum UserRole {
     ADMIN, USER

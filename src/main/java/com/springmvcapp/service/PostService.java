@@ -3,6 +3,7 @@ package com.springmvcapp.service;
 import com.springmvcapp.dto.PostModelDto;
 import com.springmvcapp.model.PostModel;
 import com.springmvcapp.service.repo.PostModelRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,5 +30,10 @@ public class PostService {
         postModel.setCreatedAt(LocalDateTime.now()); // Thêm thời gian tạo bài viết
         postModel.setUpdatedAt(LocalDateTime.now()); // Thêm thời gian cập nhật bài viết
         postRepository.save(postModel);
+    }
+
+    public PostModel getPostById(Long id) {
+        return postRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy bài đăng với ID: " + id));
     }
 }

@@ -1,5 +1,6 @@
 package com.springmvcapp.model;
 
+import com.springmvcapp.status.UserRole;
 import lombok.Data;
 
 @Data

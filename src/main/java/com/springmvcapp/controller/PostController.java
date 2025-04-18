@@ -11,11 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/post")
+@RequestMapping("/posts")
 @RequiredArgsConstructor
 public class PostController {
 
@@ -36,5 +37,12 @@ public class PostController {
   public String createPost(@ModelAttribute PostModelDto post) {
     postService.savePost(post); // Lưu bài viết mới vào database
     return "redirect:/";       // Điều hướng về trang Home
+  }
+
+  @GetMapping("/{id}")
+  public String viewPostDetail(@PathVariable Long id, Model model) {
+    PostModel post = postService.getPostById(id);
+    model.addAttribute("post", post);
+    return "post_detail";
   }
 }

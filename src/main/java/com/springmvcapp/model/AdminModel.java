@@ -19,8 +19,7 @@ public class AdminModel {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  private String name; // Tên Admin
-  private String email; // Email đăng nhập
-  private String password; // Mật khẩu (được mã hóa)
-  private LocalDateTime createdAt; // Ngày tạo tài khoản
+  private String username;
+  private String email;
+  private String fullName;
 }

@@ -15,8 +15,8 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 public class PostModelDto implements Serializable {
 
-  private Long ownerId;
+//  private Long ownerId;
   private String title;
   private String content;
-  private Long motelId;
+//  private Long motelId;
 }

@@ -1,7 +1,7 @@
 package com.springmvcapp.service;
 
 import com.springmvcapp.model.UserModel;
-import com.springmvcapp.model.UserRole;
+import com.springmvcapp.status.UserRole;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
