@@ -17,17 +17,17 @@
     <h2>Danh sách bài viết</h2>
     <!-- Danh sách bài đăng -->
     <div th:each="post : ${posts}">
-        <h3 th:text="${post.title}">[Tiêu đề bài viết]</h3>
-        <p th:text="${post.description}">[Mô tả ngắn]</p>
-        <p><b>Giá thuê:</b> <span th:text="${post.price}">[Giá thuê]</span></p>
-        <p><b>Địa chỉ:</b> <span th:text="${post.address}">[Địa chỉ]</span></p>
-        <p><b>Liên hệ:</b> <span th:text="${post.contact}">[Thông tin liên hệ]</span></p>
+<!--        <h3 th:text="${post.getContent()}">[Tiêu đề bài viết]</h3>-->
+<!--        <p th:text="${post.description}">[Mô tả ngắn]</p>-->
+<!--        <p><b>Giá thuê:</b> <span th:text="${post.price}">[Giá thuê]</span></p>-->
+<!--        <p><b>Địa chỉ:</b> <span th:text="${post.address}">[Địa chỉ]</span></p>-->
+<!--        <p><b>Liên hệ:</b> <span th:text="${post.contact}">[Thông tin liên hệ]</span></p>-->
         <hr>
     </div>
 </section>
 
 <!-- Khu vực đăng nhập và đăng ký -->
-<section id="auth">
+<section id="auth" sec:authorize="isAnonymous()">
     <p>Bạn muốn đăng bài? Vui lòng đăng nhập!</p>
     <a href="/login">Đăng nhập</a>
     <p>Nếu chưa có tài khoản, vui lòng <a href="/registration">Đăng ký</a>.</p>
