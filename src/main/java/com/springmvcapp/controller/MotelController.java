@@ -1,6 +1,5 @@
 package com.springmvcapp.controller;
 
-import com.springmvcapp.model.BookModel;
 import com.springmvcapp.model.MotelModel;
 import com.springmvcapp.service.MotelService;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MotelController {
 
-    public static final String USER_LOGIN = "userLogin";
-    private final MotelService motelService;
+  public static final String USER_LOGIN = "userLogin";
+  private final MotelService motelService;
 
 //    @GetMapping
 //    public String showMotels(Model model,
@@ -42,10 +41,21 @@ public class MotelController {
 //        return "motel_templates/edit_motel";
 //    }
 
-    @GetMapping("/rooms/edit/{id}")
-    public String editRoom(@PathVariable Long id, Model model) {
+  @GetMapping
+  public String getAllMotels(Model model,
+      @AuthenticationPrincipal UserDetails userDetails) {
+    String username = userDetails.getUsername();
+
+    model.addAttribute(USER_LOGIN, username);
+    List<MotelModel> motels = motelService.getAllMotels();
+    model.addAttribute("userRooms", motels);
+    return "motel";
+  }
+
+  @GetMapping("/rooms/edit/{id}")
+  public String editRoom(@PathVariable Long id, Model model) {
 //        MotelModel room = MotelService.findById(id); // Replace with actual method to fetch the room
 //        model.addAttribute("roomToEdit", room); // Bind the object to the Thymeleaf template
-        return "motel_templates/edit_motel"; // Name of the Thymeleaf template (editRoom.html)
-    }
+    return "motel_templates/edit_motel"; // Name of the Thymeleaf template (editRoom.html)
+  }
 }

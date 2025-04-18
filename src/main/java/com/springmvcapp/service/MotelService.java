@@ -2,6 +2,8 @@ package com.springmvcapp.service;
 
 import com.springmvcapp.model.MotelModel;
 import com.springmvcapp.model.MotelModel;
+import com.springmvcapp.service.repo.MotelModelRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -11,7 +13,15 @@ import java.util.List;
 @Service
 public class MotelService {
 
+    @Autowired
+    private MotelModelRepository motelModelRepository;
+
     private static List<MotelModel> motels;
+
+
+    public List<MotelModel> getAllMotels() {
+        return motelModelRepository.findAll();
+    }
 
 //    public static List<MotelModel> generateFakeMotels() {
 //        return Arrays.asList(
