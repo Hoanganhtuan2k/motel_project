@@ -1,6 +1,26 @@
 <div class="topnav" th:fragment="navigation">
   <a class="active" href="/">Home</a>
-  <a href="/books">Books</a>
   <a href="/motels">Motels</a>
-  <a href="/posts">Post</a>
+  <a href="/posts">Posts</a>
+
+  <!-- Phần này chỉ hiển thị khi đã đăng nhập -->
+  <div style="float: right;" sec:authorize="isAuthenticated()">
+    <!-- Avatar hoặc icon tài khoản -->
+    <a href="/profile" title="Thông tin cá nhân" style="padding-right: 10px;">
+      <img src="/images/user-icon.png" alt="User Icon" style="height: 20px; vertical-align: middle;">
+    </a>
+
+    <!-- Logout -->
+    <form th:action="@{/logout}" method="post" style="display: inline;">
+      <button type="submit" class="btn-logout" style="background: none; border: none; color: #007bff; cursor: pointer; padding: 0;">
+        Đăng xuất
+      </button>
+    </form>
+  </div>
+
+  <!-- Nếu chưa đăng nhập thì hiện nút Đăng nhập/Đăng ký -->
+  <div style="float: right;" sec:authorize="isAnonymous()">
+    <a href="/login">Đăng nhập</a>
+    <a href="/registration">Đăng ký</a>
+  </div>
 </div>
