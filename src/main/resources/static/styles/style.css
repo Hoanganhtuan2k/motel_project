@@ -17,12 +17,12 @@ body {
 }
 
 .topnav a:hover {
-    background-color: #ddd;
-    color: black;
+    background-color: #343a40;
+    color: white;
 }
 
 .topnav a.active {
-    background-color: #a8abab;
+    background-color: #007bff;
     color: white;
 }
 
@@ -69,3 +69,4 @@ td, th {
 tr:nth-child(even) {
     background-color: #dddddd;
 }
+
