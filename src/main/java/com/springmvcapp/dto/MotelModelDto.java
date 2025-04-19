@@ -3,6 +3,7 @@ package com.springmvcapp.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.springmvcapp.status.MotelStatus;
 import java.io.Serializable;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,8 +19,10 @@ import lombok.experimental.Accessors;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MotelModelDto implements Serializable {
 
+  private Long id;
   private String name;
-  private MotelStatus status;
+  private String status;
   private String currentContractId;
   private String adminId;
+  private List<String> imageUrls; // Danh sách các URL hình ảnh
 }
