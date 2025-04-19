@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * DTO for {@link com.springmvcapp.model.MotelModel}
@@ -24,5 +25,5 @@ public class MotelModelDto implements Serializable {
   private String status;
   private String currentContractId;
   private String adminId;
-  private List<String> imageUrls; // Danh sách các URL hình ảnh
+  private MultipartFile imageFile;
 }
