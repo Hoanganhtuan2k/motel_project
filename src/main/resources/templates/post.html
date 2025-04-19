@@ -3,30 +3,109 @@
 <head>
   <meta charset="UTF-8">
   <title>Tạo bài viết mới</title>
-  <link rel="stylesheet" href="styles/style.css">
+  <link rel="stylesheet" href="/styles/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px auto;
+      max-width: 800px;
+      background: #f9f9f9;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    form label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #555;
+    }
+    form input, form textarea, form select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    form button {
+      margin-top: 25px;
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    form button:hover {
+      background-color: #45a049;
+    }
+  </style>
 </head>
 <body>
+
 <div th:insert="~{parts/navigation::navigation}"></div>
 
 <h1>Tạo bài viết mới</h1>
 
-<!-- Form tạo bài viết -->
 <form th:action="@{/post/create}" method="post">
+
+  <!-- Title -->
   <label for="title">Tiêu đề:</label>
   <input type="text" id="title" name="title" placeholder="Nhập tiêu đề bài viết" required>
 
+  <!-- Content -->
   <label for="content">Nội dung:</label>
-  <textarea id="content" name="content" rows="5" placeholder="Nhập nội dung bài viết" required></textarea>
+  <textarea id="content" name="content" rows="6" placeholder="Nhập nội dung bài viết" required></textarea>
 
-  <label for="motelId">ID phòng trọ:</label>
-  <input type="number" id="motelId" name="motelId" placeholder="Nhập ID phòng trọ liên kết" required>
+  <!-- Chọn phòng trọ có sẵn -->
+  <label for="relatedRoomId">Chọn phòng trọ liên quan:</label>
+  <select id="relatedRoomId" name="relatedRoomId" required>
+    <option value="">-- Chọn phòng trọ --</option>
+    <option th:each="motel : ${motels}"
+            th:value="${motel.id}"
+            th:text="${motel.name + ' - ID: ' + motel.id}">
+    </option>
+  </select>
 
-  <label for="ownerId">ID chủ sở hữu:</label>
-  <input type="number" id="ownerId" name="ownerId" placeholder="Nhập ID chủ sở hữu" required>
+  <!-- Upload nhiều ảnh -->
+  <label for="images">Hình ảnh đính kèm bổ sung:</label>
+  <input type="file" id="images" name="images" accept="image/*" multiple>
+
+<!--  &lt;!&ndash; Admin ID (người đăng) &ndash;&gt;-->
+<!--  <label for="adminId">ID người đăng:</label>-->
+<!--  <input type="text" id="adminId" name="adminId" placeholder="Nhập ID người đăng bài" required>-->
+
+<!--  &lt;!&ndash; Related Room ID &ndash;&gt;-->
+<!--  <label for="relatedRoomId">ID phòng liên quan:</label>-->
+<!--  <input type="text" id="relatedRoomId" name="relatedRoomId" placeholder="Nhập ID phòng trọ liên quan (nếu có)">-->
+
+  <!-- Trạng thái bài viết -->
+  <label for="status">Trạng thái:</label>
+  <select id="status" name="status" required>
+    <option value="">-- Chọn trạng thái --</option>
+    <option value="DRAFT">Nháp</option>
+    <option value="PUBLISHED">Đã đăng</option>
+    <option value="ARCHIVED">Lưu trữ</option>
+  </select>
+
+<!--  &lt;!&ndash; Ngày tạo &ndash;&gt;-->
+<!--  <label for="createdAt">Ngày tạo:</label>-->
+<!--  <input type="datetime-local" id="createdAt" name="createdAt">-->
+
+<!--  &lt;!&ndash; Ngày cập nhật &ndash;&gt;-->
+<!--  <label for="updatedAt">Ngày cập nhật:</label>-->
+<!--  <input type="datetime-local" id="updatedAt" name="updatedAt">-->
 
   <button type="submit">Tạo bài viết</button>
 </form>
 
 <div th:insert="~{parts/footer::footer}"></div>
+
 </body>
 </html>

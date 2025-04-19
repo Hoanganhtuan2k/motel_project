@@ -29,13 +29,13 @@
     </tr>
     <th:block th:each="room : ${userRooms}">
         <tr>
-            <td th:text="${room.title}"></td>
-            <td th:text="${room.description}"></td>
-            <td th:text="${room.price}"></td>
-            <td th:text="${room.area}"></td>
-            <td th:text="${room.address}"></td>
-            <td th:text="${room.images}"></td>
-            <td th:text="${room.createdAt}"></td>
+            <td th:text="${room.name}"></td>
+            <td th:text="${room.name}"></td>
+            <td th:text="${room.name}"></td>
+            <td th:text="${room.name}"></td>
+            <td th:text="${room.name}"></td>
+            <td th:text="${room.name}"></td>
+            <td th:text="${room.name}"></td>
 
             <td><button><a th:href="@{|/rooms/edit/${room.id}|}">Edit</a></button></td>
             <td><button><a th:href="@{|/rooms/detail/${room.id}|}">Detail</a></button></td>

@@ -1,6 +1,7 @@
 package com.springmvcapp.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.springmvcapp.status.PostStatus;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,8 +16,11 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 public class PostModelDto implements Serializable {
 
-//  private Long ownerId;
   private String title;
   private String content;
-//  private Long motelId;
+  private String adminId;          // người đăng bài
+  private String relatedRoomId;    // nếu bài viết liên quan đến 1 phòng cụ thể
+  private PostStatus status;
+
+  private MotelModelDto motel;
 }
