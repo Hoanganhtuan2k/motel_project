@@ -1,24 +1,87 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Registration page</title>
-    <link rel="stylesheet" href="/styles/login.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <style>
+        form {
+            width: 300px;
+            margin: 0 auto;
+            padding: 1em;
+            background: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        div {
+            margin-bottom: 1em;
+        }
+        label {
+            margin-bottom: .5em;
+            color: #333333;
+        }
+        input {
+            width: 100%;
+            padding: .5em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 0.7em;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error, .success {
+            margin-top: 1em;
+            color: red; /* or green for success */
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <div class="form-box" id="register-form">
-        <h2>Register</h2>
-        <form th:action="@{/registration}" method="post">
-            <input name="name" type="text" placeholder="Name">
-            <input name="username" type="text" placeholder="Email">
-            <input name="password" type="password" placeholder="Password">
-            <button type="submit">Regiter</button>
-            <p>
-                Already have an account? <a href="/login">Login</a>
-            </p>
-        </form>
+<h1>User Registration</h1>
+<form action="/register" method="post">
+    <!-- Error or Success messages -->
+    <div class="error" th:if="${error}" th:text="${error}"></div>
+    <div class="success" th:if="${success}" th:text="${success}"></div>
+
+    <!-- Form Fields -->
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
     </div>
-</div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+    </div>
+    <div>
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" required>
+    </div>
+    <!-- Role can be a dropdown or hidden depending on your logic -->
+    <div>
+        <label for="role">Role:</label>
+        <select id="role" name="role">
+            <option value="USER">User</option>
+            <option value="ADMIN">Admin</option>
+        </select>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit">Register</button>
+</form>
 </body>
 </html>

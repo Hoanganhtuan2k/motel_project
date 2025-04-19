@@ -29,6 +29,16 @@ public class SecurityConfig {
                         .permitAll())
                 .logout(LogoutConfigurer::permitAll);
         return http.build();
+//        return http
+//            .authorizeHttpRequests(auth -> auth
+//                .requestMatchers("/").permitAll()
+//                .requestMatchers("/styles/*").permitAll()
+//                .requestMatchers("/registration").permitAll()
+//                .requestMatchers("/login").permitAll()
+//                .requestMatchers("/logout").permitAll()
+//                .requestMatchers("/register").permitAll().anyRequest().authenticated())
+//            .formLogin(form -> form.defaultSuccessUrl("/", true))
+//            .logout(config -> config.logoutSuccessUrl("/")).build();
     }
 
     @Bean
@@ -47,4 +57,5 @@ public class SecurityConfig {
         authenticationManagerBuilder.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
         return authenticationManagerBuilder.build();
     }
+
 }
