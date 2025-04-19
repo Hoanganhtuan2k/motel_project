@@ -25,7 +25,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(request -> request.requestMatchers("/", "/styles/*", "/registration", "/login").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form.loginPage("/login")
-                        .defaultSuccessUrl("/books", true)
+                        .defaultSuccessUrl("/", true)
                         .permitAll())
                 .logout(LogoutConfigurer::permitAll);
         return http.build();
