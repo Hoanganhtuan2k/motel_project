@@ -1,11 +1,8 @@
 package com.springmvcapp.model;
 
 import com.springmvcapp.status.UserRole;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +22,7 @@ public class UserModel {
     private String password;
     private String email;
     private String phone;
+    @Enumerated(EnumType.STRING)
     private UserRole role;
     @Transient // Không lưu xuống DB
     private String confirmPassword;
