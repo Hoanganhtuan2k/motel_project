@@ -2,12 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-  <meta charset="UTF-8">
-  <title>Quản lý phòng trọ</title>
-  <link rel="stylesheet" href="styles/style.css">
     <meta charset="UTF-8">
     <title>Quản lý phòng trọ</title>
     <link rel="stylesheet" href="styles/style.css">
+    <meta charset="UTF-8">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,55 +21,49 @@
 
 <!-- Bảng danh sách phòng trọ -->
 <table>
-  <tr>
-    <th>Tiêu đề</th><!--title-->
-    <th>Mô tả</th><!--description-->
-    <th>Giá</th><!--price-->
-    <th>Diện tích</th><!--area-->
-    <th>Địa chỉ</th><!--address-->
-    <th>Ảnh</th><!--images-->
-    <th>Ngày tạo</th><!--createdAt-->
-  </tr>
-  <th:block th:each="room : ${userRooms}">
     <tr>
-      <td th:text="${room.name}">Tên phòng</td>
-      <td th:text="${room.status}">Trạng thái</td>
-      <td th:text="${room.currentContractId}">Mã hợp đồng</td>
-      <td th:text="${room.adminId}">Người quản lý</td>
-      <td>Địa chỉ</td>
-
-      <td>
-    <span th:if="${room.imageUrls != null and not #lists.isEmpty(room.imageUrls)}">
-        <!-- Hiển thị ảnh đầu tiên -->
-        <img th:src="@{'/uploads/' + ${room.imageUrls[0]}}" alt="Ảnh phòng" width="100"
-             height="100"/>
-    </span>
-        <span th:if="${room.imageUrls == null or #lists.isEmpty(room.imageUrls)}">
-        <!-- Thông báo nếu không có ảnh -->
-        Không có ảnh
-    </span>
-      </td>
-
-      <!--            <td }">Ngày tạo</td>-->
-
-      <!-- Các nút thao tác -->
-      <td>
-        <button><a th:href="@{|/rooms/edit/${room.id}|}">Edit</a></button>
-      </td>
-      <td>
-        <button><a th:href="@{|/rooms/detail/${room.id}|}">Detail</a></button>
-      </td>
-      <td>
-        <button><a th:href="@{|/rooms/detail/${room.id}|}">Create post</a></button>
-      </td>
-      <td sec:authorize="hasRole('ADMIN')">
-        <button><a th:href="@{|/rooms/delete/${room.id}|}">Delete</a></button>
-      </td>
+        <th>Title</th>
+        <th>Status</th>
+        <th>Current Contract ID</th>
+        <th>Manager ID</th>
+        <th>Image</th>
+        <th>Create At</th>
+        <th>Action</th>
     </tr>
-  </th:block>
+    <th:block th:each="motel : ${motels}">
+        <tr>
+            <td th:text="${motel.name}"></td>
+            <td th:text="${motel.status}"></td>
+            <td th:text="${motel.currentContractId}"></td>
+            <td th:text="${motel.adminId}"></td>
+            <td>
+                <img th:src="@{'/images/' + ${motel.imageName}}" alt="Ảnh phòng" width="100"/>
+            </td>
+            </td>
+
+            <td th:text="${motel.createdAt}"></td>
+
+            <td colspan="4">
+                <div style="display: flex; justify-content: center; gap: 10px;">
+                    <a th:href="@{|/motels/edit/${motel.id}|}">
+                        <button>Edit</button>
+                    </a>
+                    <a th:href="@{|/motels/detail/${motel.id}|}">
+                        <button>Detail</button>
+                    </a>
+                    <a th:href="@{|/motels/detail/${motel.id}|}">
+                        <button>Create post</button>
+                    </a>
+                    <a th:href="@{|/motels/delete/${motel.id}|}" sec:authorize="hasRole('ADMIN')">
+                        <button style="background-color: #dc3545;">Delete</button>
+                    </a>
+                </div>
+            </td>
+
+        </tr>
+    </th:block>
 </table>
 
-<!-- Nút thêm phòng trọ mới -->
 <a th:href="@{/motels/create}">Thêm phòng trọ mới</a>
 
 <div th:insert="~{parts/footer :: footer}"></div>

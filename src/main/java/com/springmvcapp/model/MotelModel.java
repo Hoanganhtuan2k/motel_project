@@ -27,6 +27,7 @@ public class MotelModel {
   private String adminId; // phòng do ai quản lý
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
+  private String imageName;
 //    private Long id;
 //    private String title; // Tiêu đề
 //    private String description; // Mô tả chi tiết

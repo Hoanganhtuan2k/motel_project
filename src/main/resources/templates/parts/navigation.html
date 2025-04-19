@@ -7,12 +7,13 @@
   <div style="float: right;" sec:authorize="isAuthenticated()">
     <!-- Avatar hoặc icon tài khoản -->
     <a href="/profile" title="Thông tin cá nhân" style="padding-right: 10px;">
-      <img src="/images/user-icon.png" alt="User Icon" style="height: 20px; vertical-align: middle;">
+      <i class="fas fa-user" style="font-size: 20px; color: #007bff;"></i>
     </a>
+
 
     <!-- Logout -->
     <form th:action="@{/logout}" method="post" style="display: inline;">
-      <button type="submit" class="btn-logout" style="background: none; border: none; color: #007bff; cursor: pointer; padding: 0;">
+      <button type="submit" class="btn-logout" style="background: none; border: none; color: #007bff; cursor: pointer; padding: 14px;font-size: 17px">
         Đăng xuất
       </button>
     </form>
