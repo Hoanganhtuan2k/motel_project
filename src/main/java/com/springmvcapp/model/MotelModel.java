@@ -25,6 +25,8 @@ public class MotelModel {
   private MotelStatus status; // EMPTY, OCCUPIED
   private String currentContractId; // dùng để lookup contract hiện tại
   private String adminId; // phòng do ai quản lý
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 //    private Long id;
 //    private String title; // Tiêu đề
 //    private String description; // Mô tả chi tiết
