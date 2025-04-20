@@ -81,7 +81,7 @@
 <h1>Tạo bài viết mới</h1>
 
 <div class="post-container">
-    <form th:action="@{/posts/create/motel}" th:object="${postDto}" method="post">
+    <form th:action="@{/posts/create}" th:object="${postDto}" method="post">
 
         <label for="title">Tiêu đề:</label>
         <input type="text" id="title" th:field="*{title}" placeholder="Nhập tiêu đề" required>
@@ -103,12 +103,10 @@
         <select th:field="*{status}" required>
             <option value="">-- Chọn trạng thái --</option>
             <option value="DRAFT">Nháp</option>
-            <option value="PUBLISHED">Đã đăng</option>
+            <option value="VISIBLE">Hiển thị công khai</option>
+            <option value="HIDDEN">Ẩn khỏi người dùng</option>
             <option value="ARCHIVED">Lưu trữ</option>
         </select>
-
-        <label for="adminId">ID người đăng:</label>
-        <input type="text" id="adminId" th:field="*{adminId}" placeholder="Nhập ID người đăng" required>
 
         <button class="post-create" type="submit">Tạo bài viết</button>
     </form>
