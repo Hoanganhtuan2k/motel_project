@@ -2,200 +2,106 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Motel</title>
+    <title>Chỉnh sửa phòng trọ</title>
     <style>
-        /* General Styles */
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            padding: 40px;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
             color: #333;
         }
 
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-size: 1.5em;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Form Styles */
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            font-weight: bold;
-            margin-bottom: 5px;
+        label {
             display: block;
+            margin-top: 15px;
+            font-weight: 600;
         }
 
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
+        input[type="text"],
+        input[type="number"],
+        select {
             width: 100%;
             padding: 10px;
             margin-top: 5px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #ccc;
         }
 
-        textarea {
-            resize: vertical;
+        input[type="file"] {
+            margin-top: 10px;
         }
 
-        /* Button Styles */
-        button {
-            background-color: #4CAF50;
+        .btn-save {
+            margin-top: 25px;
+            padding: 12px 25px;
+            background-color: #28a745;
             color: white;
             border: none;
-            padding: 10px 15px;
-            font-size: 1em;
+            border-radius: 5px;
             cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.3s ease;
+            width: 100%;
         }
 
-        button:hover {
-            background-color: #45a049;
+        .btn-save:hover {
+            background-color: #218838;
         }
 
-        /* Links */
-        a {
-            color: #4CAF50;
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #007bff;
             text-decoration: none;
-            font-weight: bold;
         }
 
-        a:hover {
+        .back-link:hover {
             text-decoration: underline;
-        }
-
-        /* Image Thumbnails */
-        img {
-            display: inline-block;
-            margin: 5px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            width: 100px;
-            height: auto;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-
-            button {
-                width: 100%;
-                padding: 12px;
-            }
-
-            img {
-                width: 80px;
-            }
         }
     </style>
 </head>
 <body>
-<header>
-    <h1>Edit Motel</h1>
-</header>
-<div class="container">
-    <!-- Edit Motel Form -->
-    <form th:object="${roomToEdit}" th:action="@{/motels/update}" th:method="post">
-        <!-- Hidden field for motel ID -->
-        <input type="hidden" id="id" name="id" th:field="*{id}">
+<div class="form-container">
+    <h2>Chỉnh sửa phòng trọ</h2>
+    <form th:action="@{/motels/edit/save}" method="post" enctype="multipart/form-data" th:object="${motel}">
+        <input type="hidden" th:field="*{id}" />
 
-        <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" id="title" name="title" th:field="*{title}" required>
-        </div>
+        <label>Tên phòng trọ:</label>
+        <input type="text" th:field="*{name}" required />
 
-        <div class="form-group">
-            <label for="description">Description</label>
-            <textarea id="description" name="description" rows="4" th:field="*{description}" required></textarea>
-        </div>
+        <label>Trạng thái:</label>
+        <select th:field="*{status}">
+            <option value="AVAILABLE" th:selected="${motel.status == 'AVAILABLE'}">AVAILABLE</option>
+            <option value="RENTED" th:selected="${motel.status == 'RENTED'}">RENTED</option>
+            <option value="MAINTENANCE" th:selected="${motel.status == 'MAINTENANCE'}">MAINTENANCE</option>
+        </select>
 
-        <div class="form-group">
-            <label for="price">Price</label>
-            <input type="number" id="price" name="price" th:field="*{price}" step="0.01" required>
-        </div>
+        <label>ID hợp đồng hiện tại:</label>
+        <input type="number" th:field="*{currentContractId}" />
 
-        <div class="form-group">
-            <label for="area">Area (m²)</label>
-            <input type="number" id="area" name="area" th:field="*{area}" step="0.01" required>
-        </div>
+        <label>ID quản lý:</label>
+        <input type="number" th:field="*{adminId}" />
 
-        <div class="form-group">
-            <label for="address">Address</label>
-            <input type="text" id="address" name="address" th:field="*{address}" required>
-        </div>
+        <label>Ảnh mới (nếu muốn cập nhật):</label>
+        <input type="file" name="imageFile" />
 
-        <div class="form-group">
-            <label for="locationId">Location ID</label>
-            <input type="number" id="locationId" name="locationId" th:field="*{locationId}" required>
-        </div>
-
-        <div class="form-group">
-            <label for="ownerId">Owner ID</label>
-            <input type="number" id="ownerId" name="ownerId" th:field="*{ownerId}" required>
-        </div>
-
-        <div class="form-group">
-            <label for="images">Images</label>
-            <input type="file" id="images" name="images" multiple>
-            <div>
-                <!-- Display current images -->
-                <p>Current Images:</p>
-                <div th:each="image : ${bookToEdit.images}">
-                    <img th:src="@{${image}}" alt="Motel Image">
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="isRented">Is Rented</label>
-            <select id="isRented" name="isRented" th:field="*{isRented}">
-                <option value="true">Yes</option>
-                <option value="false">No</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="rentedFrom">Rented From</label>
-            <input type="date" id="rentedFrom" name="rentedFrom" th:field="*{rentedFrom}">
-        </div>
-
-        <div class="form-group">
-            <label for="rentedUntil">Rented Until</label>
-            <input type="date" id="rentedUntil" name="rentedUntil" th:field="*{rentedUntil}">
-        </div>
-
-        <button type="submit">Save Changes</button>
+        <button type="submit" class="btn-save">Lưu thay đổi</button>
     </form>
 
-    <!-- Back to Motel List -->
-    <a href="/motels">Back to Motel List</a>
+    <a th:href="@{/motels}" class="back-link">← Quay lại danh sách</a>
 </div>
 </body>
 </html>

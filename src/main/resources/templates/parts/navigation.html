@@ -1,7 +1,7 @@
 <div class="topnav" th:fragment="navigation">
   <a class="active" href="/">Home</a>
   <a href="/motels">Motels</a>
-  <a href="/posts">Posts</a>
+  <a href="/posts/create/motel">Posts</a>
 
   <!-- Phần này chỉ hiển thị khi đã đăng nhập -->
   <div style="float: right;" sec:authorize="isAuthenticated()">
@@ -21,7 +21,7 @@
 
   <!-- Nếu chưa đăng nhập thì hiện nút Đăng nhập/Đăng ký -->
   <div style="float: right;" sec:authorize="isAnonymous()">
-    <a href="/login">Đăng nhập</a>
-    <a href="/registration">Đăng ký</a>
+    <a href="/auth/login">Đăng nhập</a>
+    <a href="/auth/register">Đăng ký</a>
   </div>
 </div>

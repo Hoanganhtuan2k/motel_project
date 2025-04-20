@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<link rel="stylesheet" th:href="@{/webjars/font-awesome/6.7.2/css/all.min.css}"/>
-
 <head>
     <meta charset="UTF-8">
     <title>Tạo bài viết mới</title>
@@ -52,7 +49,7 @@
             resize: vertical;
         }
 
-        .post-create {
+     .post-create {
             margin-top: 30px;
             background-color: #007bff;
             color: white;
@@ -60,13 +57,20 @@
             border: none;
             border-radius: 6px;
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s ease;
             width: 100%;
+            transition: background-color 0.3s ease;
         }
 
         form button:hover {
             background-color: #0056b3;
+        }
+
+        .form-note {
+            font-size: 13px;
+            color: #777;
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -77,7 +81,7 @@
 <h1>Tạo bài viết mới</h1>
 
 <div class="post-container">
-    <form th:action="@{/posts/create}" th:object="${postDto}" method="post">
+    <form th:action="@{/posts/create/motel}" th:object="${postDto}" method="post">
 
         <label for="title">Tiêu đề:</label>
         <input type="text" id="title" th:field="*{title}" placeholder="Nhập tiêu đề" required>
@@ -88,9 +92,10 @@
         <label for="relatedRoomId">Phòng trọ liên quan:</label>
         <select th:field="*{relatedRoomId}" required>
             <option value="">-- Chọn phòng trọ --</option>
-            <option th:each="motel : ${motels}"
+            <option
                     th:value="${motel.id}"
-                    th:text="${motel.name}">
+                    th:text="${motel.name}"
+                    th:selected="${postDto.relatedRoomId == motel.id.toString()}">
             </option>
         </select>
 
@@ -107,7 +112,6 @@
 
         <button class="post-create" type="submit">Tạo bài viết</button>
     </form>
-
 </div>
 
 <div th:insert="~{parts/footer::footer}"></div>

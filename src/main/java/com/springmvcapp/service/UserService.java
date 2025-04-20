@@ -14,48 +14,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserModelRepository userModelRepository;
-
-    private static List<UserModel> users = new ArrayList<>();
-
-    private final PasswordEncoder passwordEncoder;
-
-    @PostConstruct
-    public void postConstruct() {
-        UserModel user = new UserModel();
-        user.setRole(UserRole.ADMIN);
-        user.setUsername("admin");
-        user.setPassword(passwordEncoder.encode("abc"));
-        users.add(user);
-    }
-
-    public void register(UserModel user) {
-        user.setRole(UserRole.USER);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        users.add(user);
-    }
+    private final UserModelRepository userModelRepository;
 
     public UserModel findByLogin(String login) {
-        return users.stream().filter(user -> user.getUsername().equals(login))
-                .findFirst()
-                .orElse(null);
+        return userModelRepository.findByUsername(login).orElse(null);
     }
 
-    public UserDetails loadUserByUserName(String email) throws UsernameNotFoundException {
-        UserModel userModel = userModelRepository.findByEmail(email);
-        if (userModel != null) {
-            var springUser = User.withUsername(userModel.getEmail())
-                .password(userModel.getPassword())
-                .roles(String.valueOf(userModel.getRole()))
-                .build();
-            return springUser;
-        }
-        return null;
+    public UserModel findByEmail(String email) {
+        return userModelRepository.findByEmail(email).orElse(null);
     }
+
 }
