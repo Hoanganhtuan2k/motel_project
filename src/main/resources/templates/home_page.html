@@ -1,99 +1,125 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
-<link rel="stylesheet" th:href="@{/webjars/font-awesome/6.7.2/css/all.min.css}" />
+<link rel="stylesheet" th:href="@{/webjars/font-awesome/6.7.2/css/all.min.css}"/>
 
 <head>
-    <meta charset="UTF-8">
-    <title>Trang chủ cho thuê phòng trọ</title>
-    <link rel="stylesheet" href="/styles/style.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            padding: 20px;
-        }
+  <meta charset="UTF-8">
+  <title>Trang chủ cho thuê phòng trọ</title>
+  <link rel="stylesheet" href="/styles/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      padding: 20px;
+    }
 
-        h1, h2 {
-            text-align: center;
-            color: #333;
-        }
+    .btn-rent {
+        background-color: #17a2b8; /* Màu xanh dương nhạt */
+        color: white;
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+    }
 
-        .post-card {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+    .btn-rent:hover {
+        background-color: #138496;
+    }
 
-        .post-card p {
-            margin: 8px 0;
-        }
+    .btn-comment {
+        background-color: #ffc107; /* Màu vàng */
+        color: white;
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+    }
 
-        .post-label {
-            font-weight: bold;
-            color: #444;
-        }
+    .btn-comment:hover {
+        background-color: #e0a800;
+    }
 
-        .post-actions {
-            margin-top: 15px;
-        }
+    h1, h2 {
+      text-align: center;
+      color: #333;
+    }
 
-        .btn {
-            display: inline-block;
-            padding: 8px 16px;
-            margin-right: 10px;
-            font-size: 14px;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            cursor: pointer;
-        }
+    .post-card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-        .btn-detail {
-            background-color: #007bff;
-            color: white;
-        }
+    .post-card p {
+      margin: 8px 0;
+    }
 
-        .btn-edit {
-            background-color: #28a745;
-            color: white;
-        }
+    .post-label {
+      font-weight: bold;
+      color: #444;
+    }
 
-        .btn:hover {
-            opacity: 0.9;
-        }
+    .post-actions {
+      margin-top: 15px;
+    }
 
-        #auth {
-            margin-top: 40px;
-            text-align: center;
-            background-color: #fff3cd;
-            padding: 15px;
-            border: 1px solid #ffeeba;
-            border-radius: 8px;
-        }
+    .btn {
+      display: inline-block;
+      padding: 8px 16px;
+      margin-right: 10px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+    }
 
-        #auth a {
-            color: #d58512;
-            text-decoration: none;
-            font-weight: bold;
-        }
+    .btn-detail {
+      background-color: #007bff;
+      color: white;
+    }
 
-        .btn-delete {
-            background-color: #dc3545; /* Đỏ */
-            color: white;
-            padding: 8px 16px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-        }
+    .btn-edit {
+      background-color: #28a745;
+      color: white;
+    }
 
-        .btn-delete:hover {
-            background-color: #c82333;
-        }
+    .btn:hover {
+      opacity: 0.9;
+    }
 
-    </style>
+    #auth {
+      margin-top: 40px;
+      text-align: center;
+      background-color: #fff3cd;
+      padding: 15px;
+      border: 1px solid #ffeeba;
+      border-radius: 8px;
+    }
+
+    #auth a {
+      color: #d58512;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .btn-delete {
+      background-color: #dc3545; /* Đỏ */
+      color: white;
+      padding: 8px 16px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .btn-delete:hover {
+      background-color: #c82333;
+    }
+
+  </style>
 </head>
 <body>
 
@@ -103,68 +129,73 @@
 <h2>Dễ dàng tìm kiếm phòng trọ phù hợp</h2>
 
 <section id="posts">
-    <h2>Danh sách bài viết</h2>
+  <h2>Danh sách bài viết</h2>
 
-    <div th:each="post : ${posts}" class="post-card">
-        <!-- Hiển thị tiêu đề bài viết -->
-        <p>
-            <span class="post-label">Tên nhà trọ:</span>
-            <span th:text="${post.title}">[Tên nhà trọ]</span>
-        </p>
+  <div th:each="post : ${posts}" class="post-card">
+    <!-- Hiển thị tiêu đề bài viết -->
+    <p>
+      <span class="post-label">Tên nhà trọ:</span>
+      <span th:text="${post.title}">[Tên nhà trọ]</span>
+    </p>
 
-        <!-- Hiển thị nội dung tóm tắt -->
-        <p>
-            <span class="post-label">Nội dung:</span>
-            <span th:text="${post.content}">[Nội dung]</span>
-        </p>
+    <!-- Hiển thị nội dung tóm tắt -->
+    <p>
+      <span class="post-label">Nội dung:</span>
+      <span th:text="${post.content}">[Nội dung]</span>
+    </p>
 
-        <!-- Ẩn thông tin nhạy cảm đối với người dùng chưa đăng nhập -->
-        <div sec:authorize="isAuthenticated()">
-            <p>
-                <span class="post-label">Người đăng:</span>
-                <span th:text="${post.adminId}">[Người đăng]</span>
-            </p>
+    <!-- Ẩn thông tin nhạy cảm đối với người dùng chưa đăng nhập -->
+    <div sec:authorize="isAuthenticated()">
+      <p>
+        <span class="post-label">Người đăng:</span>
+        <span th:text="${post.adminId}">[Người đăng]</span>
+      </p>
 
-            <p th:if="${post.relatedRoomId != null}">
-                <span class="post-label">Phòng liên quan:</span>
-                <span th:text="${post.relatedRoomId}">[Mã phòng]</span>
-            </p>
+      <p th:if="${post.relatedRoomId != null}">
+        <span class="post-label">Phòng liên quan:</span>
+        <span th:text="${post.relatedRoomId}">[Mã phòng]</span>
+      </p>
 
-            <p>
-                <span class="post-label">Trạng thái bài viết:</span>
-                <span th:text="${post.status}">[Trạng thái]</span>
-            </p>
+      <p>
+        <span class="post-label">Trạng thái bài viết:</span>
+        <span th:text="${post.status}">[Trạng thái]</span>
+      </p>
 
-            <p>
-                <span class="post-label">Cập nhật lần cuối:</span>
-                <span th:text="${#temporals.format(post.updatedAt, 'dd/MM/yyyy HH:mm')}">
+      <p>
+        <span class="post-label">Cập nhật lần cuối:</span>
+        <span th:text="${#temporals.format(post.updatedAt, 'dd/MM/yyyy HH:mm')}">
                     [Ngày cập nhật]
                 </span>
-            </p>
-        </div>
+      </p>
+    </div>
 
-        <!-- Hiển thị ngày đăng chung cho tất cả -->
-        <p>
-            <span class="post-label">Ngày đăng:</span>
-            <span th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy HH:mm')}">
+    <!-- Hiển thị ngày đăng chung cho tất cả -->
+    <p>
+      <span class="post-label">Ngày đăng:</span>
+      <span th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy HH:mm')}">
                 [Ngày đăng]
             </span>
-        </p>
+    </p>
 
-        <!-- Giới hạn nút hành động cho người dùng đăng nhập -->
-        <div class="post-actions" sec:authorize="isAuthenticated()">
-            <a th:href="@{'/posts/' + ${post.id}}" class="btn btn-detail">Xem chi tiết</a>
-            <a th:href="@{'/posts/edit/' + ${post.id}}" class="btn btn-edit">Chỉnh sửa</a>
-            <a th:href="@{'/posts/delete/' + ${post.id}}"
-               class="btn btn-delete"
-               onclick="return confirm('Bạn có chắc chắn muốn xóa bài viết này không?');">Xóa</a>        </div>
-    </div>
+    <!-- Giới hạn nút hành động cho người dùng đăng nhập -->
+      <div class="post-actions" sec:authorize="isAuthenticated()">
+          <a th:href="@{'/posts/' + ${post.id}}" class="btn btn-detail">Xem chi tiết</a>
+          <a th:href="@{'/posts/edit/' + ${post.id}}" class="btn btn-edit">Chỉnh sửa</a>
+          <a th:href="@{'/posts/delete/' + ${post.id}}"
+             class="btn btn-delete"
+             onclick="return confirm('Bạn có chắc chắn muốn xóa bài viết này không?');">Xóa</a>
+          <a th:href="@{'/contracts/create/' + ${post.id}}"
+             class="btn btn-rent"
+             target="_blank">Thuê</a>
+          <a th:href="@{'/comments/' + ${post.id}}" class="btn btn-comment">Comment</a>
+      </div>
+  </div>
 </section>
 
 <section id="auth" sec:authorize="isAnonymous()">
-    <p>Bạn muốn đăng bài? Vui lòng đăng nhập!</p>
-    <a href="/login">Đăng nhập</a>
-    <p>Nếu chưa có tài khoản, vui lòng <a href="/registration">Đăng ký</a>.</p>
+  <p>Bạn muốn đăng bài? Vui lòng đăng nhập!</p>
+  <a href="/login">Đăng nhập</a>
+  <p>Nếu chưa có tài khoản, vui lòng <a href="/registration">Đăng ký</a>.</p>
 </section>
 
 <div th:insert="~{parts/footer :: footer}"></div>
