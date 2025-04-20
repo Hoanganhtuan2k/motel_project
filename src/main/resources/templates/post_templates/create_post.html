@@ -20,10 +20,11 @@
         }
 
         .post-container {
+            /*padding-bottom: 100px;*/
             max-width: 700px;
             background: white;
             margin: auto;
-            padding: 30px 40px;
+            padding: 30px 40px 100px;
             border-radius: 10px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
         }
@@ -51,7 +52,7 @@
             resize: vertical;
         }
 
-     .post-create {
+        .post-create {
             margin-top: 30px;
             background-color: #007bff;
             color: white;
@@ -145,5 +146,21 @@
 
 <script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.bundle.min.js}"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const navLinks = document.querySelectorAll(".topnav a");
+        const currentPath = '/motels';
+
+        navLinks.forEach(link => {
+            if (link.getAttribute("href") === currentPath) {
+                link.classList.add("active");
+            } else {
+                link.classList.remove("active");
+            }
+        });
+    });
+
+</script>
 </body>
 </html>
