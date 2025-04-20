@@ -1,12 +1,10 @@
   package com.springmvcapp.dto;
 
-  import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
   import com.springmvcapp.status.PostStatus;
   import java.io.Serializable;
   import lombok.AllArgsConstructor;
   import lombok.Data;
   import lombok.NoArgsConstructor;
-  import lombok.experimental.Accessors;
 
   /**
    * DTO for {@link com.springmvcapp.model.PostModel}
