@@ -78,6 +78,8 @@ public class MotelController {
         motelModel.setAdminId(modelDto.getAdminId());
         motelModel.setImageName(storgeFileName);
         motelModel.setCreatedAt(LocalDateTime.now());
+        motelModel.setLat(modelDto.getLat());
+        motelModel.setLng(modelDto.getLng());
         motelModelRepository.save(motelModel);
         return "redirect:/motels";
     }

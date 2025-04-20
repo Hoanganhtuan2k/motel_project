@@ -26,4 +26,7 @@ public class MotelModelDto implements Serializable {
   private String currentContractId;
   private String adminId;
   private MultipartFile imageFile;
+  private Double lat;
+  private Double lng;
+
 }
