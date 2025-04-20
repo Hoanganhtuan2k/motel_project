@@ -1,22 +1,31 @@
 package com.springmvcapp.controller;
 
 import com.springmvcapp.model.PostModel;
+import com.springmvcapp.model.UserModel;
 import com.springmvcapp.service.PostService;
+import com.springmvcapp.service.repo.UserModelRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/")
+@RequiredArgsConstructor
 public class HomeController {
 
     @Autowired
     private PostService postService;
 
+    private final UserModelRepository userModelRepository;
     /**
      * Trang chủ hiển thị danh sách bài viết có phân trang và tìm kiếm theo từ khóa.
      * @param page     trang hiện tại (mặc định = 1)
@@ -38,4 +47,19 @@ public class HomeController {
 
         return "home_page";
     }
+
+    @GetMapping("/profile")
+    public String userProfile(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        String username = userDetails.getUsername();
+        System.out.println(username);
+        UserModel user = userModelRepository.findByEmail(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        model.addAttribute("user", user);
+        return "profile";
+    }
+
+
+
+
 }

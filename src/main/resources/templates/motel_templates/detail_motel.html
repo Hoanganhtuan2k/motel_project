@@ -75,12 +75,13 @@
     <p><strong>Tiêu đề:</strong> <span th:text="${motel.name}"></span></p>
     <p><strong>Trạng thái:</strong> <span th:text="${motel.status}"></span></p>
     <p><strong>ID hợp đồng hiện tại:</strong> <span th:text="${motel.currentContractId}"></span></p>
-    <p><strong>ID quản lý:</strong> <span th:text="${motel.adminId}"></span></p>
+    <p><strong>Quản lý:</strong> <span th:text="${adminName}"></span></p>
     <p><strong>Ngày tạo:</strong> <span th:text="${#temporals.format(motel.createdAt, 'dd/MM/yyyy HH:mm')}"></span></p>
   </div>
 
   <a class="back-btn" th:href="@{/motels}">← Quay lại danh sách</a>
 </div>
+<div th:insert="~{parts/footer :: footer}"></div>
 
 </body>
 </html>
