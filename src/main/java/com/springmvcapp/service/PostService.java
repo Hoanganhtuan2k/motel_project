@@ -1,5 +1,6 @@
 package com.springmvcapp.service;
 
+import com.springmvcapp.dto.MotelModelDto;
 import com.springmvcapp.dto.PostModelDto;
 import com.springmvcapp.model.MotelModel;
 import com.springmvcapp.model.PostModel;
@@ -52,4 +53,25 @@ public class PostService {
                 .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy phòng trọ với ID: " + motelId));
     }
 
+    public PostModelDto getPostDetailById(Long postId) {
+        PostModel post = postRepository.findById(postId).orElse(null);
+        if (post == null) return null;
+
+        PostModelDto postDto = modelMapper.map(post, PostModelDto.class);
+
+        if (post.getRelatedRoomId() != null) {
+            try {
+                Long roomId = Long.valueOf(post.getRelatedRoomId());
+                MotelModel motel = motelModelRepository.findById(roomId).orElse(null);
+                if (motel != null) {
+                    MotelModelDto motelDto = modelMapper.map(motel, MotelModelDto.class);
+                    postDto.setMotel(motelDto);
+                }
+            } catch (NumberFormatException e) {
+                // Optional: log
+            }
+        }
+
+        return postDto;
+    }
 }

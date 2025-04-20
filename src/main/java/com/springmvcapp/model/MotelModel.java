@@ -10,7 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -30,5 +29,10 @@ public class MotelModel {
   private String imageName;
   private Double lat;
   private Double lng;
+  private String description;
+  private String acreage;
+  private String originalPrice;
+  private String actualPrice;
+
 
 }
