@@ -6,10 +6,15 @@ import com.springmvcapp.model.PostModel;
 import com.springmvcapp.model.UserModel;
 import com.springmvcapp.service.PostService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import com.springmvcapp.service.repo.PostModelRepository;
 import com.springmvcapp.service.repo.UserModelRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -22,9 +27,12 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     public static final String USER_LOGIN = "userLogin";
+    @Autowired
+    private ModelMapper modelMapper;
 
     private final PostService postService;
     private final UserModelRepository userModelRepository;
+    private final PostModelRepository postModelRepository;
     @GetMapping("/create/motel")
     public String getAllMotels(Model model,
                                @AuthenticationPrincipal UserDetails userDetails) {
@@ -37,7 +45,6 @@ public class PostController {
 
         return "post";
     }
-
 
     @PostMapping("/create/motel")
     public String createPostWidthAllMotel(@ModelAttribute PostModelDto post,
@@ -87,4 +94,52 @@ public class PostController {
         model.addAttribute("post", post);
         return "post_detail";
     }
+
+    @GetMapping("/edit/{id}")
+    public String showEditPostForm(@PathVariable Long id, Model model) {
+        PostModel post = postService.getPostById(id);
+        PostModelDto postDto = modelMapper.map(post, PostModelDto.class);
+        postDto.setId(post.getId());
+
+
+        model.addAttribute("postDto", postDto);
+
+        MotelModel motel = postService.getMotelById(Long.parseLong(post.getRelatedRoomId()));
+        model.addAttribute("motel", motel);
+        return "post_templates/edit_post";
+    }
+
+    @PostMapping("/edit")
+    public String editPost(@ModelAttribute PostModelDto postDto,
+                           @AuthenticationPrincipal UserDetails userDetails) {
+        String email = userDetails.getUsername();
+        UserModel user = userModelRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found: " + email));
+
+        postDto.setAdminId(String.valueOf(user.getId()));
+
+        // Ensure the postDto has an id
+        if (postDto.getId() == null) {
+            throw new IllegalArgumentException("Post ID is required for update");
+        }
+
+        postService.updatePost(postDto);
+        return "redirect:/";
+    }
+    @GetMapping("/delete/{id}")
+    public String deletePost(@PathVariable Long id,
+                             @AuthenticationPrincipal UserDetails userDetails) {
+//        String email = userDetails.getUsername();
+//        UserModel user = userModelRepository.findByEmail(email)
+//                .orElseThrow(() -> new RuntimeException("User not found: " + email));
+//
+//        PostModel post = postService.getPostById(id);
+
+        postService.deletePostById(id);
+        return "redirect:/";
+    }
+
+
+
+
 }

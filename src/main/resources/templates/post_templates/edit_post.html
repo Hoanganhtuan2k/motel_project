@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Tạo bài viết mới</title>
+  <link rel="stylesheet" href="/styles/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .post-container {
+      max-width: 700px;
+      background: white;
+      margin: auto;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    form label {
+      font-weight: 600;
+      margin-top: 20px;
+      display: block;
+      color: #444;
+    }
+
+    form input[type="text"],
+    form select,
+    form textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+
+    form textarea {
+      resize: vertical;
+    }
+
+    .post-create {
+      margin-top: 30px;
+      background-color: #007bff;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s ease;
+    }
+
+    form button:hover {
+      background-color: #0056b3;
+    }
+
+    .form-note {
+      font-size: 13px;
+      color: #777;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<div th:insert="~{parts/navigation::navigation}"></div>
+
+<h1>Tạo bài viết mới</h1>
+
+<div class="post-container">
+  <form th:action="@{/posts/edit}" th:object="${postDto}" method="post">
+    <input type="hidden" th:field="*{id}">
+
+    <label for="title">Tiêu đề:</label>
+    <input type="text" id="title" th:field="*{title}" placeholder="Nhập tiêu đề" required>
+
+    <label for="content">Nội dung:</label>
+    <textarea id="content" th:field="*{content}" rows="6" placeholder="Nhập nội dung bài viết" required></textarea>
+
+    <label for="relatedRoomId">Phòng trọ liên quan:</label>
+    <select th:field="*{relatedRoomId}" required>
+      <option value="">-- Chọn phòng trọ --</option>
+      <option
+              th:value="${motel.id}"
+              th:text="${motel.name}"
+              th:selected="${postDto.relatedRoomId == motel.id.toString()}">
+      </option>
+    </select>
+
+    <label for="status">Trạng thái bài viết:</label>
+    <select th:field="*{status}" required>
+      <option value="">-- Chọn trạng thái --</option>
+      <option value="DRAFT">Nháp</option>
+      <option value="VISIBLE">Hiển thị công khai</option>
+      <option value="HIDDEN">Ẩn khỏi người dùng</option>
+      <option value="ARCHIVED">Lưu trữ</option>
+    </select>
+
+    <button class="post-create" type="submit">Tạo bài viết</button>
+  </form>
+</div>
+
+<div th:insert="~{parts/footer::footer}"></div>
+
+</body>
+</html>
