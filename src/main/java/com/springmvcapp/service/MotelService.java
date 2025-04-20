@@ -23,4 +23,10 @@ public class MotelService {
   public List<MotelModel> getAllMotels() {
     return motelModelRepository.findAll();
   }
+
+  public MotelModel getMotelById(Long id) {
+    return motelModelRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Không tìm thấy phòng trọ với ID: " + id));
+  }
+
 }

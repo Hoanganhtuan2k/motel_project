@@ -1,7 +1,9 @@
 package com.springmvcapp.service;
 
 import com.springmvcapp.dto.PostModelDto;
+import com.springmvcapp.model.MotelModel;
 import com.springmvcapp.model.PostModel;
+import com.springmvcapp.service.repo.MotelModelRepository;
 import com.springmvcapp.service.repo.PostModelRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -18,22 +20,36 @@ public class PostService {
     private PostModelRepository postRepository;
 
     @Autowired
+    private MotelModelRepository motelModelRepository;
+
+
+    @Autowired
     private ModelMapper modelMapper;
 
     public List<PostModel> getAllPosts() {
-        return postRepository.findAll(); // Truy vấn tất cả bài viết từ database
+        return postRepository.findAll();
     }
     private static List<PostModel> posts;
 
     public void savePost(PostModelDto postDTO) {
         PostModel postModel = modelMapper.map(postDTO, PostModel.class);
-        postModel.setCreatedAt(LocalDateTime.now()); // Thêm thời gian tạo bài viết
-        postModel.setUpdatedAt(LocalDateTime.now()); // Thêm thời gian cập nhật bài viết
+        postModel.setCreatedAt(LocalDateTime.now());
+        postModel.setUpdatedAt(LocalDateTime.now());
         postRepository.save(postModel);
+    }
+
+    public List<MotelModel> getAllMotels() {
+        return motelModelRepository.findAll();
     }
 
     public PostModel getPostById(Long id) {
         return postRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy bài đăng với ID: " + id));
     }
+
+    public MotelModel getMotelById(Long motelId) {
+        return motelModelRepository.findById(motelId)
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy phòng trọ với ID: " + motelId));
+    }
+
 }

@@ -28,7 +28,7 @@ public class AuthController {
 
         if (result.equals("success")) {
             model.addAttribute("success", "Đăng ký thành công! Bạn có thể đăng nhập.");
-            model.addAttribute("user", new UserModel()); // reset form
+            model.addAttribute("user", new UserModel());
         } else {
             model.addAttribute("error", result);
         }

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Chi tiết phòng trọ</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f8;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .image-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .image-container img {
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .info {
+      font-size: 18px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .info strong {
+      color: #333;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+
+    .back-btn:hover {
+      background-color: #0056b3;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Chi tiết phòng trọ</h2>
+
+  <div class="image-container">
+    <img th:src="@{'/images/' + ${motel.imageName}}" alt="Ảnh phòng trọ">
+  </div>
+
+  <div class="info">
+    <p><strong>Tiêu đề:</strong> <span th:text="${motel.name}"></span></p>
+    <p><strong>Trạng thái:</strong> <span th:text="${motel.status}"></span></p>
+    <p><strong>ID hợp đồng hiện tại:</strong> <span th:text="${motel.currentContractId}"></span></p>
+    <p><strong>ID quản lý:</strong> <span th:text="${motel.adminId}"></span></p>
+    <p><strong>Ngày tạo:</strong> <span th:text="${#temporals.format(motel.createdAt, 'dd/MM/yyyy HH:mm')}"></span></p>
+  </div>
+
+  <a class="back-btn" th:href="@{/motels}">← Quay lại danh sách</a>
+</div>
+
+</body>
+</html>

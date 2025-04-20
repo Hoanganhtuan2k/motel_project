@@ -1,34 +1,129 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<link rel="stylesheet" th:href="@{/webjars/font-awesome/6.7.2/css/all.min.css}"/>
+
 <head>
     <meta charset="UTF-8">
     <title>Quản lý phòng trọ</title>
     <link rel="stylesheet" href="styles/style.css">
-    <meta charset="UTF-8">
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
             padding: 20px;
         }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+            font-weight: 600;
+        }
+
+        td img {
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        button:nth-child(1) {
+            background-color: #ffc107;
+        }
+
+        /* Edit */
+        button:nth-child(2) {
+            background-color: #17a2b8;
+        }
+
+        /* Detail */
+        button:nth-child(3) {
+            background-color: #28a745;
+        }
+
+        /* Create Post */
+        button:nth-child(4) {
+            background-color: #dc3545;
+        }
+
+        /* Delete */
+
+        a {
+            text-decoration: none;
+        }
+
+        .add-room-link {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-room-link:hover {
+            background-color: #0056b3;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
     </style>
 </head>
 <body>
 <div th:insert="~{parts/navigation::navigation}"></div>
 
-<h1>Welcome, <span th:text="${userLogin}"></span>! Quản lý phòng trọ của bạn</h1>
+<h1>Chào mừng, <span th:text="${userLogin}"></span>! Quản lý phòng trọ của bạn</h1>
 
 <!-- Bảng danh sách phòng trọ -->
 <table>
     <tr>
-        <th>Title</th>
-        <th>Status</th>
-        <th>Current Contract ID</th>
-        <th>Manager ID</th>
-        <th>Image</th>
-        <th>Create At</th>
-        <th>Action</th>
+        <th>Tiêu đề</th>
+        <th>Trạng thái</th>
+        <th>Hợp đồng hiện tại</th>
+        <th>Người quản lý</th>
+        <th>Ảnh</th>
+        <th>Ngày tạo</th>
+        <th>Hành động</th>
     </tr>
     <th:block th:each="motel : ${motels}">
         <tr>
@@ -39,32 +134,28 @@
             <td>
                 <img th:src="@{'/images/' + ${motel.imageName}}" alt="Ảnh phòng" width="100"/>
             </td>
-            </td>
-
             <td th:text="${motel.createdAt}"></td>
-
-            <td colspan="4">
-                <div style="display: flex; justify-content: center; gap: 10px;">
+            <td>
+                <div class="action-buttons">
                     <a th:href="@{|/motels/edit/${motel.id}|}">
                         <button>Edit</button>
                     </a>
                     <a th:href="@{|/motels/detail/${motel.id}|}">
                         <button>Detail</button>
                     </a>
-                    <a th:href="@{|/motels/detail/${motel.id}|}">
+                    <a th:href="@{|/posts/create?motelId=${motel.id}|}">
                         <button>Create post</button>
                     </a>
                     <a th:href="@{|/motels/delete/${motel.id}|}" sec:authorize="hasRole('ADMIN')">
-                        <button style="background-color: #dc3545;">Delete</button>
+                        <button>Delete</button>
                     </a>
                 </div>
             </td>
-
         </tr>
     </th:block>
 </table>
 
-<a th:href="@{/motels/create}">Thêm phòng trọ mới</a>
+<a class="add-room-link" th:href="@{/motels/create}">+ Thêm phòng trọ mới</a>
 
 <div th:insert="~{parts/footer :: footer}"></div>
 </body>

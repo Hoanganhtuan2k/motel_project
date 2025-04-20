@@ -41,15 +41,22 @@ public class SecurityConfig {
                         .failureUrl("/auth/login?error=true")
                         .permitAll()
                 )
-
+                .rememberMe(remember -> remember
+                        .key("uniqueAndSecretKey123") // nên random cái này
+                        .tokenValiditySeconds(7 * 24 * 60 * 60) // 7 ngày
+                        .rememberMeParameter("remember-me") // tên field trong form
+                        .userDetailsService(customUserDetailsService)
+                )
 
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/auth/login?logout=true")
                         .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
+                        .deleteCookies("JSESSIONID", "remember-me")
                         .permitAll()
                 );
+
+
         return http.build();
     }
 

@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -81,6 +82,25 @@ public class MotelController {
         motelModelRepository.save(motelModel);
         return "redirect:/motels";
     }
+
+    @GetMapping("/detail/{id}")
+    public String showMotelDetail(@PathVariable Long id, Model model) {
+        MotelModel motel = motelService.getMotelById(id);
+        model.addAttribute("motel", motel);
+        return "motel_templates/detail_motel";
+    }
+    @GetMapping("/edit/{id}")
+    public String showMotelEdit(@PathVariable Long id, Model model) {
+        MotelModel motel = motelService.getMotelById(id);
+        model.addAttribute("motel", motel);
+        return "motel_templates/edit_motel";
+    }
+
+
+
+
+
+
 
 
 }
