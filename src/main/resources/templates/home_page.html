@@ -131,6 +131,15 @@
 <section id="posts">
   <h2>Danh sách bài viết</h2>
 
+    <form th:action="@{/}" method="get" style="text-align: right;margin-bottom: 10px;">
+        <input type="text" name="keyword" th:value="${keyword}" placeholder="Tìm theo tiêu đề..."
+               style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+        <button type="submit"
+                style="margin-left: 8px; padding: 8px 12px; border: none; background-color: #007bff; color: white; border-radius: 5px;">
+            Tìm kiếm
+        </button>
+    </form>
+
   <div th:each="post : ${posts}" class="post-card">
     <!-- Hiển thị tiêu đề bài viết -->
     <p>
@@ -191,6 +200,31 @@
       </div>
   </div>
 </section>
+
+<!-- Pagination -->
+<div class="pagination-container" th:if="${totalPages >= 1}">
+    <!-- Previous Page -->
+    <a class="pagination-link"
+       th:classappend="${currentPage > 1} ? '' : 'disabled'"
+       th:href="@{/(page=${currentPage - 1}, keyword=${keyword})}"
+       th:attr="disabled=${currentPage == 1}">&laquo; Trước</a>
+
+    <!-- Page Numbers -->
+    <span th:each="page : ${#numbers.sequence(1, totalPages)}">
+        <a class="pagination-link"
+           th:href="@{/(page=${page}, keyword=${keyword})}"
+           th:text="${page}"
+           th:classappend="${page == currentPage} ? ' active-page' : ''"></a>
+    </span>
+
+    <!-- Next Page -->
+    <a class="pagination-link"
+       th:classappend="${currentPage < totalPages} ? '' : 'disabled'"
+       th:href="@{/(page=${currentPage + 1}, keyword=${keyword})}"
+       th:attr="disabled=${currentPage == totalPages}">Tiếp &raquo;</a>
+</div>
+
+
 
 <section id="auth" sec:authorize="isAnonymous()">
   <p>Bạn muốn đăng bài? Vui lòng đăng nhập!</p>

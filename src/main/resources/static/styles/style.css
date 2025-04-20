@@ -70,3 +70,30 @@ tr:nth-child(even) {
     background-color: #dddddd;
 }
 
+
+.pagination-container {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.pagination-link {
+    margin: 0 5px;
+    padding: 6px 12px;
+    text-decoration: none;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.active-page {
+    background-color: #007bff;
+    color: white;
+    pointer-events: none;
+}
+.pagination-link.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+
