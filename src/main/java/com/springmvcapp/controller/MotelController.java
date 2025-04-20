@@ -7,16 +7,15 @@ import com.springmvcapp.service.repo.MotelModelRepository;
 
 import com.springmvcapp.status.MotelStatus;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
@@ -40,11 +39,26 @@ public class MotelController {
     private final MotelService motelService;
 
     @GetMapping
-    public String getAllMotels(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-        List<MotelModel> motels = motelModelRepository.findAll();
-        model.addAttribute("motels", motels);
+    public String listMotels(@RequestParam(defaultValue = "1") int page,
+                             @RequestParam(required = false) String keyword,
+                             Model model) {
+        Page<MotelModel> motelPage;
+
+        if (keyword != null && !keyword.isEmpty()) {
+            System.out.println(keyword);
+            motelPage = motelService.searchMotels(keyword, page);
+        } else {
+            motelPage = motelService.getAllMotels(page);
+        }
+
+        model.addAttribute("motels", motelPage.getContent());
+        model.addAttribute("totalPages", motelPage.getTotalPages());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("keyword", keyword);
         return "motel";
     }
+
+
 
     @GetMapping("/create")
     public String showCreateRoomForm(Model model) {

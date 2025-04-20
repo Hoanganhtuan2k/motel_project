@@ -114,6 +114,15 @@
 
 <h1>Chào mừng, <span th:text="${userLogin}"></span>! Quản lý phòng trọ của bạn</h1>
 
+<form th:action="@{/motels}" method="get" style="text-align: right;margin-bottom: 10px;">
+    <input type="text" name="keyword" th:value="${keyword}" placeholder="Tìm theo tiêu đề..."
+           style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+    <button type="submit"
+            style="margin-left: 8px; padding: 8px 12px; border: none; background-color: #007bff; color: white; border-radius: 5px;">
+        Tìm kiếm
+    </button>
+</form>
+
 <!-- Bảng danh sách phòng trọ -->
 <table>
     <tr>
@@ -156,6 +165,28 @@
 </table>
 
 <a class="add-room-link" th:href="@{/motels/create}">+ Thêm phòng trọ mới</a>
+
+<!-- Pagination -->
+<div class="pagination-container" th:if="${totalPages >= 1}" style="text-align: center; margin-top: 20px;">
+    <!-- Previous -->
+    <a class="pagination-link"
+       th:classappend="${currentPage > 1} ? '' : 'disabled'"
+       th:href="@{/motels(page=${currentPage - 1})}">&laquo; Trước</a>
+
+    <!-- Page numbers -->
+    <span th:each="page : ${#numbers.sequence(1, totalPages)}">
+        <a class="pagination-link"
+           th:href="@{/motels(page=${page})}"
+           th:classappend="${page == currentPage} ? ' active-page' : ''"
+           th:text="${page}"></a>
+    </span>
+
+    <!-- Next -->
+    <a class="pagination-link"
+       th:classappend="${currentPage < totalPages} ? '' : 'disabled'"
+       th:href="@{/motels(page=${currentPage + 1})}">Tiếp &raquo;</a>
+</div>
+
 
 <div th:insert="~{parts/footer :: footer}"></div>
 </body>
