@@ -1,17 +1,17 @@
 <div class="topnav" th:fragment="navigation">
+  <!-- Home luôn hiển thị khi đăng nhập -->
   <a class="active" href="/">Home</a>
-  <a href="/motels">Motels</a>
-  <a href="/posts/create/motel">Posts</a>
 
-  <!-- Phần này chỉ hiển thị khi đã đăng nhập -->
+  <!-- Chỉ admin mới thấy 2 mục này -->
+  <a href="/motels" sec:authorize="hasRole('ADMIN')">Motels</a>
+  <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Posts</a>
+
+  <!-- Đã đăng nhập -->
   <div style="float: right;" sec:authorize="isAuthenticated()">
-    <!-- Avatar hoặc icon tài khoản -->
     <a href="/profile" title="Thông tin cá nhân" style="padding-right: 10px;">
       <i class="fas fa-user" style="font-size: 20px; color: #007bff;"></i>
     </a>
 
-
-    <!-- Logout -->
     <form th:action="@{/logout}" method="post" style="display: inline;">
       <button type="submit" class="btn-logout" style="background: none; border: none; color: #007bff; cursor: pointer; padding: 14px;font-size: 17px">
         Đăng xuất
@@ -19,7 +19,7 @@
     </form>
   </div>
 
-  <!-- Nếu chưa đăng nhập thì hiện nút Đăng nhập/Đăng ký -->
+  <!-- Chưa đăng nhập -->
   <div style="float: right;" sec:authorize="isAnonymous()">
     <a href="/auth/login">Đăng nhập</a>
     <a href="/auth/register">Đăng ký</a>
