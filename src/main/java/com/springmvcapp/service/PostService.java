@@ -53,6 +53,32 @@ public class PostService {
                 .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy phòng trọ với ID: " + motelId));
     }
 
+    public void updatePost(PostModelDto dto) {
+        if (dto.getId() == null) {
+            throw new IllegalArgumentException("Post ID is required for update");
+        }
+
+        PostModel existing = postRepository.findById(dto.getId())
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        existing.setTitle(dto.getTitle());
+        existing.setContent(dto.getContent());
+        existing.setRelatedRoomId(dto.getRelatedRoomId());
+        existing.setStatus(dto.getStatus());
+        existing.setUpdatedAt(LocalDateTime.now());
+
+        postRepository.save(existing);
+    }
+
+
+    public void deletePostById(Long id) {
+        if (!postRepository.existsById(id)) {
+            throw new EntityNotFoundException("Không tìm thấy bài viết với ID: " + id);
+        }
+        postRepository.deleteById(id);
+    }
+
+
     public PostModelDto getPostDetailById(Long postId) {
         PostModel post = postRepository.findById(postId).orElse(null);
         if (post == null) return null;

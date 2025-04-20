@@ -79,6 +79,20 @@
             text-decoration: none;
             font-weight: bold;
         }
+
+        .btn-delete {
+            background-color: #dc3545; /* Đỏ */
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
     </style>
 </head>
 <body>
@@ -141,7 +155,9 @@
         <div class="post-actions" sec:authorize="isAuthenticated()">
             <a th:href="@{'/posts/' + ${post.id}}" class="btn btn-detail">Xem chi tiết</a>
             <a th:href="@{'/posts/edit/' + ${post.id}}" class="btn btn-edit">Chỉnh sửa</a>
-        </div>
+            <a th:href="@{'/posts/delete/' + ${post.id}}"
+               class="btn btn-delete"
+               onclick="return confirm('Bạn có chắc chắn muốn xóa bài viết này không?');">Xóa</a>        </div>
     </div>
 </section>
 
