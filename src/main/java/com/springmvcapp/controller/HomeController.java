@@ -26,9 +26,8 @@ public class HomeController {
     public String getHomePage(@RequestParam(defaultValue = "1") int page,
                               @RequestParam(required = false) String keyword,
                               Model model) {
-        int pageSize = 10; // Số bài viết mỗi trang
+        int pageSize = 10;
 
-        // Gọi service để lấy dữ liệu phân trang (Spring dùng chỉ số trang từ 0)
         Page<PostModel> postPage = postService.searchPosts(keyword, page - 1, pageSize);
 
         model.addAttribute("posts", postPage.getContent());

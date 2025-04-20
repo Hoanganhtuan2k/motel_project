@@ -34,15 +34,6 @@ public class MotelService {
             .orElseThrow(() -> new RuntimeException("Không tìm thấy phòng trọ với ID: " + id));
   }
 
-  public Page<MotelModel> searchMotels(String keyword, int page, int size) {
-    Pageable pageable = PageRequest.of(page, size);
-    if (keyword != null && !keyword.trim().isEmpty()) {
-      return motelModelRepository.findByNameContainingIgnoreCase(keyword.trim(), pageable);
-    } else {
-      return motelModelRepository.findAll(pageable);
-    }
-  }
-
   public Page<MotelModel> searchMotels(String keyword, int page) {
     Pageable pageable = PageRequest.of(page - 1, 5);
     return motelModelRepository.searchByKeyword(keyword, pageable);

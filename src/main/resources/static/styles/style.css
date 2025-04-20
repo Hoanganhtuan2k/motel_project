@@ -1,5 +1,8 @@
 body {
     margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    padding: 20px;
 }
 
 .topnav {
@@ -16,15 +19,13 @@ body {
     font-size: 17px;
 }
 
-.topnav a:hover {
-    background-color: #343a40;
-    color: white;
+.topnav a.active {
+    border-bottom: 3px solid #007bff;
+    color: #007bff;
+    font-weight: bold;
 }
 
-.topnav a.active {
-    background-color: #007bff;
-    color: white;
-}
+
 
 .all-browsers {
     margin: 0;
