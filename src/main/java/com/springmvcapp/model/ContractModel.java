@@ -1,10 +1,8 @@
 package com.springmvcapp.model;
 
 import com.springmvcapp.status.ContractStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,5 +21,9 @@ public class ContractModel {
   private String roomId;
   private LocalDateTime startDate;
   private LocalDateTime endDate;
-  private ContractStatus status; // ACTIVE, TERMINATED, EXPIRED
+  private String finalPrice;
+  private String description;
+
+  @Enumerated(EnumType.STRING)
+  private ContractStatus status;
 }

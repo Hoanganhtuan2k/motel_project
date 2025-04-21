@@ -15,7 +15,7 @@
     }
 
     .contract-container {
-      padding-bottom: 100px;
+      padding: 30px 40px 100px;
       max-width: 700px;
       background: white;
       margin: auto;
@@ -69,9 +69,7 @@
 </head>
 <body>
 <div class="topnav" th:fragment="navigation">
-  <!-- Home luôn hiển thị khi đăng nhập -->
   <a class="active" href="/">Home</a>
-
   <a href="/motels" sec:authorize="hasRole('ADMIN')">Motels</a>
   <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Posts</a>
 
@@ -88,32 +86,43 @@
         <button type="submit" class="dropdown-item">Đăng xuất</button>
       </form>
     </div>
-
   </div>
 
-  <!-- Chưa đăng nhập -->
   <div style="float: right;" sec:authorize="isAnonymous()">
     <a href="/auth/login">Đăng nhập</a>
     <a href="/auth/register">Đăng ký</a>
   </div>
 </div>
 
-<h1>Tạo hợp đồng thuê phòng</h1>
-
+<!-- Đưa tiêu đề vào trong form -->
 <div class="contract-container">
-  <form th:action="@{/contracts/save}" th:object="${contract}" method="post">
+  <h1>Tạo hợp đồng thuê phòng</h1>
 
-    <label for="studentId">Chọn người thuê</label>
-    <select id="studentId" name="studentId" required>
-      <option value="" disabled selected>Chọn thông tin người thuê</option>
-      <option th:each="user : ${users}"
-              th:value="${user.id}"
-              th:text="${user.getUsername()}">
-      </option>
-    </select>
+  <form th:action="@{/contracts/save}" th:object="${contract}" method="post">
+    <label for="studentId">Người thuê:</label>
+
+    <!-- Nếu là admin thì hiện dropdown -->
+    <div th:if="${isAdmin}">
+      <select id="studentId" name="studentId" required>
+        <option value="" disabled selected>Chọn thông tin người thuê</option>
+        <option th:each="user : ${users}"
+                th:value="${user.id}"
+                th:text="${user.username}">
+        </option>
+      </select>
+    </div>
+
+    <!-- Nếu là user thường thì hiện tên và truyền id ẩn -->
+    <div th:unless="${isAdmin}">
+      <input type="text" th:value="${currentUser.username}" disabled class="form-control" />
+      <input type="hidden" name="studentId" th:value="${currentUser.id}" />
+    </div>
+
+
+    <input type="hidden" th:field="*{roomId}" />
 
     <label for="roomId">Mã phòng:</label>
-    <input type="text" id="roomId" th:field="*{roomId}" placeholder="Nhập mã phòng" required />
+    <input type="text" id="roomName" th:value="${room.name}" readonly class="form-control" />
 
     <label for="startDate">Ngày bắt đầu:</label>
     <input type="datetime-local" id="startDate" th:field="*{startDate}" required />
@@ -121,11 +130,19 @@
     <label for="endDate">Ngày kết thúc:</label>
     <input type="datetime-local" id="endDate" th:field="*{endDate}" required />
 
+    <!-- Sau khi kết thúc endDate -->
+    <label for="finalPrice">Giá cuối cùng (VNĐ):</label>
+    <input type="text" id="finalPrice" th:field="*{finalPrice}" placeholder="Nhập giá cuối cùng" required />
+
+    <label for="description">Mô tả hợp đồng:</label>
+    <input type="text" id="description" th:field="*{description}" placeholder="Nhập mô tả hợp đồng" />
+
+
     <label for="status">Trạng thái hợp đồng:</label>
     <select id="status" th:field="*{status}">
-      <option value="PENDING">Đang chờ</option>
-      <option value="APPROVED">Đã duyệt</option>
-      <option value="REJECTED">Từ chối</option>
+      <option value="ACTIVE">Đang thuê</option>
+      <option value="TERMINATED">Hủy trước hạn</option>
+      <option value="EXPIRED">Hết hạn</option>
     </select>
 
     <button type="submit" class="btn-create-contract">Tạo hợp đồng</button>
