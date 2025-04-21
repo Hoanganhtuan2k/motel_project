@@ -1,5 +1,8 @@
 body {
     margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    padding: 20px;
 }
 
 .topnav {
@@ -16,15 +19,13 @@ body {
     font-size: 17px;
 }
 
-.topnav a:hover {
-    background-color: #343a40;
-    color: white;
+.topnav a.active {
+    border-bottom: 3px solid #007bff;
+    color: #007bff;
+    font-weight: bold;
 }
 
-.topnav a.active {
-    background-color: #007bff;
-    color: white;
-}
+
 
 .all-browsers {
     margin: 0;
@@ -69,4 +70,31 @@ td, th {
 tr:nth-child(even) {
     background-color: #dddddd;
 }
+
+
+.pagination-container {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.pagination-link {
+    margin: 0 5px;
+    padding: 6px 12px;
+    text-decoration: none;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.active-page {
+    background-color: #007bff;
+    color: white;
+    pointer-events: none;
+}
+.pagination-link.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
 

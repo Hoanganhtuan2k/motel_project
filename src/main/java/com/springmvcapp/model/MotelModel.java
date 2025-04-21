@@ -1,10 +1,7 @@
 package com.springmvcapp.model;
 
 import com.springmvcapp.status.MotelStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +21,8 @@ public class MotelModel {
   private MotelStatus status; // EMPTY, OCCUPIED
   private String currentContractId; // dùng để lookup contract hiện tại
   private String adminId; // phòng do ai quản lý
+  @Transient
+  private String adminName;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
   private String imageName;

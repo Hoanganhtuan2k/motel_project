@@ -9,6 +9,10 @@ import com.springmvcapp.service.repo.PostModelRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page; // ✅ CHỈNH Ở ĐÂY
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -78,6 +82,15 @@ public class PostService {
         postRepository.deleteById(id);
     }
 
+    public Page<PostModel> searchPosts(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        if (keyword != null && !keyword.isEmpty()) {
+            return postRepository.findByTitleContainingIgnoreCase(keyword, pageable);
+        } else {
+            return postRepository.findAll(pageable);
+        }
+    }
 
     public PostModelDto getPostDetailById(Long postId) {
         PostModel post = postRepository.findById(postId).orElse(null);

@@ -1,114 +1,99 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet" th:href="@{/webjars/font-awesome/6.7.2/css/all.min.css}"/>
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}"/>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Tạo bài viết mới</title>
-    <link rel="stylesheet" href="/styles/style.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            padding: 20px;
-        }
+<link rel="stylesheet" href="/styles/post.css">
 
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-        }
+<div th:replace="~{parts/header :: header}"></div>
 
-        .post-container {
-            max-width: 700px;
-            background: white;
-            margin: auto;
-            padding: 30px 40px;
-            border-radius: 10px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-        }
+<div class="topnav" th:fragment="navigation">
+    <!-- Home luôn hiển thị khi đăng nhập -->
+    <a class="active" href="/">Home</a>
 
-        form label {
-            font-weight: 600;
-            margin-top: 20px;
-            display: block;
-            color: #444;
-        }
+    <!-- Chỉ admin mới thấy 2 mục này -->
+    <a href="/motels" sec:authorize="hasRole('ADMIN')">Motels</a>
+    <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Posts</a>
 
-        form input[type="text"],
-        form select,
-        form textarea {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 14px;
-        }
+    <!-- Đã đăng nhập -->
+    <div class="dropdown" style="float: right;height: 170px" sec:authorize="isAuthenticated()">
+        <a class="dropdown-toggle" href="#" role="button" id="userDropdown"
+           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+           style="padding: 14px; color: #007bff; text-decoration: none;">
+            <i class="fas fa-user" style="font-size: 20px;"></i>
+        </a>
 
-        form textarea {
-            resize: vertical;
-        }
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+            <a class="dropdown-item" href="/profile">Thông tin cá nhân</a>
+            <form th:action="@{/logout}" method="post" style="margin: 0;">
+                <button type="submit" class="dropdown-item">Đăng xuất</button>
+            </form>
+        </div>
 
-        .post-create {
-            margin-top: 30px;
-            background-color: #007bff;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            width: 100%;
-        }
+    </div>
 
-        form button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-
-<div th:insert="~{parts/navigation::navigation}"></div>
-
-<h1>Tạo bài viết mới</h1>
-
-<div class="post-container">
-    <form th:action="@{/posts/create/motel}" th:object="${postDto}" method="post">
-
-        <label for="title">Tiêu đề:</label>
-        <input type="text" id="title" th:field="*{title}" placeholder="Nhập tiêu đề" required>
-
-        <label for="content">Nội dung:</label>
-        <textarea id="content" th:field="*{content}" rows="6" placeholder="Nhập nội dung bài viết" required></textarea>
-
-        <label for="relatedRoomId">Phòng trọ liên quan:</label>
-        <select th:field="*{relatedRoomId}" required>
-            <option value="">-- Chọn phòng trọ --</option>
-            <option th:each="motel : ${motels}"
-                    th:value="${motel.id}"
-                    th:text="${motel.name}">
-            </option>
-        </select>
-
-        <label for="status">Trạng thái bài viết:</label>
-        <select th:field="*{status}" required>
-            <option value="">-- Chọn trạng thái --</option>
-            <option value="DRAFT">Nháp</option>
-            <option value="VISIBLE">Hiển thị công khai</option>
-            <option value="HIDDEN">Ẩn khỏi người dùng</option>
-            <option value="ARCHIVED">Lưu trữ</option>
-        </select>
-
-        <button class="post-create" type="submit">Tạo bài viết</button>
-    </form>
-
+    <!-- Chưa đăng nhập -->
+    <div style="float: right;" sec:authorize="isAnonymous()">
+        <a href="/auth/login">Đăng nhập</a>
+        <a href="/auth/register">Đăng ký</a>
+    </div>
 </div>
 
+
+<div class="post">
+    <h1>Tạo bài viết mới</h1>
+
+    <div class="post-container">
+        <form th:action="@{/posts/create/motel}" th:object="${postDto}" method="post">
+
+            <label for="title">Tiêu đề:</label>
+            <input type="text" id="title" th:field="*{title}" placeholder="Nhập tiêu đề" required>
+
+            <label for="content">Nội dung:</label>
+            <textarea id="content" th:field="*{content}" rows="6" placeholder="Nhập nội dung bài viết" required></textarea>
+
+            <label for="relatedRoomId">Phòng trọ liên quan:</label>
+            <select th:field="*{relatedRoomId}" required>
+                <option value="">-- Chọn phòng trọ --</option>
+                <option th:each="motel : ${motels}"
+                        th:value="${motel.id}"
+                        th:text="${motel.name}">
+                </option>
+            </select>
+
+            <label for="status">Trạng thái bài viết:</label>
+            <select th:field="*{status}" required>
+                <option value="">-- Chọn trạng thái --</option>
+                <option value="DRAFT">Nháp</option>
+                <option value="VISIBLE">Hiển thị công khai</option>
+                <option value="HIDDEN">Ẩn khỏi người dùng</option>
+                <option value="ARCHIVED">Lưu trữ</option>
+            </select>
+
+            <button class="post-create" type="submit">Tạo bài viết</button>
+        </form>
+
+    </div>
+</div>
+
+<script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.bundle.min.js}"></script>
 <div th:insert="~{parts/footer::footer}"></div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const navLinks = document.querySelectorAll(".topnav a");
+        const currentPath = window.location.pathname;
+
+        navLinks.forEach(link => {
+            if (link.getAttribute("href") === currentPath) {
+                link.classList.add("active");
+            } else {
+                link.classList.remove("active");
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

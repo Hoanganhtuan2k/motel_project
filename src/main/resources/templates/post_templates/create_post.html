@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Tạo bài viết mới</title>
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/6.7.2/css/all.min.css}"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}">
     <link rel="stylesheet" href="/styles/style.css">
     <style>
         body {
@@ -18,10 +20,11 @@
         }
 
         .post-container {
+            /*padding-bottom: 100px;*/
             max-width: 700px;
             background: white;
             margin: auto;
-            padding: 30px 40px;
+            padding: 30px 40px 100px;
             border-radius: 10px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
         }
@@ -49,7 +52,7 @@
             resize: vertical;
         }
 
-     .post-create {
+        .post-create {
             margin-top: 30px;
             background-color: #007bff;
             color: white;
@@ -76,8 +79,35 @@
 </head>
 <body>
 
-<div th:insert="~{parts/navigation::navigation}"></div>
+<div class="topnav" th:fragment="navigation">
+    <!-- Home luôn hiển thị khi đăng nhập -->
+    <a class="active" href="/">Home</a>
 
+    <a href="/motels" sec:authorize="hasRole('ADMIN')">Motels</a>
+    <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Posts</a>
+
+    <div class="dropdown" style="float: right;height: 170px" sec:authorize="isAuthenticated()">
+        <a class="dropdown-toggle" href="#" role="button" id="userDropdown"
+           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+           style="padding: 14px; color: #007bff; text-decoration: none;">
+            <i class="fas fa-user" style="font-size: 20px;"></i>
+        </a>
+
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+            <a class="dropdown-item" href="/profile">Thông tin cá nhân</a>
+            <form th:action="@{/logout}" method="post" style="margin: 0;">
+                <button type="submit" class="dropdown-item">Đăng xuất</button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Chưa đăng nhập -->
+    <div style="float: right;" sec:authorize="isAnonymous()">
+        <a href="/auth/login">Đăng nhập</a>
+        <a href="/auth/register">Đăng ký</a>
+    </div>
+</div>
 <h1>Tạo bài viết mới</h1>
 
 <div class="post-container">
@@ -114,5 +144,23 @@
 
 <div th:insert="~{parts/footer::footer}"></div>
 
+<script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.bundle.min.js}"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const navLinks = document.querySelectorAll(".topnav a");
+        const currentPath = '/motels';
+
+        navLinks.forEach(link => {
+            if (link.getAttribute("href") === currentPath) {
+                link.classList.add("active");
+            } else {
+                link.classList.remove("active");
+            }
+        });
+    });
+
+</script>
 </body>
 </html>

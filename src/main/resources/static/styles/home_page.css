@@ -1,0 +1,116 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
+.home-container{
+    padding-bottom:100px;
+    margin-top: -100px;
+
+}
+
+
+h1, h2 {
+    text-align: center;
+    color: #333;
+}
+
+#auth {
+    margin-top: 40px;
+    text-align: center;
+    background-color: #fff3cd;
+    padding: 15px;
+    border: 1px solid #ffeeba;
+    border-radius: 8px;
+}
+
+#auth a {
+    color: #d58512;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.search-form {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.search-form input {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.search-form button {
+    margin-left: 8px;
+    padding: 8px 12px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-form button:hover {
+    background-color: #0056b3;
+}
+
+.post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.post-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.post-card h4 {
+    margin-bottom: 10px;
+    color: #007bff;
+}
+
+.post-card p {
+    margin: 5px 0;
+}
+
+.post-actions {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+.post-actions .btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.post-actions .btn i {
+    margin-right: 5px;
+}
+
+.btn-detail { background-color: #17a2b8; }
+.btn-edit   { background-color: #ffc107; color: #212529; }
+.btn-delete { background-color: #dc3545; }
+.btn-rent   { background-color: #28a745; }
+.btn-comment { background-color: #6f42c1; }
+
+.btn:hover {
+    opacity: 0.9;
+}
+
