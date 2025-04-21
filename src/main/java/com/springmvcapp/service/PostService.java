@@ -9,14 +9,13 @@ import com.springmvcapp.service.repo.PostModelRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page; // ✅ CHỈNH Ở ĐÂY
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -47,9 +46,22 @@ public class PostService {
         return motelModelRepository.findAll();
     }
 
+//    public PostModel getPostById(Long id) {
+//        return postRepository.findById(id)
+//            .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy bài đăng với ID: " + id));
+//    }
+
     public PostModel getPostById(Long id) {
-        return postRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy bài đăng với ID: " + id));
+        PostModel post = postRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy bài đăng với ID: " + id));
+
+        if (post.getRelatedRoomId() != null) {
+            // Lấy dữ liệu MotelModel bằng relatedRoomId
+            Optional<MotelModel> motelOptional = motelModelRepository.findById(post.getRelatedRoomId());
+            motelOptional.ifPresent(post::setMotelModel); // Bổ sung thông tin vào PostModel
+        }
+
+        return post;
     }
 
     public MotelModel getMotelById(Long motelId) {
@@ -67,7 +79,7 @@ public class PostService {
 
         existing.setTitle(dto.getTitle());
         existing.setContent(dto.getContent());
-        existing.setRelatedRoomId(dto.getRelatedRoomId());
+        existing.setRelatedRoomId(Long.valueOf(dto.getRelatedRoomId()));
         existing.setStatus(dto.getStatus());
         existing.setUpdatedAt(LocalDateTime.now());
 
@@ -90,6 +102,28 @@ public class PostService {
         } else {
             return postRepository.findAll(pageable);
         }
+    }
+
+    public Page<PostModel> searchPostsWithMotels(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        // Tìm kiếm post
+        Page<PostModel> postPage = (keyword != null && !keyword.isEmpty())
+                ? postRepository.findByTitleContainingIgnoreCase(keyword, pageable)
+                : postRepository.findAll(pageable);
+
+        // Lấy danh sách PostModel và kết hợp thông tin MotelModel
+        List<PostModel> postsWithMotels = postPage.getContent().stream().map(post -> {
+            if (post.getRelatedRoomId() != null) {
+                // Lấy thông tin MotelModel
+                Optional<MotelModel> motelOptional = motelModelRepository.findById(post.getRelatedRoomId());
+                motelOptional.ifPresent(post::setMotelModel); // Bạn cần thêm field MotelModel trong PostModel
+            }
+            return post;
+        }).collect(Collectors.toList());
+
+        // Trả về Page với dữ liệu đã kết hợp
+        return new PageImpl<>(postsWithMotels, pageable, postPage.getTotalElements());
     }
 
     public PostModelDto getPostDetailById(Long postId) {

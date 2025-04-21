@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Tạo bài viết mới</title>
+  <title>Chỉnh sửa bài viết</title>
   <link rel="stylesheet" href="/styles/style.css">
   <style>
     body {
@@ -18,7 +18,7 @@
     }
 
     .post-container {
-      max-width: 700px;
+      max-width: 800px;
       background: white;
       margin: auto;
       padding: 30px 40px;
@@ -66,22 +66,16 @@
     form button:hover {
       background-color: #0056b3;
     }
-
-    .form-note {
-      font-size: 13px;
-      color: #777;
-      margin-top: 5px;
-    }
   </style>
 </head>
 <body>
 
 <div th:insert="~{parts/navigation::navigation}"></div>
 
-<h1>Tạo bài viết mới</h1>
+<h1>Chỉnh sửa bài viết</h1>
 
 <div class="post-container">
-  <form th:action="@{/posts/edit}" th:object="${postDto}" method="post">
+  <form th:action="@{/posts/update}" th:object="${postDto}" method="post">
     <input type="hidden" th:field="*{id}">
 
     <label for="title">Tiêu đề:</label>
@@ -103,13 +97,25 @@
     <label for="status">Trạng thái bài viết:</label>
     <select th:field="*{status}" required>
       <option value="">-- Chọn trạng thái --</option>
-      <option value="DRAFT">Nháp</option>
-      <option value="VISIBLE">Hiển thị công khai</option>
-      <option value="HIDDEN">Ẩn khỏi người dùng</option>
-      <option value="ARCHIVED">Lưu trữ</option>
+      <option value="DRAFT" th:selected="${postDto.status == 'DRAFT'}">Nháp</option>
+      <option value="VISIBLE" th:selected="${postDto.status == 'VISIBLE'}">Hiển thị công khai</option>
+      <option value="HIDDEN" th:selected="${postDto.status == 'HIDDEN'}">Ẩn khỏi người dùng</option>
+      <option value="ARCHIVED" th:selected="${postDto.status == 'ARCHIVED'}">Lưu trữ</option>
     </select>
 
-    <button class="post-create" type="submit">Tạo bài viết</button>
+    <label for="adminId">Người quản lý:</label>
+    <input type="text" id="adminId" th:field="*{adminId}" placeholder="Nhập người quản lý" required>
+
+    <label for="imageName">Tên ảnh:</label>
+<!--    <input type="text" id="imageName" th:field="*{imageName}" placeholder="Nhập tên ảnh (nếu có)">-->
+
+<!--    <label for="createdAt">Ngày tạo:</label>-->
+<!--    <input type="text" id="createdAt" th:field="*{createdAt}" disabled>-->
+
+<!--    <label for="updatedAt">Ngày cập nhật:</label>-->
+<!--    <input type="text" id="updatedAt" th:field="*{updatedAt}" disabled>-->
+
+    <button class="post-create" type="submit">Cập nhật bài viết</button>
   </form>
 </div>
 

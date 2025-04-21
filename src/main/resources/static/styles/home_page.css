@@ -10,6 +10,14 @@ body {
 
 }
 
+.post-image {
+    width: 100%; /* Làm ảnh phù hợp với chiều rộng của container */
+    height: auto; /* Giữ tỷ lệ khung hình */
+    max-width: 300px; /* Đặt giới hạn tối đa chiều rộng */
+    border-radius: 10px; /* Tùy chỉnh góc bo tròn nếu cần */
+    margin-bottom: 10px; /* Khoảng cách phía dưới ảnh */
+    display: block; /* Hiển thị ảnh như block */
+}
 
 h1, h2 {
     text-align: center;

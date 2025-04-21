@@ -30,4 +30,7 @@ public class UserService {
         return userModelRepository.findByEmail(email).orElse(null);
     }
 
+    public List<UserModel> getUsersByRole(UserRole role) {
+        return userModelRepository.findByRole((role));
+    }
 }

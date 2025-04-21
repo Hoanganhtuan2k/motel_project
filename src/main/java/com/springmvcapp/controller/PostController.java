@@ -104,7 +104,7 @@ public class PostController {
 
         model.addAttribute("postDto", postDto);
 
-        MotelModel motel = postService.getMotelById(Long.parseLong(post.getRelatedRoomId()));
+        MotelModel motel = postService.getMotelById(post.getRelatedRoomId());
         model.addAttribute("motel", motel);
         return "post_templates/edit_post";
     }

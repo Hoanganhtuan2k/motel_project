@@ -2,6 +2,7 @@ package com.springmvcapp.controller;
 
 import com.springmvcapp.dto.MotelModelDto;
 import com.springmvcapp.model.MotelModel;
+import com.springmvcapp.model.PostModel;
 import com.springmvcapp.model.UserModel;
 import com.springmvcapp.service.MotelService;
 import com.springmvcapp.service.repo.MotelModelRepository;
@@ -141,6 +142,16 @@ public class MotelController {
         MotelModel motel = motelService.getMotelById(id);
         model.addAttribute("motel", motel);
         return "motel_templates/edit_motel";
+    }
+
+
+
+    @GetMapping("/delete/{id}")
+    public String deleteMotel(@PathVariable Long id,
+                             @AuthenticationPrincipal UserDetails userDetails) {
+
+        motelService.deleteMotelById(id);
+        return "redirect:/";
     }
 
 

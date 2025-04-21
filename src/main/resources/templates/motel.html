@@ -89,9 +89,16 @@
                         <a th:href="@{|/posts/create?motelId=${motel.id}|}">
                             <button class="btn-create"><i class="fas fa-plus"></i> Create Post</button>
                         </a>
-                        <a th:href="@{|/motels/delete/${motel.id}|}" sec:authorize="hasRole('ADMIN')">
+                        <a th:href="@{|/motels/delete/${motel.id}|}" sec:authorize="hasRole('ADMIN')"
+                           onclick="return confirmDelete();">
                             <button class="btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
                         </a>
+
+                        <script>
+                            function confirmDelete() {
+                                return confirm("Cảnh báo: Nếu xóa phòng trọ này, tất cả các bài viết liên quan cũng sẽ bị xóa. Bạn có chắc chắn muốn thực hiện hành động này?");
+                            }
+                        </script>
 
                     </div>
                 </td>

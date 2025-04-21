@@ -1,10 +1,7 @@
 package com.springmvcapp.model;
 
 import com.springmvcapp.status.PostStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,9 +20,11 @@ public class PostModel {
   private String title;
   private String content;
   private String adminId;          // người đăng bài
-  private String relatedRoomId;    // nếu bài viết liên quan đến 1 phòng cụ thể
+  private Long relatedRoomId;    // nếu bài viết liên quan đến 1 phòng cụ thể
   private PostStatus status;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 
+  @Transient
+  private MotelModel motelModel;
 }

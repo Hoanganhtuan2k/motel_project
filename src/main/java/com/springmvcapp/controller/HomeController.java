@@ -37,8 +37,8 @@ public class HomeController {
                               Model model) {
         int pageSize = 10;
 
-        Page<PostModel> postPage = postService.searchPosts(keyword, page - 1, pageSize);
-
+//        Page<PostModel> postPage = postService.searchPosts(keyword, page - 1, pageSize);
+        Page<PostModel> postPage = postService.searchPostsWithMotels(keyword, page - 1, pageSize);
         model.addAttribute("posts", postPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", postPage.getTotalPages());

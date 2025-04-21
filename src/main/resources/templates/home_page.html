@@ -43,9 +43,7 @@
 </div>
 
 <div class="home-container">
-    <h1>Trang chủ cho thuê nhà trọ</h1>
-    <h2>Dễ dàng tìm kiếm phòng trọ phù hợp</h2>
-
+    <h1>Trang chủ </h1>
     <section id="posts">
         <h2>Danh sách bài viết</h2>
 
@@ -56,16 +54,29 @@
 
         <div class="post-grid">
             <div th:each="post : ${posts}" class="post-card">
+                <img th:src="@{'/images/' + ${post.motelModel.imageName}}"
+                     alt="Ảnh phòng"
+                     class="post-image" />
                 <h4 th:text="${post.title}">[Tên nhà trọ]</h4>
                 <p><strong>Nội dung:</strong> <span th:text="${post.content}">[Nội dung]</span></p>
 
                 <div sec:authorize="isAuthenticated()">
                     <p><strong>Người đăng:</strong> <span th:text="${post.adminId}">[Người đăng]</span></p>
-                    <p th:if="${post.relatedRoomId != null}">
-                        <strong>Phòng liên quan:</strong> <span th:text="${post.relatedRoomId}">[Mã phòng]</span>
+<!--                    <p th:if="${post.relatedRoomId != null}">-->
+<!--                        <strong>Phòng liên quan:</strong> <span th:text="${post.relatedRoomId}">[Mã phòng]</span>-->
+<!--                    </p>-->
+                    <p th:if="${post.motelModel != null}">
+                        <strong>Tên phòng:</strong> <span th:text="${post.motelModel.name}">[Tên phòng]</span>
                     </p>
-                    <p><strong>Trạng thái:</strong> <span th:text="${post.status}">[Trạng thái]</span></p>
-                    <p><strong>Cập nhật:</strong> <span th:text="${#temporals.format(post.updatedAt, 'dd/MM/yyyy HH:mm')}">[Ngày cập nhật]</span></p>
+                    <p th:if="${post.motelModel != null}">
+                        <strong>Trạng thái phòng:</strong> <span th:text="${post.motelModel.status}">[Trạng thái]</span>
+                    </p>
+                    <p th:if="${post.motelModel != null}">
+                        <strong>Giá gốc:</strong> <span th:text="${post.motelModel.originalPrice}">[Giá gốc]</span>
+                    </p>
+                    <p th:if="${post.motelModel != null}">
+                        <strong>Giá hiện tại:</strong> <span th:text="${post.motelModel.actualPrice}">[Giá hiện tại]</span>
+                    </p>
                 </div>
 
                 <p><strong>Ngày đăng:</strong> <span th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy HH:mm')}">[Ngày đăng]</span></p>
@@ -74,11 +85,12 @@
                     <a th:href="@{'/posts/' + ${post.id}}" class="btn btn-detail"><i class="fas fa-eye"></i> Xem</a>
                     <a th:href="@{'/posts/edit/' + ${post.id}}" class="btn btn-edit"><i class="fas fa-pen"></i> Sửa</a>
                     <a th:href="@{'/posts/delete/' + ${post.id}}" class="btn btn-delete" onclick="return confirm('Bạn có chắc muốn xóa bài này?');"><i class="fas fa-trash-alt"></i> Xóa</a>
-                    <a th:href="@{'/contracts/create/' + ${post.id}}" class="btn btn-rent" target="_blank"><i class="fas fa-file-contract"></i> Thuê</a>
+                    <a th:href="@{'/contracts/create/' + ${post.id}}" class="btn btn-rent" target="_blank"><i class="fas fa-file-contract"></i> Tạo hợp đồng</a>
                     <a th:href="@{'/comments/' + ${post.id}}" class="btn btn-comment"><i class="fas fa-comment-dots"></i> Comment</a>
                 </div>
             </div>
         </div>
+
     </section>
 
 
