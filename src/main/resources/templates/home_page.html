@@ -95,11 +95,12 @@
 
 
     <div class="pagination-container" th:if="${totalPages >= 1}">
-        <a class="pagination-link"
-           th:classappend="${currentPage > 1} ? '' : 'disabled'"
-           th:href="@{/(page=${currentPage - 1}, keyword=${keyword})}"
-           th:attr="disabled=${currentPage == 1}">&laquo; Trước</a>
+        <!-- Nút Trước -->
+        <span th:if="${currentPage == 1}" class="pagination-link disabled">&laquo; Trước</span>
+        <a th:if="${currentPage > 1}" class="pagination-link"
+           th:href="@{/(page=${currentPage - 1}, keyword=${keyword})}">&laquo; Trước</a>
 
+        <!-- Các trang -->
         <span th:each="page : ${#numbers.sequence(1, totalPages)}">
         <a class="pagination-link"
            th:href="@{/(page=${page}, keyword=${keyword})}"
@@ -107,11 +108,12 @@
            th:classappend="${page == currentPage} ? ' active-page' : ''"></a>
     </span>
 
-        <a class="pagination-link"
-           th:classappend="${currentPage < totalPages} ? '' : 'disabled'"
-           th:href="@{/(page=${currentPage + 1}, keyword=${keyword})}"
-           th:attr="disabled=${currentPage == totalPages}">Tiếp &raquo;</a>
+        <!-- Nút Tiếp -->
+        <span th:if="${currentPage == totalPages}" class="pagination-link disabled">Tiếp &raquo;</span>
+        <a th:if="${currentPage < totalPages}" class="pagination-link"
+           th:href="@{/(page=${currentPage + 1}, keyword=${keyword})}">Tiếp &raquo;</a>
     </div>
+
 </div>
 
 <section id="auth" sec:authorize="isAnonymous()">
