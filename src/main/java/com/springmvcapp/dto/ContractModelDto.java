@@ -23,5 +23,7 @@ public class ContractModelDto implements Serializable {
   private String roomId;
   private LocalDateTime startDate;
   private LocalDateTime endDate;
+  private String finalPrice;
+  private String description;
   private ContractStatus status;
 }

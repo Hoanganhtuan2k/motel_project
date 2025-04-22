@@ -26,7 +26,6 @@ body {
 }
 
 
-
 .all-browsers {
     margin: 0;
     padding: 5px;
@@ -87,14 +86,21 @@ tr:nth-child(even) {
     font-weight: bold;
 }
 
+.pagination-link:hover {
+    text-decoration: none;
+}
+
 .active-page {
     background-color: #007bff;
     color: white;
     pointer-events: none;
 }
+
 .pagination-link.disabled {
-    opacity: 0.3;
+    opacity: 0.4;
     cursor: not-allowed;
+    pointer-events: none; /* Ngăn click */
 }
+
 
 

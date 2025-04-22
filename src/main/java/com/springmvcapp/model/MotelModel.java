@@ -33,5 +33,4 @@ public class MotelModel {
   private String originalPrice;
   private String actualPrice;
 
-
 }
