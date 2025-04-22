@@ -6,18 +6,20 @@
     <link rel="stylesheet" th:href="@{/webjars/font-awesome/6.7.2/css/all.min.css}"/>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}"/>
     <link rel="stylesheet" href="/styles/style.css"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: white;
-            padding: 20px;
         }
 
         .form-container {
-            max-width: 600px;
+            max-width: 500px;
             margin: auto;
+            margin-top: 22px;
             background-color: white;
-            padding: 30px;
+            padding: 50px;
             border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
@@ -64,18 +66,48 @@
             margin-top: 15px;
             display: block;
             color: #007bff;
+            text-decoration: none;
         }
 
         .back-link:hover {
-            text-decoration: underline;
+            text-decoration: none;
         }
+
+
     </style>
 </head>
 <body>
-<div class="topnav" th:fragment="navigation">
-    <!-- ... giống như create -->
-</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <div class="container-fluid px-4">
+        <!-- Search + Menu -->
+        <div class="d-flex align-items-center gap-3">
+            <form th:action="@{/}" method="get" class="d-flex">
+                <input type="text" name="keyword" th:value="${keyword}" class="form-control form-control-sm" placeholder="Tìm bài viết...">
+                <button type="submit" class="btn btn-sm btn-outline-primary ms-2">Tìm</button>
+            </form>
+            <a class="nav-link active  " href="/">Trang chủ</a>
+            <a class="nav-link" href="/motels" sec:authorize="hasRole('ADMIN')">Nhà trọ</a>
+            <a class="nav-link" href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Bài đăng</a>
+        </div>
 
+        <!-- User controls -->
+        <div class="d-flex align-items-center gap-2">
+            <div class="dropdown" sec:authorize="isAuthenticated()">
+                <a class="dropdown-toggle" href="#" data-bs-toggle="dropdown"><i class="fas fa-user-circle fa-lg text-primary"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="/profile">Thông tin cá nhân</a></li>
+                    <li>
+                        <form th:action="@{/logout}" method="post"><button class="dropdown-item">Đăng xuất</button></form>
+                    </li>
+                </ul>
+            </div>
+            <div sec:authorize="isAnonymous()">
+                <a href="/auth/login" class="btn btn-sm btn-outline-primary">Đăng nhập</a>
+                <a href="/auth/register" class="btn btn-sm btn-outline-success">Đăng ký</a>
+            </div>
+        </div>
+    </div>
+</nav>
 <div class="form-container">
     <h2>Chỉnh sửa phòng trọ</h2>
 
@@ -183,6 +215,18 @@
             alert("Không tìm được tọa độ: " + error.message);
         }
     }
+    window.addEventListener('DOMContentLoaded', () => {
+        const navLinks = document.querySelectorAll(".nav-link");
+        const currentPath = "/motels";
+
+        navLinks.forEach(link => {
+            if (link.getAttribute("href") === currentPath) {
+                link.classList.add("active");
+            } else {
+                link.classList.remove("active");
+            }
+        });
+    });
 </script>
 </body>
 </html>
