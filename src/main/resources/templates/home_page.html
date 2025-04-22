@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Trang chủ</title>
@@ -13,12 +13,14 @@
 <div th:replace="~{parts/header :: header}"></div>
 
 <div class="topnav" th:fragment="navigation">
-    <!-- Home luôn hiển thị khi đăng nhập -->
-    <a class="active" href="/">Home</a>
+    <!-- Trang chủ luôn hiển thị khi đăng nhập -->
+    <a class="active" href="/">Trang chủ</a>
 
-    <a href="/motels" sec:authorize="hasRole('ADMIN')">Motels</a>
-    <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Posts</a>
+    <!-- Chỉ admin mới thấy -->
+    <a href="/motels" sec:authorize="hasRole('ADMIN')">Nhà trọ</a>
+    <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Bài đăng</a>
 
+    <!-- Người dùng đã đăng nhập -->
     <div class="dropdown" style="float: right;height: 170px" sec:authorize="isAuthenticated()">
         <a class="dropdown-toggle" href="#" role="button" id="userDropdown"
            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -32,7 +34,6 @@
                 <button type="submit" class="dropdown-item">Đăng xuất</button>
             </form>
         </div>
-
     </div>
 
     <!-- Chưa đăng nhập -->
@@ -43,7 +44,7 @@
 </div>
 
 <div class="home-container">
-    <h1>Trang chủ </h1>
+    <h1>Trang chủ</h1>
     <section id="posts">
         <h2>Danh sách bài viết</h2>
 
@@ -56,43 +57,46 @@
             <div th:each="post : ${posts}" class="post-card">
                 <img th:src="@{'/images/' + ${post.motelModel.imageName}}"
                      alt="Ảnh phòng"
-                     class="post-image" />
+                     class="post-image"/>
                 <h4 th:text="${post.title}">[Tên nhà trọ]</h4>
                 <p><strong>Nội dung:</strong> <span th:text="${post.content}">[Nội dung]</span></p>
 
                 <div sec:authorize="isAuthenticated()">
-                    <p><strong>Người đăng:</strong> <span th:text="${post.adminId}">[Người đăng]</span></p>
-<!--                    <p th:if="${post.relatedRoomId != null}">-->
-<!--                        <strong>Phòng liên quan:</strong> <span th:text="${post.relatedRoomId}">[Mã phòng]</span>-->
-<!--                    </p>-->
+                    <p><strong>Người đăng:</strong>
+                        <span th:text="${adminNames[post.id]}">[Tên người đăng]</span>
+                    </p>
                     <p th:if="${post.motelModel != null}">
                         <strong>Tên phòng:</strong> <span th:text="${post.motelModel.name}">[Tên phòng]</span>
                     </p>
                     <p th:if="${post.motelModel != null}">
-                        <strong>Trạng thái phòng:</strong> <span th:text="${post.motelModel.status}">[Trạng thái]</span>
+                        <strong>Trạng thái phòng:</strong> <span th:text="${post.motelModel.status.getStatusName()}">[Trạng thái]</span>
                     </p>
                     <p th:if="${post.motelModel != null}">
                         <strong>Giá gốc:</strong> <span th:text="${post.motelModel.originalPrice}">[Giá gốc]</span>
                     </p>
                     <p th:if="${post.motelModel != null}">
-                        <strong>Giá hiện tại:</strong> <span th:text="${post.motelModel.actualPrice}">[Giá hiện tại]</span>
+                        <strong>Giá hiện tại:</strong> <span
+                            th:text="${post.motelModel.actualPrice}">[Giá hiện tại]</span>
                     </p>
                 </div>
 
-                <p><strong>Ngày đăng:</strong> <span th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy HH:mm')}">[Ngày đăng]</span></p>
+                <p><strong>Ngày đăng:</strong> <span th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy HH:mm')}">[Ngày đăng]</span>
+                </p>
 
                 <div class="post-actions" sec:authorize="isAuthenticated()">
                     <a th:href="@{'/posts/' + ${post.id}}" class="btn btn-detail"><i class="fas fa-eye"></i> Xem</a>
                     <a th:href="@{'/posts/edit/' + ${post.id}}" class="btn btn-edit"><i class="fas fa-pen"></i> Sửa</a>
-                    <a th:href="@{'/posts/delete/' + ${post.id}}" class="btn btn-delete" onclick="return confirm('Bạn có chắc muốn xóa bài này?');"><i class="fas fa-trash-alt"></i> Xóa</a>
-                    <a th:href="@{'/contracts/create/' + ${post.id}}" class="btn btn-rent" target="_blank"><i class="fas fa-file-contract"></i> Tạo hợp đồng</a>
-                    <a th:href="@{'/comments/' + ${post.id}}" class="btn btn-comment"><i class="fas fa-comment-dots"></i> Comment</a>
+                    <a th:href="@{'/posts/delete/' + ${post.id}}" class="btn btn-delete"
+                       onclick="return confirm('Bạn có chắc muốn xóa bài này?');"><i class="fas fa-trash-alt"></i>
+                        Xóa</a>
+                    <a th:href="@{'/contracts/create/' + ${post.id}}" class="btn btn-rent" target="_blank"><i
+                            class="fas fa-file-contract"></i> Tạo hợp đồng</a>
+                    <a th:href="@{'/comments/' + ${post.id}}" class="btn btn-comment"><i
+                            class="fas fa-comment-dots"></i> Bình luận</a>
                 </div>
             </div>
         </div>
-
     </section>
-
 
     <div class="pagination-container" th:if="${totalPages >= 1}">
         <!-- Nút Trước -->
@@ -102,20 +106,20 @@
 
         <!-- Các trang -->
         <span th:each="page : ${#numbers.sequence(1, totalPages)}">
-        <a class="pagination-link"
-           th:href="@{/(page=${page}, keyword=${keyword})}"
-           th:text="${page}"
-           th:classappend="${page == currentPage} ? ' active-page' : ''"></a>
-    </span>
+            <a class="pagination-link"
+               th:href="@{/(page=${page}, keyword=${keyword})}"
+               th:text="${page}"
+               th:classappend="${page == currentPage} ? ' active-page' : ''"></a>
+        </span>
 
         <!-- Nút Tiếp -->
         <span th:if="${currentPage == totalPages}" class="pagination-link disabled">Tiếp &raquo;</span>
         <a th:if="${currentPage < totalPages}" class="pagination-link"
            th:href="@{/(page=${currentPage + 1}, keyword=${keyword})}">Tiếp &raquo;</a>
     </div>
-
 </div>
 
+<!-- Thông báo cho người chưa đăng nhập -->
 <section id="auth" sec:authorize="isAnonymous()">
     <p>Bạn muốn đăng bài? Vui lòng đăng nhập!</p>
     <a href="/login">Đăng nhập</a>

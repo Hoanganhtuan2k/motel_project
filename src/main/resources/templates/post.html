@@ -8,14 +8,14 @@
 <div th:replace="~{parts/header :: header}"></div>
 
 <div class="topnav" th:fragment="navigation">
-    <!-- Home luôn hiển thị khi đăng nhập -->
-    <a class="active" href="/">Home</a>
+    <!-- Trang chủ luôn hiển thị khi đăng nhập -->
+    <a class="active" href="/">Trang chủ</a>
 
-    <!-- Chỉ admin mới thấy 2 mục này -->
-    <a href="/motels" sec:authorize="hasRole('ADMIN')">Motels</a>
-    <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Posts</a>
+    <!-- Chỉ admin mới thấy -->
+    <a href="/motels" sec:authorize="hasRole('ADMIN')">Nhà trọ</a>
+    <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Bài đăng</a>
 
-    <!-- Đã đăng nhập -->
+    <!-- Người dùng đã đăng nhập -->
     <div class="dropdown" style="float: right;height: 170px" sec:authorize="isAuthenticated()">
         <a class="dropdown-toggle" href="#" role="button" id="userDropdown"
            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -29,7 +29,6 @@
                 <button type="submit" class="dropdown-item">Đăng xuất</button>
             </form>
         </div>
-
     </div>
 
     <!-- Chưa đăng nhập -->

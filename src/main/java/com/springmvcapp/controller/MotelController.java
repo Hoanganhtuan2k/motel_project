@@ -120,6 +120,11 @@ public class MotelController {
         motelModel.setCreatedAt(LocalDateTime.now());
         motelModel.setLat(modelDto.getLat());
         motelModel.setLng(modelDto.getLng());
+        motelModel.setDescription(modelDto.getDescription());
+        motelModel.setAcreage(modelDto.getAcreage());
+        motelModel.setOriginalPrice(modelDto.getOriginalPrice());
+        motelModel.setActualPrice(modelDto.getActualPrice());
+
 
         motelModelRepository.save(motelModel);
         return "redirect:/motels";
@@ -153,6 +158,43 @@ public class MotelController {
         motelService.deleteMotelById(id);
         return "redirect:/";
     }
+
+    @PostMapping("/edit/save")
+    public String saveEditMotel(@ModelAttribute MotelModel updatedMotel,
+                                @RequestParam("imageFile") MultipartFile imageFile) {
+
+        MotelModel motel = motelModelRepository.findById(updatedMotel.getId())
+                .orElseThrow(() -> new RuntimeException("Phòng trọ không tồn tại"));
+
+        motel.setName(updatedMotel.getName());
+        motel.setStatus(updatedMotel.getStatus());
+        motel.setDescription(updatedMotel.getDescription());
+        motel.setAcreage(updatedMotel.getAcreage());
+        motel.setOriginalPrice(updatedMotel.getOriginalPrice());
+        motel.setActualPrice(updatedMotel.getActualPrice());
+        motel.setLat(updatedMotel.getLat());
+        motel.setLng(updatedMotel.getLng());
+
+        if (!imageFile.isEmpty()) {
+            try {
+                String filename = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
+                Path uploadPath = Paths.get("static/images/");
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+                try (InputStream inputStream = imageFile.getInputStream()) {
+                    Files.copy(inputStream, uploadPath.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
+                    motel.setImageName(filename);
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("Lỗi khi lưu ảnh: " + e.getMessage());
+            }
+        }
+
+        motelModelRepository.save(motel);
+        return "redirect:/motels";
+    }
+
 
 
 }
