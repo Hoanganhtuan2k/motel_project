@@ -3,144 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <title>Chi tiết bài đăng</title>
-    <link rel="stylesheet" href="/styles/style.css">
-    <style>
-      .post-header {
-        display: flex;
-        justify-content: space-between; /* Chia thành hai phần */
-        align-items: flex-start; /* Canh chỉnh đầu mỗi phần */
-      }
 
-      .post-summary {
-        flex: 1; /* Chiếm toàn bộ phần bên trái */
-      }
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-      .post-image {
-        max-width: 350px;
-        height: auto;
-        border-radius: 10px;
-        margin-left: 20px; /* Tạo khoảng cách với phần text */
-      }
-
-      .location-section {
-        margin-top: 30px;
-        text-align: center; /* Căn giữa bản đồ */
-      }
-
-      .map-container {
-        width: 100%;
-        height: 500px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        overflow: hidden;
-      }
-
-    </style>
 </head>
 <body>
 
+<!-- Navigation -->
 <div th:insert="~{parts/navigation::navigation}"></div>
 
-<div class="container">
-    <h1>Chi tiết bài đăng</h1>
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Chi tiết bài đăng</h1>
 
     <!-- Thông tin bài đăng -->
-    <div class="post-info">
-        <div class="post-header">
-          <div class="post-summary">
-            <h2 th:text="${post.title}">[Tên nhà trọ]</h2>
-            <p><span class="post-label">Người đăng:</span> <span th:text="${post.adminId}"></span></p>
-            <p><span class="post-label">Ngày đăng:</span> <span th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy HH:mm')}"></span></p>
-            <p><span class="post-label">Cập nhật lần cuối:</span> <span th:text="${#temporals.format(post.updatedAt, 'dd/MM/yyyy HH:mm')}"></span></p>
-          </div>
-
-          <!-- Ảnh bên phải -->
-          <img th:src="@{'/images/' + ${post.motelModel.imageName}}" alt="Ảnh nhà trọ" class="post-image"/>
+    <div class="card mb-4">
+        <div class="card-body d-flex align-items-center">
+            <div class="flex-grow-1">
+                <h2 class="card-title" th:text="${post.title}">[Tên nhà trọ]</h2>
+                <p><strong>Người đăng:</strong> <span th:text="${post.adminId}"></span></p>
+                <p><strong>Ngày đăng:</strong> <span th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy HH:mm')}"></span></p>
+                <p><strong>Cập nhật lần cuối:</strong> <span th:text="${#temporals.format(post.updatedAt, 'dd/MM/yyyy HH:mm')}"></span></p>
+            </div>
+            <img th:src="@{'/images/' + ${post.motelModel.imageName}}" alt="Ảnh nhà trọ" class="img-fluid rounded" style="max-width: 200px;">
         </div>
+    </div>
 
-        <!-- Nội dung bài viết -->
-        <div class="post-content">
-            <h3>Nội dung</h3>
+    <!-- Nội dung bài viết -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3 class="card-title">Nội dung</h3>
             <p th:text="${post.content}">[Nội dung]</p>
         </div>
+    </div>
 
-        <!-- Thông tin nhà trọ liên quan -->
-        <div class="motel-info" th:if="${post.motelModel != null}">
-            <h3>Thông tin nhà trọ</h3>
-            <p>
-                <span class="post-label">Tên nhà trọ:</span>
-                <span th:text="${post.motelModel.name}">[Tên nhà trọ]</span>
-            </p>
-            <p>
-                <span class="post-label">Trạng thái:</span>
-                <span th:text="${post.motelModel.status}">[Trạng thái]</span>
-            </p>
-            <p>
-                <span class="post-label">Giá gốc:</span>
-                <span th:text="${post.motelModel.originalPrice}">[Giá gốc]</span>
-            </p>
-            <p>
-                <span class="post-label">Giá hiện tại:</span>
-                <span th:text="${post.motelModel.actualPrice}">[Giá hiện tại]</span>
-            </p>
-            <p>
-                <span class="post-label">Diện tích:</span>
-                <span th:text="${post.motelModel.acreage}">[Diện tích]</span>
-            </p>
-            <p>
-                <span class="post-label">Mô tả:</span>
-                <span th:text="${post.motelModel.description}">[Mô tả]</span>
-            </p>
+    <!-- Thông tin nhà trọ -->
+    <div class="card mb-4" th:if="${post.motelModel != null}">
+        <div class="card-body">
+            <h3 class="card-title">Thông tin nhà trọ</h3>
+            <table class="table table-bordered">
+                <tr><td><strong>Tên nhà trọ</strong></td><td th:text="${post.motelModel.name}"></td></tr>
+                <tr><td><strong>Trạng thái</strong></td><td th:text="${post.motelModel.status}"></td></tr>
+                <tr><td><strong>Giá gốc</strong></td><td th:text="${post.motelModel.originalPrice}"></td></tr>
+                <tr><td><strong>Giá hiện tại</strong></td><td th:text="${post.motelModel.actualPrice}"></td></tr>
+                <tr><td><strong>Diện tích</strong></td><td th:text="${post.motelModel.acreage}"></td></tr>
+                <tr><td><strong>Mô tả</strong></td><td th:text="${post.motelModel.description}"></td></tr>
+            </table>
         </div>
+    </div>
 
-        <!-- Vị trí -->
-        <div class="location-section">
-            <h3>Vị trí</h3>
+    <!-- Vị trí -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3 class="card-title">Vị trí</h3>
             <div class="map-container" id="map_div" style="width: 100%; height: 500px;"></div>
         </div>
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script th:inline="javascript">
-            /*<![CDATA[*/
-            let motelDescription = /*[[${post.motelModel.description}]]*/ "Không có mô tả";
-            let motelLat = /*[[${post.motelModel.lat}]]*/ 0; // Chuyển về số thay vì chuỗi
-            let motelLng = /*[[${post.motelModel.lng}]]*/ 0;
-            console.log("Mô tả nhà trọ:", motelDescription);
-            console.log("Vĩ độ:", motelLat);
-            console.log("Kinh độ:", motelLng);
-            /*]]>*/
-        </script>
-
-        <script type="text/javascript">
-            google.charts.load("current", {
-                "packages": ["map"],
-                "mapsApiKey": "AIzaSyCIRm_C3Q2OIZ4RjeXxDmGA-haQ0hNBGRQ" // Bạn nên dùng API key của riêng mình
-            });
-
-            google.charts.setOnLoadCallback(drawChart);
-
-            function drawChart() {
-                var data = google.visualization.arrayToDataTable([
-                    ['Lat', 'Long', 'Name'],
-                    // [19.0760, 72.8777, 'Mumbai'],
-                    // [18.5204, 73.8567, 'Pune'],
-                    [motelLat, motelLng, motelDescription] // Lấy giá trị từ Thymeleaf
-                ]);
-
-                var map = new google.visualization.Map(document.getElementById('map_div'));
-                map.draw(data, {
-                    showTooltip: true,
-                    showInfoWindow: true
-                });
-            }
-        </script>
     </div>
+
+    <!-- Google Maps -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script th:inline="javascript">
+        let motelDescription = /*[[${post.motelModel.description}]]*/ "Không có mô tả";
+        let motelLat = /*[[${post.motelModel.lat}]]*/ 0;
+        let motelLng = /*[[${post.motelModel.lng}]]*/ 0;
+    </script>
+
+    <script type="text/javascript">
+        google.charts.load("current", {
+            "packages": ["map"],
+            "mapsApiKey": "AIzaSyCIRm_C3Q2OIZ4RjeXxDmGA-haQ0hNBGRQ" // Replace with your API key
+        });
+
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Lat', 'Long', 'Name'],
+                [motelLat, motelLng, motelDescription]
+            ]);
+
+            var map = new google.visualization.Map(document.getElementById('map_div'));
+            map.draw(data, { showTooltip: true, showInfoWindow: true });
+        }
+    </script>
 
     <!-- Nút quay về -->
-    <div class="back-button">
-        <a th:href="@{/}" class="btn">← Quay về trang chủ</a>
+    <div class="text-center mt-4">
+        <a th:href="@{/}" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Quay về trang chủ</a>
     </div>
+
 </div>
 
+<!-- Footer -->
 <div th:insert="~{parts/footer :: footer}"></div>
 
 </body>
