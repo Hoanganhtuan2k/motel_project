@@ -25,16 +25,19 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .authorizeHttpRequests(auth -> auth
-            // Trang không cần đăng nhập
             .requestMatchers("/auth/login", "/auth/register", "/styles/**").permitAll()
 
-            // Trang cho ADMIN
-            .requestMatchers("/motels/**", "/posts/**").hasRole("ADMIN")
+            // Chỉ ADMIN được sửa, xóa, tạo
+            .requestMatchers("/posts/edit/**", "/posts/delete/**", "/posts/create/**")
+            .hasRole("ADMIN")
 
-            // Trang Home cho cả ADMIN và USER
+            // Trang xem chi tiết post (GET /posts/{id}) cho cả ADMIN và USER
+            .requestMatchers("/posts/**").hasAnyRole("ADMIN", "USER")
+
+            // Trang home
             .requestMatchers("/", "/home").hasAnyRole("ADMIN", "USER")
 
-            // Các trang còn lại phải đăng nhập
+            // Còn lại phải đăng nhập
             .anyRequest().authenticated()
         )
         .formLogin(form -> form
