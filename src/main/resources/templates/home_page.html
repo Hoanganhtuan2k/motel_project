@@ -3,148 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <title>Trang chủ</title>
+
+    <!-- FontAwesome (giữ nguyên webjars nếu ổn) -->
     <link rel="stylesheet" th:href="@{/webjars/font-awesome/6.7.2/css/all.min.css}"/>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}"/>
+
+    <!-- Bootstrap from local static folder -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Your custom styles -->
     <link rel="stylesheet" href="/styles/home_page.css">
 </head>
 
 <body>
 
-<div th:replace="~{parts/header :: header}"></div>
-
-<div class="topnav" th:fragment="navigation">
-    <!-- Trang chủ luôn hiển thị khi đăng nhập -->
-    <a class="active" href="/">Trang chủ</a>
-
-    <!-- Chỉ admin mới thấy -->
-    <a href="/motels" sec:authorize="hasRole('ADMIN')">Nhà trọ</a>
-    <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Bài đăng</a>
-
-    <!-- Người dùng đã đăng nhập -->
-    <div class="dropdown" style="float: right;height: 170px" sec:authorize="isAuthenticated()">
-        <a class="dropdown-toggle" href="#" role="button" id="userDropdown"
-           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-           style="padding: 14px; color: #007bff; text-decoration: none;">
-            <i class="fas fa-user" style="font-size: 20px;"></i>
-        </a>
-
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="/profile">Thông tin cá nhân</a>
-            <form th:action="@{/logout}" method="post" style="margin: 0;">
-                <button type="submit" class="dropdown-item">Đăng xuất</button>
+<!-- HEADER -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <div class="container-fluid px-4">
+        <!-- Search + Menu -->
+        <div class="d-flex align-items-center gap-3">
+            <form th:action="@{/}" method="get" class="d-flex">
+                <input type="text" name="keyword" th:value="${keyword}" class="form-control form-control-sm" placeholder="Tìm bài viết...">
+                <button type="submit" class="btn btn-sm btn-outline-primary ms-2">Tìm</button>
             </form>
+            <a class="nav-link active fw-bold text-primary" href="/">Home</a>
+            <a class="nav-link" href="/motels" sec:authorize="hasRole('ADMIN')">Motels</a>
+            <a class="nav-link" href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Posts</a>
+        </div>
+
+        <!-- User controls -->
+        <div class="d-flex align-items-center gap-2">
+            <div class="dropdown" sec:authorize="isAuthenticated()">
+                <a class="dropdown-toggle" href="#" data-bs-toggle="dropdown"><i class="fas fa-user-circle fa-lg text-primary"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="/profile">Thông tin cá nhân</a></li>
+                    <li>
+                        <form th:action="@{/logout}" method="post"><button class="dropdown-item">Đăng xuất</button></form>
+                    </li>
+                </ul>
+            </div>
+            <div sec:authorize="isAnonymous()">
+                <a href="/auth/login" class="btn btn-sm btn-outline-primary">Đăng nhập</a>
+                <a href="/auth/register" class="btn btn-sm btn-outline-success">Đăng ký</a>
+            </div>
         </div>
     </div>
+</nav>
 
-    <!-- Chưa đăng nhập -->
-    <div style="float: right;" sec:authorize="isAnonymous()">
-        <a href="/auth/login">Đăng nhập</a>
-        <a href="/auth/register">Đăng ký</a>
-    </div>
-</div>
-
-<div class="home-container">
-    <h1>Trang chủ</h1>
-    <section id="posts">
-        <h2>Danh sách bài viết</h2>
-
-        <form th:action="@{/}" method="get" class="search-form">
-            <input type="text" name="keyword" th:value="${keyword}" placeholder="Tìm theo tiêu đề...">
-            <button type="submit">Tìm kiếm</button>
-        </form>
-
-        <div class="post-grid">
-            <div th:each="post : ${posts}" class="post-card">
-                <img th:src="@{'/images/' + ${post.motelModel.imageName}}"
-                     alt="Ảnh phòng"
-                     class="post-image"/>
-                <h4 th:text="${post.title}">[Tên nhà trọ]</h4>
-                <p><strong>Nội dung:</strong> <span th:text="${post.content}">[Nội dung]</span></p>
-
-                <div sec:authorize="isAuthenticated()">
-                    <p><strong>Người đăng:</strong>
-                        <span th:text="${adminNames[post.id]}">[Tên người đăng]</span>
-                    </p>
-                    <p th:if="${post.motelModel != null}">
-                        <strong>Tên phòng:</strong> <span th:text="${post.motelModel.name}">[Tên phòng]</span>
-                    </p>
-                    <p th:if="${post.motelModel != null}">
-                        <strong>Trạng thái phòng:</strong> <span th:text="${post.motelModel.status.getStatusName()}">[Trạng thái]</span>
-                    </p>
-                    <p th:if="${post.motelModel != null}">
-                        <strong>Giá gốc:</strong> <span th:text="${post.motelModel.originalPrice}">[Giá gốc]</span>
-                    </p>
-                    <p th:if="${post.motelModel != null}">
-                        <strong>Giá hiện tại:</strong> <span
-                            th:text="${post.motelModel.actualPrice}">[Giá hiện tại]</span>
-                    </p>
+<!-- BODY -->
+<div class="container-fluid mt-4 px-4">
+    <div class="row">
+        <!-- LEFT SIDEBAR -->
+        <div class="col-md-3 d-none d-md-block sticky-sidebar">
+            <div class="card mb-3" sec:authorize="isAuthenticated()">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-circle fa-3x text-secondary mb-2"></i>
+                    <h5 class="card-title" th:text="${#authentication.name}">[Tên người dùng]</h5>
                 </div>
+            </div>
+            <div class="list-group shadow-sm">
+                <a href="#" class="list-group-item list-group-item-action">Bài viết đã thích</a>
+                <a href="#" class="list-group-item list-group-item-action">Tin nhắn</a>
+                <a href="#" class="list-group-item list-group-item-action">Lịch sử giao dịch</a>
+                <a href="#" class="list-group-item list-group-item-action">Hợp đồng đã tạo</a>
+            </div>
+        </div>
 
-                <p><strong>Ngày đăng:</strong> <span th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy HH:mm')}">[Ngày đăng]</span>
-                </p>
+        <!-- CENTER POSTS -->
+        <div class="col-md-6 main-content">
+            <section id="posts">
+                <div th:each="post : ${posts}" class="card mb-4 shadow-sm">
+                    <img th:src="@{'/images/' + ${post.motelModel.imageName}}" class="card-img-top post-img" alt="Ảnh phòng">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${post.title}">[Tiêu đề]</h5>
+                        <p class="card-text" th:text="${post.content}">[Nội dung]</p>
 
-                <div class="post-actions" sec:authorize="isAuthenticated()">
-                    <a th:href="@{'/posts/' + ${post.id}}" class="btn btn-detail"><i class="fas fa-eye"></i> Xem</a>
-                    <a th:href="@{'/posts/edit/' + ${post.id}}" class="btn btn-edit"><i class="fas fa-pen"></i> Sửa</a>
-                    <a th:href="@{'/posts/delete/' + ${post.id}}" class="btn btn-delete"
-                       onclick="return confirm('Bạn có chắc muốn xóa bài này?');"><i class="fas fa-trash-alt"></i>
-                        Xóa</a>
-                    <a th:href="@{'/contracts/create/' + ${post.id}}" class="btn btn-rent" target="_blank"><i
-                            class="fas fa-file-contract"></i> Tạo hợp đồng</a>
-                    <a th:href="@{'/comments/' + ${post.id}}" class="btn btn-comment"><i
-                            class="fas fa-comment-dots"></i> Bình luận</a>
+                        <div sec:authorize="isAuthenticated()">
+                            <small class="text-muted">Người đăng: <span th:text="${post.adminId}">[Người đăng]</span></small><br/>
+                            <small th:if="${post.motelModel != null}" class="text-muted">Tên phòng: <span th:text="${post.motelModel.name}">[Tên phòng]</span></small><br/>
+                            <small th:if="${post.motelModel != null}" class="text-muted">Giá: <span th:text="${post.motelModel.actualPrice}">[Giá]</span></small>
+                        </div>
+
+                        <p class="text-muted mt-2 mb-1"><i class="far fa-clock"></i> <span th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy HH:mm')}">[Ngày đăng]</span></p>
+
+                        <div class="d-flex flex-wrap gap-2 mt-2" sec:authorize="isAuthenticated()">
+                            <a th:href="@{'/posts/' + ${post.id}}" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i> Xem</a>
+                            <a th:href="@{'/posts/edit/' + ${post.id}}" class="btn btn-sm btn-outline-warning"><i class="fas fa-pen"></i> Sửa</a>
+                            <a th:href="@{'/posts/delete/' + ${post.id}}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn có chắc muốn xóa bài này?');"><i class="fas fa-trash-alt"></i> Xóa</a>
+                            <a th:href="@{'/contracts/create/' + ${post.id}}" class="btn btn-sm btn-outline-success"><i class="fas fa-file-contract"></i> Hợp đồng</a>
+                            <a th:href="@{'/comments/' + ${post.id}}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-comment-dots"></i> Comment</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- RIGHT SIDEBAR -->
+        <div class="col-md-3 d-none d-md-block sticky-sidebar">
+            <div class="card mb-3 shadow-sm">
+                <img src="/images/1745045963182_2022_5_5_637873405485082514_pc-dep-1.jpg" class="card-img-top" alt="Ads">
+                <div class="card-body">
+                    <p class="card-text">🔥 Tìm phòng giá rẻ cực hot tại TP.HCM! Click ngay!</p>
+                </div>
+            </div>
+            <div class="card mb-3 shadow-sm">
+                <img src="/images/One-Piece-Gear-5.jpg" class="card-img-top" alt="Ads">
+                <div class="card-body">
+                    <p class="card-text">🛠️ Cần sửa điện nước? Đặt thợ ngay tại đây!</p>
                 </div>
             </div>
         </div>
-    </section>
-
-    <div class="pagination-container" th:if="${totalPages >= 1}">
-        <!-- Nút Trước -->
-        <span th:if="${currentPage == 1}" class="pagination-link disabled">&laquo; Trước</span>
-        <a th:if="${currentPage > 1}" class="pagination-link"
-           th:href="@{/(page=${currentPage - 1}, keyword=${keyword})}">&laquo; Trước</a>
-
-        <!-- Các trang -->
-        <span th:each="page : ${#numbers.sequence(1, totalPages)}">
-            <a class="pagination-link"
-               th:href="@{/(page=${page}, keyword=${keyword})}"
-               th:text="${page}"
-               th:classappend="${page == currentPage} ? ' active-page' : ''"></a>
-        </span>
-
-        <!-- Nút Tiếp -->
-        <span th:if="${currentPage == totalPages}" class="pagination-link disabled">Tiếp &raquo;</span>
-        <a th:if="${currentPage < totalPages}" class="pagination-link"
-           th:href="@{/(page=${currentPage + 1}, keyword=${keyword})}">Tiếp &raquo;</a>
     </div>
 </div>
 
-<!-- Thông báo cho người chưa đăng nhập -->
-<section id="auth" sec:authorize="isAnonymous()">
-    <p>Bạn muốn đăng bài? Vui lòng đăng nhập!</p>
-    <a href="/login">Đăng nhập</a>
-    <p>Nếu chưa có tài khoản, vui lòng <a href="/registration">Đăng ký</a>.</p>
-</section>
-
-<div th:insert="~{parts/footer :: footer}"></div>
-
+<!-- Scripts -->
+<script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
-<script th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.bundle.min.js}"></script>
 
-<script>
-    window.addEventListener('DOMContentLoaded', () => {
-        const navLinks = document.querySelectorAll(".topnav a");
-        const currentPath = window.location.pathname;
-        console.log(currentPath);
-        navLinks.forEach(link => {
-            if (link.getAttribute("href") === currentPath) {
-                link.classList.add("active");
-            } else {
-                link.classList.remove("active");
-            }
-        });
-    });
-</script>
+<!-- jQuery nếu bạn cần -->
+<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
 
+<!-- Bootstrap Bundle from local -->
+<script src="/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
