@@ -134,36 +134,30 @@
   let motelDescription = /*[[${motel.name}]]*/ "Không có mô tả";
 </script>
 
-<script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
   google.charts.load("current", {
-    "packages": ["map"],
+    "packages":["map"],
+    // Note: you will need to get a mapsApiKey for your project.
+    // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
     "mapsApiKey": "AIzaSyCIRm_C3Q2OIZ4RjeXxDmGA-haQ0hNBGRQ"
   });
-
-  google.charts.setOnLoadCallback(drawMap);
-
-  function drawMap() {
+  google.charts.setOnLoadCallback(drawChart);
+  function drawChart() {
     var data = google.visualization.arrayToDataTable([
       ['Lat', 'Long', 'Name'],
-      [motelLat, motelLng, motelDescription]
+      // [19.0760,  72.8777, 'Mumbai'],
+      // [18.5204, 73.8567, 'Pune'],
+      [motelLat, motelLng, motelDescription],
     ]);
 
     var map = new google.visualization.Map(document.getElementById('map_div'));
-    map.draw(data, { showTooltip: true, showInfoWindow: true });
-  }
-  window.addEventListener('DOMContentLoaded', () => {
-    const navLinks = document.querySelectorAll(".nav-link");
-    const currentPath = "/motels";
-
-    navLinks.forEach(link => {
-      if (link.getAttribute("href") === currentPath) {
-        link.classList.add("active");
-      } else {
-        link.classList.remove("active");
-      }
+    map.draw(data, {
+      showTooltip: true,
+      showInfoWindow: true
     });
-  });
-</script>
+  }
 
+</script>
 </body>
 </html>
