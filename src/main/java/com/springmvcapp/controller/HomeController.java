@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -37,17 +39,26 @@ public class HomeController {
                               @RequestParam(required = false) String keyword,
                               Model model) {
         int pageSize = 10;
-
-//        Page<PostModel> postPage = postService.searchPosts(keyword, page - 1, pageSize);
         Page<PostModel> postPage = postService.searchPostsWithMotels(keyword, page - 1, pageSize);
-        model.addAttribute("posts", postPage.getContent());
+        var posts = postPage.getContent();
+
+        // Map chứa ID bài viết => tên người đăng
+        Map<Long, String> postAdminNames = new HashMap<>();
+        for (PostModel post : posts) {
+            Long adminId = Long.valueOf(post.getAdminId());
+            Optional<UserModel> admin = userModelRepository.findById(adminId);
+            postAdminNames.put(post.getId(), admin.map(UserModel::getUsername).orElse("Không rõ"));
+        }
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("adminNames", postAdminNames); // truyền thêm map này
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", postPage.getTotalPages());
         model.addAttribute("keyword", keyword);
-        System.out.println("Total Pages: " + postPage.getTotalPages());
 
         return "home_page";
     }
+
 
     @GetMapping("/profile")
     public String userProfile(@AuthenticationPrincipal UserDetails userDetails, Model model) {

@@ -1,10 +1,10 @@
 <div class="topnav" th:fragment="navigation">
-  <!-- Home luôn hiển thị khi đăng nhập -->
-  <a class="active" href="/">Home</a>
+  <!-- Trang chủ luôn hiển thị khi đăng nhập -->
+  <a class="active" href="/">Trang chủ</a>
 
   <!-- Chỉ admin mới thấy 2 mục này -->
-  <a href="/motels" sec:authorize="hasRole('ADMIN')">Motels</a>
-  <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Posts</a>
+  <a href="/motels" sec:authorize="hasRole('ADMIN')">Nhà trọ</a>
+  <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Bài đăng</a>
 
   <!-- Đã đăng nhập -->
   <div style="float: right;" sec:authorize="isAuthenticated()">
@@ -19,11 +19,9 @@
     </form>
   </div>
 
-
   <!-- Chưa đăng nhập -->
   <div style="float: right;" sec:authorize="isAnonymous()">
     <a href="/auth/login">Đăng nhập</a>
     <a href="/auth/register">Đăng ký</a>
   </div>
 </div>
-

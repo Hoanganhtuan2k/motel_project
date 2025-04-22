@@ -8,6 +8,7 @@ import com.springmvcapp.service.PostService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import com.springmvcapp.service.repo.PostModelRepository;
 import com.springmvcapp.service.repo.UserModelRepository;
@@ -92,8 +93,15 @@ public class PostController {
     public String viewPostDetail(@PathVariable Long id, Model model) {
         PostModel post = postService.getPostById(id);
         model.addAttribute("post", post);
+
+        // Lấy người đăng bài từ adminId
+        Optional<UserModel> admin = userModelRepository.findById(Long.valueOf(post.getAdminId()));
+        String adminName = admin.map(UserModel::getUsername).orElse("Không rõ");
+
+        model.addAttribute("adminName", adminName);
         return "post_detail";
     }
+
 
     @GetMapping("/edit/{id}")
     public String showEditPostForm(@PathVariable Long id, Model model) {
