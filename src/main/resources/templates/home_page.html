@@ -25,9 +25,9 @@
                 <input type="text" name="keyword" th:value="${keyword}" class="form-control form-control-sm" placeholder="Tìm bài viết...">
                 <button type="submit" class="btn btn-sm btn-outline-primary ms-2">Tìm</button>
             </form>
-            <a class="nav-link active fw-bold text-primary" href="/">Home</a>
-            <a class="nav-link" href="/motels" sec:authorize="hasRole('ADMIN')">Motels</a>
-            <a class="nav-link" href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Posts</a>
+            <a class="nav-link active  " href="/">Trang chủ</a>
+            <a class="nav-link" href="/motels" sec:authorize="hasRole('ADMIN')">Nhà Trọ</a>
+            <a class="nav-link" href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Bài đăng</a>
         </div>
 
         <!-- User controls -->
@@ -166,6 +166,22 @@
 <!-- Scripts -->
 <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const navLinks = document.querySelectorAll(".nav-link");
+        const currentPath = window.location.pathname;
+
+        navLinks.forEach(link => {
+            if (link.getAttribute("href") === currentPath) {
+                link.classList.add("active");
+            } else {
+                link.classList.remove("active");
+            }
+        });
+    });
+</script>
 
 <!-- jQuery nếu bạn cần -->
 <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
