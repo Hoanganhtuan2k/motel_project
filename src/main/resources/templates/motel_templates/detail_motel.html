@@ -10,7 +10,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f8f9fa;
+      background-color: white;
       padding: 20px;
     }
 
@@ -68,12 +68,14 @@
 </head>
 <body>
 <div class="topnav" th:fragment="navigation">
-  <!-- Home luôn hiển thị khi đăng nhập -->
-  <a class="active" href="/">Home</a>
+  <!-- Trang chủ luôn hiển thị khi đăng nhập -->
+  <a class="active" href="/">Trang chủ</a>
 
-  <a href="/motels" sec:authorize="hasRole('ADMIN')">Motels</a>
-  <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Posts</a>
+  <!-- Chỉ admin mới thấy -->
+  <a href="/motels" sec:authorize="hasRole('ADMIN')">Nhà trọ</a>
+  <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Bài đăng</a>
 
+  <!-- Người dùng đã đăng nhập -->
   <div class="dropdown" style="float: right;height: 170px" sec:authorize="isAuthenticated()">
     <a class="dropdown-toggle" href="#" role="button" id="userDropdown"
        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -87,7 +89,6 @@
         <button type="submit" class="dropdown-item">Đăng xuất</button>
       </form>
     </div>
-
   </div>
 
   <!-- Chưa đăng nhập -->
@@ -104,32 +105,77 @@
   </div>
 
   <div class="info">
-    <p><strong>Tiêu đề:</strong> <span th:text="${motel.name}"></span></p>
-    <p><strong>Trạng thái:</strong> <span th:text="${motel.status}"></span></p>
+    <p><strong>Tên phòng trọ:</strong> <span th:text="${motel.name}"></span></p>
+    <p><strong>Trạng thái:</strong>
+    <span th:text="${motel.status.getStatusName()}"></span>
+    </p>
     <p><strong>ID hợp đồng hiện tại:</strong> <span th:text="${motel.currentContractId}"></span></p>
     <p><strong>Quản lý:</strong> <span th:text="${adminName}"></span></p>
     <p><strong>Ngày tạo:</strong> <span th:text="${#temporals.format(motel.createdAt, 'dd/MM/yyyy HH:mm')}"></span></p>
+    <p><strong>Diện tích (m²):</strong> <span th:text="${motel.acreage}"></span></p>
+    <p><strong>Giá gốc (VND):</strong> <span th:text="${motel.originalPrice}"></span></p>
+    <p><strong>Giá hiện tại (VND):</strong> <span th:text="${motel.actualPrice}"></span></p>
+    <!-- Vị trí -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Vị trí</h3>
+        <!-- Chứa bản đồ Google -->
+        <div class="map-container" id="map_div" style="width: 100%; height: 500px;"></div>
+      </div>
+    </div>
+
+    <a class="back-btn" th:href="@{/motels}">← Quay lại danh sách</a>
+
+
+    <!-- Google Maps -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script th:inline="javascript">
+      // Lấy thông tin vị trí từ các thuộc tính của phòng trọ
+      let motelLat = /*[[${motel.lat}]]*/ 0;
+      let motelLng = /*[[${motel.lng}]]*/ 0;
+      let motelDescription = /*[[${motel.name}]]*/ "Không có mô tả"; // Mô tả có thể là tên phòng trọ hoặc mô tả thêm
+    </script>
+
+    <script type="text/javascript">
+      // Load Google Maps với API key của bạn
+      google.charts.load("current", {
+        "packages": ["map"],
+        "mapsApiKey": "AIzaSyCIRm_C3Q2OIZ4RjeXxDmGA-haQ0hNBGRQ" // Replace with your API key
+      });
+
+      google.charts.setOnLoadCallback(drawMap);
+
+      function drawMap() {
+        var data = google.visualization.arrayToDataTable([
+          ['Lat', 'Long', 'Name'],
+          [motelLat, motelLng, motelDescription]
+        ]);
+
+        var map = new google.visualization.Map(document.getElementById('map_div'));
+        map.draw(data, { showTooltip: true, showInfoWindow: true });
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const navLinks = document.querySelectorAll(".topnav a");
+        const currentPath = '/motels';
+        navLinks.forEach(link => {
+          if (link.getAttribute("href") === currentPath) {
+            link.classList.add("active");
+          } else {
+            link.classList.remove("active");
+          }
+        });
+      });
+    </script>
+
   </div>
 
-  <a class="back-btn" th:href="@{/motels}">← Quay lại danh sách</a>
 </div>
 <div th:insert="~{parts/footer :: footer}"></div>
 <script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.bundle.min.js}"></script>
 
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const navLinks = document.querySelectorAll(".topnav a");
-    const currentPath = '/motels';
-    navLinks.forEach(link => {
-      if (link.getAttribute("href") === currentPath) {
-        link.classList.add("active");
-      } else {
-        link.classList.remove("active");
-      }
-    });
-  });
-</script>
 
 </body>
 </html>

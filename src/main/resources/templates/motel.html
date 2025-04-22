@@ -8,14 +8,14 @@
 <div th:replace="~{parts/header :: header}"></div>
 
 <div class="topnav" th:fragment="navigation">
-    <!-- Home luôn hiển thị khi đăng nhập -->
-    <a class="active" href="/">Home</a>
+    <!-- Trang chủ luôn hiển thị khi đăng nhập -->
+    <a class="active" href="/">Trang chủ</a>
 
-    <!-- Chỉ admin mới thấy 2 mục này -->
-    <a href="/motels" sec:authorize="hasRole('ADMIN')">Motels</a>
-    <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Posts</a>
+    <!-- Chỉ admin mới thấy -->
+    <a href="/motels" sec:authorize="hasRole('ADMIN')">Nhà trọ</a>
+    <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Bài đăng</a>
 
-    <!-- Đã đăng nhập -->
+    <!-- Người dùng đã đăng nhập -->
     <div class="dropdown" style="float: right;height: 170px" sec:authorize="isAuthenticated()">
         <a class="dropdown-toggle" href="#" role="button" id="userDropdown"
            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -29,7 +29,6 @@
                 <button type="submit" class="dropdown-item">Đăng xuất</button>
             </form>
         </div>
-
     </div>
 
     <!-- Chưa đăng nhập -->
@@ -71,37 +70,37 @@
         <th:block th:each="motel : ${motels}">
             <tr>
                 <td th:text="${motel.name}"></td>
-                <td th:text="${motel.status}"></td>
+                <td th:text="${motel.status.getStatusName()}"></td>
                 <td th:text="${motel.currentContractId}"></td>
                 <td th:text="${motel.adminName}"></td>
                 <td>
                     <img th:src="@{'/images/' + ${motel.imageName}}" alt="Ảnh phòng" width="100"/>
                 </td>
-                <td th:text="${motel.createdAt}"></td>
+                <td th:text="${#temporals.format(motel.createdAt, 'dd/MM/yyyy')}"></td>
                 <td>
                     <div class="action-buttons">
                         <a th:href="@{|/motels/edit/${motel.id}|}">
-                            <button class="btn-edit"><i class="fas fa-pen"></i> Edit</button>
+                            <button class="btn-edit"><i class="fas fa-pen"></i> Sửa</button>
                         </a>
                         <a th:href="@{|/motels/detail/${motel.id}|}">
-                            <button class="btn-detail"><i class="fas fa-eye"></i> Detail</button>
+                            <button class="btn-detail"><i class="fas fa-eye"></i> Chi tiết</button>
                         </a>
                         <a th:href="@{|/posts/create?motelId=${motel.id}|}">
-                            <button class="btn-create"><i class="fas fa-plus"></i> Create Post</button>
+                            <button class="btn-create"><i class="fas fa-plus"></i> Tạo bài viết</button>
                         </a>
                         <a th:href="@{|/motels/delete/${motel.id}|}" sec:authorize="hasRole('ADMIN')"
                            onclick="return confirmDelete();">
-                            <button class="btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+                            <button class="btn-delete"><i class="fas fa-trash-alt"></i> Xóa</button>
                         </a>
 
                         <script>
                             function confirmDelete() {
-                                return confirm("Cảnh báo: Nếu xóa phòng trọ này, tất cả các bài viết liên quan cũng sẽ bị xóa. Bạn có chắc chắn muốn thực hiện hành động này?");
+                                return confirm("Cảnh báo: Nếu bạn xóa phòng trọ này, tất cả các bài viết liên quan cũng sẽ bị xóa. Bạn có chắc chắn muốn tiếp tục?");
                             }
                         </script>
-
                     </div>
                 </td>
+
             </tr>
         </th:block>
     </table>
