@@ -150,6 +150,9 @@
             <!-- Nút submit -->
             <button class="post-create" type="submit">Tạo bài viết</button>
         </form>
+        <div class="text-center mt-3">
+            <a th:href="@{/motels}" class=" btn btn-primary">← Quay lại danh sách</a>
+        </div>
     </div>
 </div>
 
@@ -161,7 +164,8 @@
 <script>
     window.addEventListener('DOMContentLoaded', () => {
         const navLinks = document.querySelectorAll(".nav-link");
-        const currentPath = window.location.pathname;
+        const currentPath = "/motels";
+
         navLinks.forEach(link => {
             if (link.getAttribute("href") === currentPath) {
                 link.classList.add("active");

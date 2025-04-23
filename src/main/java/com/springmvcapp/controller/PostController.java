@@ -109,7 +109,6 @@ public class PostController {
         PostModelDto postDto = modelMapper.map(post, PostModelDto.class);
         postDto.setId(post.getId());
 
-
         model.addAttribute("postDto", postDto);
 
         MotelModel motel = postService.getMotelById(post.getRelatedRoomId());

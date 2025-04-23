@@ -6,6 +6,7 @@
   <link rel="stylesheet" th:href="@{/webjars/font-awesome/6.7.2/css/all.min.css}"/>
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}"/>
   <link rel="stylesheet" href="/css/bootstrap.min.css">
+
   <div th:replace="~{parts/header :: header}"></div>
   <style>
     body {
@@ -157,6 +158,19 @@
       showInfoWindow: true
     });
   }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const navLinks = document.querySelectorAll(".nav-link");
+    const currentPath = "/motels";
+    navLinks.forEach(link => {
+
+      if (link.getAttribute("href") === currentPath) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  });
 
 </script>
 </body>

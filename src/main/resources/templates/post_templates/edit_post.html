@@ -18,7 +18,7 @@
   <h1 class="text-center mb-4">Chỉnh sửa bài viết</h1>
 
   <div class="card shadow-sm p-4">
-    <form th:action="@{/posts/update}" th:object="${postDto}" method="post">
+    <form th:action="@{/posts/edit}" th:object="${postDto}" method="post">
       <input type="hidden" th:field="*{id}">
 
       <div class="row g-3">
@@ -27,10 +27,11 @@
           <input type="text" id="title" th:field="*{title}" class="form-control" placeholder="Nhập tiêu đề" required>
         </div>
 
-        <div class="col-md-6">
-          <label for="adminId" class="form-label">Người quản lý:</label>
-          <input type="text" id="adminId" th:field="*{adminId}" class="form-control" placeholder="Nhập người quản lý" required>
-        </div>
+<!--        <div class="col-md-6">-->
+<!--          <label for="adminName" class="form-label">Người quản lý:</label>-->
+<!--          <input type="text" id="adminName" th:value="*{adminName}"-->
+<!--                 class="form-control" placeholder="Người quản lý" readonly>-->
+<!--        </div>-->
 
         <div class="col-12">
           <label for="content" class="form-label">Nội dung:</label>

@@ -47,8 +47,13 @@ public class HomeController {
         for (PostModel post : posts) {
             Long adminId = Long.valueOf(post.getAdminId());
             Optional<UserModel> admin = userModelRepository.findById(adminId);
-            postAdminNames.put(post.getId(), admin.map(UserModel::getUsername).orElse("Không rõ"));
+
+            // Giả sử bạn muốn lấy tên người thật
+            String adminName = admin.map(UserModel::getUsername).orElse("Không rõ");
+
+            postAdminNames.put(post.getId(), adminName);
         }
+
 
         model.addAttribute("posts", posts);
         model.addAttribute("adminNames", postAdminNames); // truyền thêm map này

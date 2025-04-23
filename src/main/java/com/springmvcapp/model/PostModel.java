@@ -24,6 +24,8 @@ public class PostModel {
   private PostStatus status;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
+  @Transient
+  private String adminName;
 
   @Transient
   private MotelModel motelModel;
