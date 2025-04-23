@@ -19,67 +19,69 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  private final CustomUserDetailsService customUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
 
-  @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/auth/login", "/auth/register", "/styles/**").permitAll()
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/login", "/auth/register", "/styles/**").permitAll()
 
-            // Chỉ ADMIN được sửa, xóa, tạo
-            .requestMatchers("/posts/edit/**", "/posts/delete/**", "/posts/create/**")
-            .hasRole("ADMIN")
+                        // Chỉ ADMIN được sửa, xóa, tạo
+                        .requestMatchers("/posts/edit/**", "/posts/delete/**", "/posts/create/**")
+                        .hasRole("ADMIN")
 
-            // Trang xem chi tiết post (GET /posts/{id}) cho cả ADMIN và USER
-            .requestMatchers("/posts/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/comments/**").hasAnyRole("ADMIN", "USER")
 
-            // Trang home
-            .requestMatchers("/", "/home").hasAnyRole("ADMIN", "USER")
+                        // Trang xem chi tiết post (GET /posts/{id}) cho cả ADMIN và USER
+                        .requestMatchers("/posts/**").permitAll()
 
-            // Còn lại phải đăng nhập
-            .anyRequest().authenticated()
-        )
-        .formLogin(form -> form
-            .loginPage("/auth/login")
-            .loginProcessingUrl("/auth/login")
-            .usernameParameter("email")
-            .passwordParameter("password")
-            .defaultSuccessUrl("/", true)
-            .failureUrl("/auth/login?error=true")
-            .permitAll()
-        )
-        .rememberMe(remember -> remember
-            .key("uniqueAndSecretKey123")
-            .tokenValiditySeconds(7 * 24 * 60 * 60)
-            .rememberMeParameter("remember-me")
-            .userDetailsService(customUserDetailsService)
-        )
-        .logout(logout -> logout
-            .logoutUrl("/logout")
-            .logoutSuccessUrl("/auth/login?logout=true")
-            .invalidateHttpSession(true)
-            .deleteCookies("JSESSIONID", "remember-me")
-            .permitAll()
-        );
+                        // Trang home
+                        .requestMatchers("/", "/home").hasAnyRole("ADMIN", "USER")
 
-    return http.build();
+                        // Còn lại phải đăng nhập
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/auth/login")
+                        .loginProcessingUrl("/auth/login")
+                        .usernameParameter("email")
+                        .passwordParameter("password")
+                        .defaultSuccessUrl("/", true)
+                        .failureUrl("/auth/login?error=true")
+                        .permitAll()
+                )
+                .rememberMe(remember -> remember
+                        .key("uniqueAndSecretKey123")
+                        .tokenValiditySeconds(7 * 24 * 60 * 60)
+                        .rememberMeParameter("remember-me")
+                        .userDetailsService(customUserDetailsService)
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/auth/login?logout=true")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID", "remember-me")
+                        .permitAll()
+                );
 
-  }
+        return http.build();
+
+    }
 
 
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-  @Bean
-  public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-    AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(
-        AuthenticationManagerBuilder.class);
-    authenticationManagerBuilder
-        .userDetailsService(customUserDetailsService)
-        .passwordEncoder(passwordEncoder());
-    return authenticationManagerBuilder.build();
-  }
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(
+                AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder
+                .userDetailsService(customUserDetailsService)
+                .passwordEncoder(passwordEncoder());
+        return authenticationManagerBuilder.build();
+    }
 }

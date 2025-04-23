@@ -14,38 +14,38 @@
 
 </head>
 <body>
+<div th:replace="~{parts/header :: header}"></div>
+<!--&lt;!&ndash; Navigation &ndash;&gt;-->
+<!--<div class="topnav" th:fragment="navigation">-->
+<!--    &lt;!&ndash; Trang chủ luôn hiển thị khi đăng nhập &ndash;&gt;-->
+<!--    <a class="active" href="/">Trang chủ</a>-->
 
-<!-- Navigation -->
-<div class="topnav" th:fragment="navigation">
-    <!-- Trang chủ luôn hiển thị khi đăng nhập -->
-    <a class="active" href="/">Trang chủ</a>
+<!--    &lt;!&ndash; Chỉ admin mới thấy &ndash;&gt;-->
+<!--    <a href="/motels" sec:authorize="hasRole('ADMIN')">Nhà trọ</a>-->
+<!--    <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Bài đăng</a>-->
 
-    <!-- Chỉ admin mới thấy -->
-    <a href="/motels" sec:authorize="hasRole('ADMIN')">Nhà trọ</a>
-    <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Bài đăng</a>
+<!--    &lt;!&ndash; Người dùng đã đăng nhập &ndash;&gt;-->
+<!--    <div class="dropdown" style="float: right;height: 170px" sec:authorize="isAuthenticated()">-->
+<!--        <a class="dropdown-toggle" href="#" role="button" id="userDropdown"-->
+<!--           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"-->
+<!--           style="padding: 14px; color: #007bff; text-decoration: none;">-->
+<!--            <i class="fas fa-user" style="font-size: 20px;"></i>-->
+<!--        </a>-->
 
-    <!-- Người dùng đã đăng nhập -->
-    <div class="dropdown" style="float: right;height: 170px" sec:authorize="isAuthenticated()">
-        <a class="dropdown-toggle" href="#" role="button" id="userDropdown"
-           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-           style="padding: 14px; color: #007bff; text-decoration: none;">
-            <i class="fas fa-user" style="font-size: 20px;"></i>
-        </a>
+<!--        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">-->
+<!--            <a class="dropdown-item" href="/profile">Thông tin cá nhân</a>-->
+<!--            <form th:action="@{/logout}" method="post" style="margin: 0;">-->
+<!--                <button type="submit" class="dropdown-item">Đăng xuất</button>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
 
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="/profile">Thông tin cá nhân</a>
-            <form th:action="@{/logout}" method="post" style="margin: 0;">
-                <button type="submit" class="dropdown-item">Đăng xuất</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Chưa đăng nhập -->
-    <div style="float: right;" sec:authorize="isAnonymous()">
-        <a href="/auth/login">Đăng nhập</a>
-        <a href="/auth/register">Đăng ký</a>
-    </div>
-</div>
+<!--    &lt;!&ndash; Chưa đăng nhập &ndash;&gt;-->
+<!--    <div style="float: right;" sec:authorize="isAnonymous()">-->
+<!--        <a href="/auth/login">Đăng nhập</a>-->
+<!--        <a href="/auth/register">Đăng ký</a>-->
+<!--    </div>-->
+<!--</div>-->
 
 <div class="container mt-4" style="padding-bottom: 100px;">
     <h1 class="text-center mb-4">Chi tiết bài đăng</h1>

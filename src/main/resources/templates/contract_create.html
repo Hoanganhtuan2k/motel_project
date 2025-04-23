@@ -1,152 +1,153 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Tạo hợp đồng</title>
-  <link rel="stylesheet" th:href="@{/webjars/font-awesome/6.7.2/css/all.min.css}"/>
-  <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}">
-  <link rel="stylesheet" href="/styles/style.css">
+    <meta charset="UTF-8">
+    <title>Tạo hợp đồng</title>
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/6.7.2/css/all.min.css}"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="/styles/style.css">
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f8f9fa;
-      padding: 20px;
-    }
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
 
-    .contract-container {
-      padding: 30px 40px 100px;
-      max-width: 700px;
-      background: white;
-      margin: auto;
-      border-radius: 10px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    }
+        .contract-container {
+            padding: 30px 40px 100px;
+            max-width: 700px;
+            background: white;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
 
-    h1 {
-      text-align: center;
-      color: #333;
-      margin-bottom: 30px;
-    }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
 
-    form label {
-      font-weight: 600;
-      margin-top: 20px;
-      display: block;
-      color: #444;
-    }
+        form label {
+            font-weight: 600;
+            margin-top: 20px;
+            display: block;
+            color: #444;
+        }
 
-    form input[type="text"],
-    form input[type="datetime-local"],
-    form select {
-      width: 100%;
-      padding: 12px;
-      margin-top: 8px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
-      box-sizing: border-box;
-    }
+        form input[type="text"],
+        form input[type="datetime-local"],
+        form select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
 
-    .btn-create-contract {
-      margin-top: 30px;
-      background-color: #28a745;
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-      transition: background-color 0.3s ease;
-    }
+        .btn-create-contract {
+            margin-top: 30px;
+            background-color: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
 
-    .btn-create-contract:hover {
-      background-color: #218838;
-    }
-  </style>
+        .btn-create-contract:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>
-<div class="topnav" th:fragment="navigation">
-  <a class="active" href="/">Home</a>
-  <a href="/motels" sec:authorize="hasRole('ADMIN')">Motels</a>
-  <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Posts</a>
+<div th:replace="~{parts/header :: header}"></div>
+<!--<div class="topnav" th:fragment="navigation">-->
+<!--  <a class="active" href="/">Home</a>-->
+<!--  <a href="/motels" sec:authorize="hasRole('ADMIN')">Motels</a>-->
+<!--  <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Posts</a>-->
 
-  <div class="dropdown" style="float: right;height: 170px" sec:authorize="isAuthenticated()">
-    <a class="dropdown-toggle" href="#" role="button" id="userDropdown"
-       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-       style="padding: 14px; color: #007bff; text-decoration: none;">
-      <i class="fas fa-user" style="font-size: 20px;"></i>
-    </a>
+<!--  <div class="dropdown" style="float: right;height: 170px" sec:authorize="isAuthenticated()">-->
+<!--    <a class="dropdown-toggle" href="#" role="button" id="userDropdown"-->
+<!--       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"-->
+<!--       style="padding: 14px; color: #007bff; text-decoration: none;">-->
+<!--      <i class="fas fa-user" style="font-size: 20px;"></i>-->
+<!--    </a>-->
 
-    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-      <a class="dropdown-item" href="/profile">Thông tin cá nhân</a>
-      <form th:action="@{/logout}" method="post" style="margin: 0;">
-        <button type="submit" class="dropdown-item">Đăng xuất</button>
-      </form>
-    </div>
-  </div>
+<!--    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">-->
+<!--      <a class="dropdown-item" href="/profile">Thông tin cá nhân</a>-->
+<!--      <form th:action="@{/logout}" method="post" style="margin: 0;">-->
+<!--        <button type="submit" class="dropdown-item">Đăng xuất</button>-->
+<!--      </form>-->
+<!--    </div>-->
+<!--  </div>-->
 
-  <div style="float: right;" sec:authorize="isAnonymous()">
-    <a href="/auth/login">Đăng nhập</a>
-    <a href="/auth/register">Đăng ký</a>
-  </div>
-</div>
+<!--  <div style="float: right;" sec:authorize="isAnonymous()">-->
+<!--    <a href="/auth/login">Đăng nhập</a>-->
+<!--    <a href="/auth/register">Đăng ký</a>-->
+<!--  </div>-->
+<!--</div>-->
 
 <!-- Đưa tiêu đề vào trong form -->
 <div class="contract-container">
-  <h1>Tạo hợp đồng thuê phòng</h1>
+    <h1>Tạo hợp đồng thuê phòng</h1>
 
-  <form th:action="@{/contracts/save}" th:object="${contract}" method="post">
-    <label for="studentId">Người thuê:</label>
+    <form th:action="@{/contracts/save}" th:object="${contract}" method="post">
+        <label for="studentId">Người thuê:</label>
 
-    <!-- Nếu là admin thì hiện dropdown -->
-    <div th:if="${isAdmin}">
-      <select id="studentId" name="studentId" required>
-        <option value="" disabled selected>Chọn thông tin người thuê</option>
-        <option th:each="user : ${users}"
-                th:value="${user.id}"
-                th:text="${user.username}">
-        </option>
-      </select>
-    </div>
+        <!-- Nếu là admin thì hiện dropdown -->
+        <div th:if="${isAdmin}">
+            <select id="studentId" name="studentId" required>
+                <option value="" disabled selected>Chọn thông tin người thuê</option>
+                <option th:each="user : ${users}"
+                        th:value="${user.id}"
+                        th:text="${user.username}">
+                </option>
+            </select>
+        </div>
 
-    <!-- Nếu là user thường thì hiện tên và truyền id ẩn -->
-    <div th:unless="${isAdmin}">
-      <input type="text" th:value="${currentUser.username}" disabled class="form-control" />
-      <input type="hidden" name="studentId" th:value="${currentUser.id}" />
-    </div>
-
-
-    <input type="hidden" th:field="*{roomId}" />
-
-    <label for="roomId">Mã phòng:</label>
-    <input type="text" id="roomName" th:value="${room.name}" readonly class="form-control" />
-
-    <label for="startDate">Ngày bắt đầu:</label>
-    <input type="datetime-local" id="startDate" th:field="*{startDate}" required />
-
-    <label for="endDate">Ngày kết thúc:</label>
-    <input type="datetime-local" id="endDate" th:field="*{endDate}" required />
-
-    <!-- Sau khi kết thúc endDate -->
-    <label for="finalPrice">Giá cuối cùng (VNĐ):</label>
-    <input type="text" id="finalPrice" th:field="*{finalPrice}" placeholder="Nhập giá cuối cùng" required />
-
-    <label for="description">Mô tả hợp đồng:</label>
-    <input type="text" id="description" th:field="*{description}" placeholder="Nhập mô tả hợp đồng" />
+        <!-- Nếu là user thường thì hiện tên và truyền id ẩn -->
+        <div th:unless="${isAdmin}">
+            <input type="text" th:value="${currentUser.username}" disabled class="form-control"/>
+            <input type="hidden" name="studentId" th:value="${currentUser.id}"/>
+        </div>
 
 
-    <label for="status">Trạng thái hợp đồng:</label>
-    <select id="status" th:field="*{status}">
-      <option value="ACTIVE">Đang thuê</option>
-      <option value="TERMINATED">Hủy trước hạn</option>
-      <option value="EXPIRED">Hết hạn</option>
-    </select>
+        <input type="hidden" th:field="*{roomId}"/>
 
-    <button type="submit" class="btn-create-contract">Tạo hợp đồng</button>
-  </form>
+        <label for="roomId">Mã phòng:</label>
+        <input type="text" id="roomName" th:value="${room.name}" readonly class="form-control"/>
+
+        <label for="startDate">Ngày bắt đầu:</label>
+        <input type="datetime-local" id="startDate" th:field="*{startDate}" required/>
+
+        <label for="endDate">Ngày kết thúc:</label>
+        <input type="datetime-local" id="endDate" th:field="*{endDate}" required/>
+
+        <!-- Sau khi kết thúc endDate -->
+        <label for="finalPrice">Giá cuối cùng (VNĐ):</label>
+        <input type="text" id="finalPrice" th:field="*{finalPrice}" placeholder="Nhập giá cuối cùng" required/>
+
+        <label for="description">Mô tả hợp đồng:</label>
+        <input type="text" id="description" th:field="*{description}" placeholder="Nhập mô tả hợp đồng"/>
+
+
+        <label for="status">Trạng thái hợp đồng:</label>
+        <select id="status" th:field="*{status}">
+            <option value="ACTIVE">Đang thuê</option>
+            <option value="TERMINATED">Hủy trước hạn</option>
+            <option value="EXPIRED">Hết hạn</option>
+        </select>
+
+        <button type="submit" class="btn-create-contract">Tạo hợp đồng</button>
+    </form>
 </div>
 
 <div th:insert="~{parts/footer::footer}"></div>

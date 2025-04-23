@@ -1,8 +1,74 @@
+<nav th:fragment="header" class="navbar navbar-expand-lg navbar-light sticky-top">
+  <style>
+    /* CSS cho header */
+    body {
+      background-color: #f0f2f5;
+      font-family: "Segoe UI", sans-serif;
+    }
 
+    .navbar {
+      height: 60px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 10px 20px;
+    }
 
-<head th:fragment="header">
-  <meta charset="UTF-8">
-  <title>Trang chủ cho thuê phòng trọ</title>
-  <link rel="stylesheet" href="/styles/style.css">
-</head>
-<body>
+    .nav-link.active {
+      position: relative;
+      color: #0d6efd !important;
+      font-weight: bold;
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 100%;
+      height: 3px;
+      background-color: #0d6efd;
+      border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+      .navbar .form-control {
+        max-width: 120px;
+      }
+    }
+  </style>
+
+  <div class="container-fluid px-4">
+    <!-- Search + Menu -->
+    <div class="d-flex align-items-center gap-3">
+      <form action="/" method="get" class="d-flex">
+        <input type="text" name="keyword" class="form-control form-control-sm" placeholder="Tìm bài viết...">
+        <button type="submit" class="btn btn-sm btn-outline-primary ms-2">Tìm</button>
+      </form>
+      <a class="nav-link active" href="/">Trang chủ</a>
+      <a class="nav-link" href="/motels">Nhà Trọ</a>
+      <a class="nav-link" href="/posts/create/motel">Bài đăng</a>
+    </div>
+
+    <!-- User Controls -->
+    <div class="d-flex align-items-center gap-3">
+      <div class="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-user-circle fa-lg"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="/profile">Thông tin cá nhân</a></li>
+          <li>
+            <form th:action="@{/logout}" method="post">
+              <button class="dropdown-item">Đăng xuất</button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!--      <div>-->
+<!--        <a href="/auth/login" class="btn btn-sm btn-outline-primary">Đăng nhập</a>-->
+<!--        <a href="/auth/register" class="btn btn-sm btn-outline-success">Đăng ký</a>-->
+<!--      </div>-->
+    </div>
+</nav>

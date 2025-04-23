@@ -3,123 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <title>Chỉnh sửa bài viết</title>
+
+  <!-- Gọi Bootstrap 5 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="/styles/style.css">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f8f9fa;
-      padding: 20px;
-    }
-
-    h1 {
-      text-align: center;
-      color: #333;
-      margin-bottom: 30px;
-    }
-
-    .post-container {
-      max-width: 800px;
-      background: white;
-      margin: auto;
-      padding: 30px 40px;
-      border-radius: 10px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    form label {
-      font-weight: 600;
-      margin-top: 20px;
-      display: block;
-      color: #444;
-    }
-
-    form input[type="text"],
-    form select,
-    form textarea {
-      width: 100%;
-      padding: 12px;
-      margin-top: 8px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      box-sizing: border-box;
-      font-size: 14px;
-    }
-
-    form textarea {
-      resize: vertical;
-    }
-
-    .post-create {
-      margin-top: 30px;
-      background-color: #007bff;
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-      transition: background-color 0.3s ease;
-    }
-
-    form button:hover {
-      background-color: #0056b3;
-    }
-  </style>
+  <link rel="stylesheet" href="/webjars/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
 
-<div th:insert="~{parts/navigation::navigation}"></div>
+<!-- Gọi phần header đã tách -->
+<div th:insert="~{parts/header :: header}"></div>
 
-<h1>Chỉnh sửa bài viết</h1>
+<div class="container mt-4">
+  <h1 class="text-center mb-4">Chỉnh sửa bài viết</h1>
 
-<div class="post-container">
-  <form th:action="@{/posts/update}" th:object="${postDto}" method="post">
-    <input type="hidden" th:field="*{id}">
+  <div class="card shadow-sm p-4">
+    <form th:action="@{/posts/update}" th:object="${postDto}" method="post">
+      <input type="hidden" th:field="*{id}">
 
-    <label for="title">Tiêu đề:</label>
-    <input type="text" id="title" th:field="*{title}" placeholder="Nhập tiêu đề" required>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="title" class="form-label">Tiêu đề:</label>
+          <input type="text" id="title" th:field="*{title}" class="form-control" placeholder="Nhập tiêu đề" required>
+        </div>
 
-    <label for="content">Nội dung:</label>
-    <textarea id="content" th:field="*{content}" rows="6" placeholder="Nhập nội dung bài viết" required></textarea>
+        <div class="col-md-6">
+          <label for="adminId" class="form-label">Người quản lý:</label>
+          <input type="text" id="adminId" th:field="*{adminId}" class="form-control" placeholder="Nhập người quản lý" required>
+        </div>
 
-    <label for="relatedRoomId">Phòng trọ liên quan:</label>
-    <select th:field="*{relatedRoomId}" required>
-      <option value="">-- Chọn phòng trọ --</option>
-      <option
-              th:value="${motel.id}"
-              th:text="${motel.name}"
-              th:selected="${postDto.relatedRoomId == motel.id.toString()}">
-      </option>
-    </select>
+        <div class="col-12">
+          <label for="content" class="form-label">Nội dung:</label>
+          <textarea id="content" th:field="*{content}" class="form-control" rows="5" placeholder="Nhập nội dung bài viết" required></textarea>
+        </div>
 
-    <label for="status">Trạng thái bài viết:</label>
-    <select th:field="*{status}" required>
-      <option value="">-- Chọn trạng thái --</option>
-      <option value="DRAFT" th:selected="${postDto.status == 'DRAFT'}">Nháp</option>
-      <option value="VISIBLE" th:selected="${postDto.status == 'VISIBLE'}">Hiển thị công khai</option>
-      <option value="HIDDEN" th:selected="${postDto.status == 'HIDDEN'}">Ẩn khỏi người dùng</option>
-      <option value="ARCHIVED" th:selected="${postDto.status == 'ARCHIVED'}">Lưu trữ</option>
-    </select>
+        <div class="col-md-6">
+          <label for="relatedRoomId" class="form-label">Phòng trọ liên quan:</label>
+          <label>
+            <select th:field="*{relatedRoomId}" class="form-select" required>
+              <option value="">-- Chọn phòng trọ --</option>
+              <option th:each="motel : ${motel}" th:value="${motel.id}" th:text="${motel.name}"></option>
+            </select>
+          </label>
+        </div>
 
-    <label for="adminId">Người quản lý:</label>
-    <input type="text" id="adminId" th:field="*{adminId}" placeholder="Nhập người quản lý" required>
+        <div class="col-md-6">
+          <label for="status" class="form-label">Trạng thái bài viết:</label>
+          <select th:field="*{status}" class="form-select" required>
+            <option value="">-- Chọn trạng thái --</option>
+            <option value="DRAFT">Nháp</option>
+            <option value="VISIBLE">Hiển thị công khai</option>
+            <option value="HIDDEN">Ẩn khỏi người dùng</option>
+            <option value="ARCHIVED">Lưu trữ</option>
+          </select>
+        </div>
+      </div>
 
-    <label for="imageName">Tên ảnh:</label>
-<!--    <input type="text" id="imageName" th:field="*{imageName}" placeholder="Nhập tên ảnh (nếu có)">-->
-
-<!--    <label for="createdAt">Ngày tạo:</label>-->
-<!--    <input type="text" id="createdAt" th:field="*{createdAt}" disabled>-->
-
-<!--    <label for="updatedAt">Ngày cập nhật:</label>-->
-<!--    <input type="text" id="updatedAt" th:field="*{updatedAt}" disabled>-->
-
-    <button class="post-create" type="submit">Cập nhật bài viết</button>
-  </form>
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary px-4">Cập nhật bài viết</button>
+      </div>
+    </form>
+  </div>
 </div>
 
-<div th:insert="~{parts/footer::footer}"></div>
+<!-- Gọi phần footer -->
+<div th:insert="~{parts/footer :: footer}"></div>
+
+<!-- Gọi Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

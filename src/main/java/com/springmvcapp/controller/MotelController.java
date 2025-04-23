@@ -37,7 +37,7 @@ public class MotelController {
 
     @Autowired
     private MotelModelRepository motelModelRepository;
- @Autowired
+    @Autowired
     private UserModelRepository userModelRepository;
 
     public static final String USER_LOGIN = "userLogin";
