@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý hợp đồng</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+<!--    <link rel="stylesheet" href="/styles/contract_management.css">-->
+</head>
+
+<body>
+<div th:replace="~{parts/header :: header}"></div>
+
+<!-- BODY -->
+<div class="container mt-4">
+    <h2 class="mb-3">Quản lý hợp đồng</h2>
+
+    <!-- Search Bar -->
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Tìm kiếm hợp đồng..." th:value="${searchKeyword}">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary">Tìm kiếm</button>
+        </div>
+        <div class="col-md-6 text-end">
+            <a th:href="@{/contracts/create}" class="btn btn-success">
+                <i class="fas fa-plus"></i> Tạo hợp đồng mới
+            </a>
+        </div>
+    </div>
+
+    <!-- Contract List -->
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                <tr>
+                    <th>Mã hợp đồng</th>
+                    <th>Người thuê</th>
+                    <th>Phòng</th>
+                    <th>Giá</th>
+                    <th>Ngày bắt đầu</th>
+                    <th>Ngày kết thúc</th>
+                    <th>Mô tả</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="contract : ${contracts}">
+<!--                    <td th:text="${contract.id}">[Mã hợp đồng]</td>-->
+                    <td th:text="${contract.studentId}">[Người thuê]</td>
+                    <td th:text="${contract.roomId}">[Phòng]</td>
+                    <td th:text="${contract.finalPrice}">[Giá]</td>
+                    <td th:text="${#temporals.format(contract.startDate, 'dd/MM/yyyy')}">[Ngày bắt đầu]</td>
+                    <td th:text="${#temporals.format(contract.endDate, 'dd/MM/yyyy')}">[Ngày kết thúc]</td>
+                    <td th:text="${contract.description}">[Mô tả]</td>
+                    <td th:text="${contract.status}">[Trạng thái]</td>
+                    <td>
+                        <a th:href="@{'/contracts/' + ${contract.id}}" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-eye"></i> Xem
+                        </a>
+                        <a th:href="@{'/contracts/edit/' + ${contract.id}}"
+                           class="btn btn-sm btn-outline-warning">
+                            <i class="fas fa-pen"></i> Sửa
+                        </a>
+                        <a th:href="@{'/contracts/delete/' + ${contract.id}}"
+                           class="btn btn-sm btn-outline-danger"
+                           onclick="return confirm('Bạn có chắc muốn xóa hợp đồng này?');">
+                            <i class="fas fa-trash-alt"></i> Xóa
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- Scripts -->
+<script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

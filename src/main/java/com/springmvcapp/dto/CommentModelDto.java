@@ -1,27 +1,37 @@
 package com.springmvcapp.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Value;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * DTO for {@link com.springmvcapp.model.CommentModel}
  */
-@Value
 @Data
-@AllArgsConstructor
 @Accessors(chain = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CommentModelDto implements Serializable {
-    String relatedRoomId;
-    String userId;
-    String adminId;
-    String content;
-    int star;
+    private String relatedRoomId;
+    private String userId;
+    private String adminId;
+    private String content;
+    private int star;
+
+
+    // Constructor không tham số (mặc định)
+    public CommentModelDto() {
+    }
+
+    // Constructor có tham số để khởi tạo nhanh
+    public CommentModelDto(String relatedRoomId, String userId, String adminId, String content, int star) {
+        this.relatedRoomId = relatedRoomId;
+        this.userId = userId;
+        this.adminId = adminId;
+        this.content = content;
+        this.star = star;
+    }
+
+
 }

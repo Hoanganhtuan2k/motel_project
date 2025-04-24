@@ -50,4 +50,26 @@ public class CommentController {
         redirectAttributes.addFlashAttribute("message", "Comment added successfully!");
         return "redirect:/comments/list"; // Chuyển hướng đến danh sách bình luận
     }
+
+    @PostMapping("/add")
+    public String addComment(@RequestParam String userId,
+                             @RequestParam String postId,
+                             @RequestParam String content,
+                             @RequestParam int rating) {
+        CommentModel newComment = new CommentModel();
+        newComment.setUserId(userId);
+        newComment.setPostId("1");
+        newComment.setContent(content);
+        newComment.setStar(rating);
+
+        commentService.saveComment(newComment);
+        return "redirect:/comments/" + postId;
+    }
+
+    @GetMapping("/{postId}")
+    public String getComments(@PathVariable String postId, Model model) {
+        List<CommentModelDto> comments = commentService.getCommentsByPostId(postId);
+        model.addAttribute("comments", comments);
+        return "home_page"; // Điều hướng đến trang comments.html
+    }
 }

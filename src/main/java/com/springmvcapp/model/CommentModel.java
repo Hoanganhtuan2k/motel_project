@@ -22,6 +22,7 @@ public class CommentModel {
     private String userId;
     private String adminId;
     private String content;
+    private String postId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private int star;

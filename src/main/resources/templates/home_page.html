@@ -133,11 +133,31 @@
                                 </div>
                             </div>
 
-                            <!-- Fake comment input -->
-                            <div class="d-flex mt-3">
-                                <img src="https://i.pravatar.cc/40?u=3" class="rounded-circle me-2" width="40" height="40" alt="avatar">
-                                <input type="text" class="form-control" placeholder="Viết bình luận..." disabled>
+                            <!-- Hiển thị danh sách bình luận -->
+                            <div th:each="comment : ${comments}" class="mb-3 p-3 border rounded">
+                                <strong th:text="${comment.userId}">[Người dùng]</strong>
+                                <p th:text="${comment.content}">[Nội dung bình luận]</p>
+                                <small class="text-muted">⭐ <span th:text="${comment.star}">[Sao]</span> - <span th:text="${#temporals.format(comment.content, 'dd/MM/yyyy HH:mm')}">[Thời gian]</span></small>
                             </div>
+
+                            <!-- Form nhập bình luận -->
+                            <form th:action="@{/comments/add}" method="post">
+                                <input type="hidden" name="userId" value="1">
+                                <input type="hidden" name="postId" value="1">
+                                <label>
+                                    <textarea name="content" class="form-control mb-2" placeholder="Viết bình luận..."></textarea>
+                                </label>
+                                <label>
+                                    <select name="rating" class="form-control mb-2">
+                                        <option value="1">⭐ 1 sao</option>
+                                        <option value="2">⭐ 2 sao</option>
+                                        <option value="3">⭐ 3 sao</option>
+                                        <option value="4">⭐ 4 sao</option>
+                                        <option value="5">⭐ 5 sao</option>
+                                    </select>
+                                </label>
+                                <button type="submit" class="btn btn-primary">Gửi bình luận</button>
+                            </form>
                         </div>
 
                     </div>

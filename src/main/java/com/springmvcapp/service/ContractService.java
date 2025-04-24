@@ -13,6 +13,11 @@ import com.springmvcapp.service.repo.UserModelRepository;
 import com.springmvcapp.status.MotelStatus;
 import com.springmvcapp.status.UserRole;
 import lombok.RequiredArgsConstructor;
+import org.apache.http.annotation.Contract;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +33,7 @@ public class ContractService {
     private final MotelModelRepository motelModelRepository;
     private final UserModelRepository userModelRepository;
     private final ContractModelRepository contractModelRepository;
+    private final ModelMapper modelMapper;
 
     public List<UserModel> getAllStudents() {
         return userModelRepository.findByRole(UserRole.USER);
@@ -68,4 +74,16 @@ public class ContractService {
     }
 
 
+//    public Page<ContractModelDto> getAllContracts(String searchKeyword, int page, int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        Page<ContractModel> contractPage;
+//
+//        if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
+////            contractPage = contractModelRepository.findByKeyword(searchKeyword, pageable);
+//        } else {
+//            contractPage = contractModelRepository.findAll(pageable);
+//        }
+//
+//        return contractPage.map(contract -> modelMapper.map(contract, ContractModelDto.class));
+//    }
 }

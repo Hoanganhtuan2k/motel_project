@@ -1,4 +1,5 @@
-<nav th:fragment="header" class="navbar navbar-expand-lg navbar-light sticky-top">
+<nav th:fragment="header" class="navbar navbar-expand-lg navbar-light sticky-top"
+     xmlns:sec="http://www.w3.org/1999/xhtml">
   <style>
     /* CSS cho header */
     body {
@@ -45,8 +46,10 @@
         <button type="submit" class="btn btn-sm btn-outline-primary ms-2">Tìm</button>
       </form>
       <a class="nav-link active" href="/">Trang chủ</a>
-      <a class="nav-link" href="/motels">Nhà Trọ</a>
-      <a class="nav-link" href="/posts/create/motel">Bài đăng</a>
+      <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/motels">Nhà Trọ</a>
+      <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/posts/create/motel">Bài đăng</a>
+      <a class="nav-link" th:href="@{/contracts/contract}">Quản lý hợp đồng</a>
+
     </div>
 
     <!-- User Controls -->

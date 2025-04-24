@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
@@ -32,10 +33,20 @@ public class CommentService {
     }
 
     public void saveComment(CommentModel comment) {
+        comment.setCreatedAt(LocalDateTime.now());
         commentRepository.save(comment);
     }
 
     public List<CommentModel> getAllComments() {
         return commentRepository.findAll();
     }
+
+    public List<CommentModelDto> getCommentsByPostId(String postId) {
+        return commentRepository.findByPostId(postId)
+                .stream()
+                .map(comment -> modelMapper.map(comment, CommentModelDto.class))
+                .collect(Collectors.toList());
+    }
+
+
 }
