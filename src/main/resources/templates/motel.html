@@ -176,7 +176,13 @@
 <!-- Footer -->
 <div th:insert="~{parts/footer :: footer}"></div>
 
+
+<script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.bundle.min.js}"></script>
 <script>
+    function confirmDelete() {
+        return confirm("Cảnh báo: Nếu bạn xóa phòng trọ này, tất cả các bài viết liên quan cũng sẽ bị xóa. Bạn có chắc chắn muốn tiếp tục?");
+    }
     window.addEventListener('DOMContentLoaded', () => {
         const navLinks = document.querySelectorAll(".nav-link");
         const currentPath = window.location.pathname;
@@ -189,14 +195,6 @@
             }
         });
     });
-</script>
-
-<script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
-<script th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.bundle.min.js}"></script>
-<script>
-    function confirmDelete() {
-        return confirm("Cảnh báo: Nếu bạn xóa phòng trọ này, tất cả các bài viết liên quan cũng sẽ bị xóa. Bạn có chắc chắn muốn tiếp tục?");
-    }
 </script>
 
 </body>

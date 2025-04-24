@@ -12,6 +12,21 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ContractModelRepository extends JpaRepository<ContractModel,Long> {
 
-//    @Query("SELECT c FROM CommentModel c WHERE c.content LIKE %:keyword% OR c.id LIKE %:keyword%")
-//    Page<ContractModel> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
+    @Query(value = "SELECT c.* FROM contract_model c " +
+            "JOIN user_model u ON c.student_id = u.id " +
+            "JOIN motel_model m ON CAST(c.room_id AS UNSIGNED) = m.id " +
+            "WHERE LOWER(u.username) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR LOWER(m.name) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR LOWER(c.description) LIKE LOWER(CONCAT('%', :keyword, '%'))",
+            countQuery = "SELECT COUNT(*) FROM contract_model c " +
+                    "JOIN user_model u ON c.student_id = u.id " +
+                    "JOIN motel_model m ON CAST(c.room_id AS UNSIGNED) = m.id " +
+                    "WHERE LOWER(u.username) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+                    "OR LOWER(m.name) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+                    "OR LOWER(c.description) LIKE LOWER(CONCAT('%', :keyword, '%'))",
+            nativeQuery = true)
+    Page<ContractModel> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
+
+
+
 }
