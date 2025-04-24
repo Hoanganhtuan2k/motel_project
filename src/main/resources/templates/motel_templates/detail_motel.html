@@ -1,44 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Chi tiết phòng trọ</title>
-  <link rel="stylesheet" th:href="@{/webjars/font-awesome/6.7.2/css/all.min.css}"/>
-  <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}"/>
+  <title>Chi tiết hợp đồng</title>
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+  <link rel="stylesheet" href="/styles/style.css">
   <link rel="stylesheet" href="/css/bootstrap.min.css">
 
-  <div th:replace="~{parts/header :: header}"></div>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: white;
+      background-color: #f8f9fa;
     }
 
-    .container {
+    .contract-box {
       max-width: 960px;
-      margin: auto;
-      margin-top: 30px;
+      margin: 40px auto;
       background-color: #fff;
       padding: 30px;
-      padding-bottom: 100px;
       border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     }
 
-    .image-container img {
-      max-width: 100%;
-      border-radius: 10px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    .form-label {
+      font-weight: bold;
     }
 
-    .list-group-item {
-      border: none;
-      padding-left: 0;
-      padding-right: 0;
-    }
-
-    .back-btn {
-      margin-top: 20px;
+    .form-control-plaintext {
+      padding-top: 0.375rem;
     }
 
     .nav-link.active {
@@ -48,122 +37,64 @@
   </style>
 </head>
 <body>
-<!--<div th:replace="~{parts/header :: header}"></div>-->
-<!-- Navbar -->
-<!--<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">-->
-<!--  <div class="container-fluid px-4">-->
-<!--    &lt;!&ndash; Search + Menu &ndash;&gt;-->
-<!--    <div class="d-flex align-items-center gap-3">-->
-<!--      <form th:action="@{/}" method="get" class="d-flex">-->
-<!--        <input type="text" name="keyword" th:value="${keyword}" class="form-control form-control-sm" placeholder="Tìm bài viết...">-->
-<!--        <button type="submit" class="btn btn-sm btn-outline-primary ms-2">Tìm</button>-->
-<!--      </form>-->
-<!--      <a class="nav-link active  " href="/">Trang chủ</a>-->
-<!--      <a class="nav-link" href="/motels" sec:authorize="hasRole('ADMIN')">Nhà trọ</a>-->
-<!--      <a class="nav-link" href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Bài đăng</a>-->
-<!--    </div>-->
 
-<!--    &lt;!&ndash; User controls &ndash;&gt;-->
-<!--    <div class="d-flex align-items-center gap-2">-->
-<!--      <div class="dropdown" sec:authorize="isAuthenticated()">-->
-<!--        <a class="dropdown-toggle" href="#" data-bs-toggle="dropdown"><i class="fas fa-user-circle fa-lg text-primary"></i></a>-->
-<!--        <ul class="dropdown-menu dropdown-menu-end">-->
-<!--          <li><a class="dropdown-item" href="/profile">Thông tin cá nhân</a></li>-->
-<!--          <li>-->
-<!--            <form th:action="@{/logout}" method="post"><button class="dropdown-item">Đăng xuất</button></form>-->
-<!--          </li>-->
-<!--        </ul>-->
-<!--      </div>-->
-<!--      <div sec:authorize="isAnonymous()">-->
-<!--        <a href="/auth/login" class="btn btn-sm btn-outline-primary">Đăng nhập</a>-->
-<!--        <a href="/auth/register" class="btn btn-sm btn-outline-success">Đăng ký</a>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</nav>-->
+<div th:replace="~{parts/header :: header}"></div>
 
-<!-- Nội dung -->
-<div class="container">
-  <h2 class="text-center mb-4">Chi tiết phòng trọ</h2>
-
+<div class="container contract-box">
+  <h2 class="text-center mb-4">Chi tiết hợp đồng thuê phòng</h2>
   <div class="row">
-    <!-- Hình ảnh -->
-    <div class="col-md-5">
-      <div class="image-container">
-        <img th:src="@{'/images/' + ${motel.imageName}}" alt="Ảnh phòng trọ" class="img-fluid rounded">
-      </div>
+    <!-- Người thuê + Phòng -->
+    <div class="col-md-6 mb-3 d-flex">
+      <label class="form-label col-4">Người thuê:</label>
+      <p class="form-control-plaintext col-8" th:text="${contract.studentName}"></p>
+    </div>
+    <div class="col-md-6 mb-3 d-flex">
+      <label class="form-label col-4">Phòng:</label>
+      <p class="form-control-plaintext col-8" th:text="${contract.roomName}"></p>
     </div>
 
-    <!-- Thông tin -->
-    <div class="col-md-7">
-      <h4 class="mb-3 text-primary"><i class="fas fa-building"></i> <span th:text="${motel.name}"></span></h4>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"><strong>Trạng thái:</strong> <span th:text="${motel.status.getStatusName()}"></span></li>
-        <li class="list-group-item"><strong>Hợp đồng hiện tại:</strong> <span th:text="${motel.currentContractId}"></span></li>
-        <li class="list-group-item"><strong>Quản lý:</strong> <span th:text="${adminName}"></span></li>
-        <li class="list-group-item"><strong>Ngày tạo:</strong> <span th:text="${#temporals.format(motel.createdAt, 'dd/MM/yyyy HH:mm')}"></span></li>
-        <li class="list-group-item"><strong>Diện tích:</strong> <span th:text="${motel.acreage}"></span> m²</li>
-        <li class="list-group-item"><strong>Giá gốc:</strong> <span th:text="${motel.originalPrice}"></span> VND</li>
-        <li class="list-group-item"><strong>Giá hiện tại:</strong> <span th:text="${motel.actualPrice}"></span> VND</li>
-      </ul>
+    <!-- Giá + Trạng thái -->
+    <div class="col-md-6 mb-3 d-flex">
+      <label class="form-label col-4">Giá thuê (VNĐ):</label>
+      <p class="form-control-plaintext col-8" th:text="${contract.finalPrice}"></p>
+    </div>
+    <div class="col-md-6 mb-3 d-flex">
+      <label class="form-label col-4">Trạng thái:</label>
+      <p class="form-control-plaintext col-8" th:text="${contract.statusVi}"></p>
+    </div>
+
+    <!-- Ngày bắt đầu + kết thúc -->
+    <div class="col-md-6 mb-3 d-flex">
+      <label class="form-label col-4">Ngày bắt đầu:</label>
+      <p class="form-control-plaintext col-8"
+         th:text="${#temporals.format(contract.startDate, 'dd/MM/yyyy HH:mm')}"></p>
+    </div>
+    <div class="col-md-6 mb-3 d-flex">
+      <label class="form-label col-4">Ngày kết thúc:</label>
+      <p class="form-control-plaintext col-8"
+         th:text="${#temporals.format(contract.endDate, 'dd/MM/yyyy HH:mm')}"></p>
+    </div>
+
+    <!-- Mô tả -->
+    <div class="col-md-12 mb-4 d-flex">
+      <label class="form-label col-2">Mô tả:</label>
+      <p class="form-control-plaintext col-10" th:text="${contract.description}"></p>
+    </div>
+
+    <!-- Nút quay lại -->
+    <div class="col-12 text-center">
+      <a th:href="@{/contracts/contract}" class="btn btn-primary">← Quay lại danh sách</a>
     </div>
   </div>
-
-  <!-- Vị trí Google Maps -->
-  <div class="card mt-4">
-    <div class="card-body">
-      <h4 class="card-title">Vị trí phòng trọ</h4>
-      <div class="map-container" id="map_div" style="width: 100%; height: 400px;"></div>
-    </div>
-  </div>
-
-  <a class="btn btn-primary back-btn" th:href="@{/motels}">← Quay lại danh sách</a>
 </div>
 
-<!-- Footer -->
-<div th:insert="~{parts/footer :: footer}"></div>
-
-<!-- Scripts -->
 <script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
-<script th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.bundle.min.js}"></script>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-<!-- Google Maps Setup -->
-<script th:inline="javascript">
-  let motelLat = /*[[${motel.lat}]]*/ 0;
-  let motelLng = /*[[${motel.lng}]]*/ 0;
-  let motelDescription = /*[[${motel.name}]]*/ "Không có mô tả";
-</script>
-
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-  google.charts.load("current", {
-    "packages":["map"],
-    // Note: you will need to get a mapsApiKey for your project.
-    // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
-    "mapsApiKey": "AIzaSyCIRm_C3Q2OIZ4RjeXxDmGA-haQ0hNBGRQ"
-  });
-  google.charts.setOnLoadCallback(drawChart);
-  function drawChart() {
-    var data = google.visualization.arrayToDataTable([
-      ['Lat', 'Long', 'Name'],
-      // [19.0760,  72.8777, 'Mumbai'],
-      // [18.5204, 73.8567, 'Pune'],
-      [motelLat, motelLng, motelDescription],
-    ]);
-
-    var map = new google.visualization.Map(document.getElementById('map_div'));
-    map.draw(data, {
-      showTooltip: true,
-      showInfoWindow: true
-    });
-  }
-
+<script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+<script>
   window.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll(".nav-link");
-    const currentPath = "/motels";
+    const currentPath = "/contracts/contract";
     navLinks.forEach(link => {
-
       if (link.getAttribute("href") === currentPath) {
         link.classList.add("active");
       } else {
@@ -171,7 +102,6 @@
       }
     });
   });
-
 </script>
 </body>
 </html>

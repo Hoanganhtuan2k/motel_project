@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}">
     <link rel="stylesheet" href="/styles/style.css">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
         body {
@@ -70,67 +70,36 @@
 </head>
 <body>
 <div th:replace="~{parts/header :: header}"></div>
-<!--<div class="topnav" th:fragment="navigation">-->
-<!--  <a class="active" href="/">Home</a>-->
-<!--  <a href="/motels" sec:authorize="hasRole('ADMIN')">Motels</a>-->
-<!--  <a href="/posts/create/motel" sec:authorize="hasRole('ADMIN')">Posts</a>-->
-
-<!--  <div class="dropdown" style="float: right;height: 170px" sec:authorize="isAuthenticated()">-->
-<!--    <a class="dropdown-toggle" href="#" role="button" id="userDropdown"-->
-<!--       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"-->
-<!--       style="padding: 14px; color: #007bff; text-decoration: none;">-->
-<!--      <i class="fas fa-user" style="font-size: 20px;"></i>-->
-<!--    </a>-->
-
-<!--    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">-->
-<!--      <a class="dropdown-item" href="/profile">Thông tin cá nhân</a>-->
-<!--      <form th:action="@{/logout}" method="post" style="margin: 0;">-->
-<!--        <button type="submit" class="dropdown-item">Đăng xuất</button>-->
-<!--      </form>-->
-<!--    </div>-->
-<!--  </div>-->
-
-<!--  <div style="float: right;" sec:authorize="isAnonymous()">-->
-<!--    <a href="/auth/login">Đăng nhập</a>-->
-<!--    <a href="/auth/register">Đăng ký</a>-->
-<!--  </div>-->
-<!--</div>-->
 
 <!-- Đưa tiêu đề vào trong form -->
 <div class="contract-container">
     <h1>Tạo hợp đồng thuê phòng</h1>
 
-    <form th:action="@{/contracts/save}" th:object="${contract}" method="post">
+    <form th:action="@{/contracts/update}" th:object="${contract}" method="post">
+        <!-- Người thuê -->
+        <input type="hidden" th:field="*{id}" />
+
+        <!-- Người thuê -->
         <label for="studentId">Người thuê:</label>
+        <select th:field="*{studentId}" id="studentId" required>
+            <option value="" disabled>Chọn thông tin người thuê</option>
+            <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}"></option>
+        </select>
 
-        <!-- Nếu là admin thì hiện dropdown -->
-        <div th:if="${isAdmin}">
-            <select id="studentId" name="studentId" required>
-                <option value="" disabled selected>Chọn thông tin người thuê</option>
-                <option th:each="user : ${users}"
-                        th:value="${user.id}"
-                        th:text="${user.username}">
-                </option>
-            </select>
-        </div>
+        <!-- Phòng -->
+        <label for="roomId">Phòng:</label>
+        <select th:field="*{roomId}" id="roomId" required>
+            <option value="" disabled>Chọn phòng</option>
+            <option th:each="room : ${rooms}" th:value="${room.id}" th:text="${room.name}"></option>
+        </select>
 
-        <!-- Nếu là user thường thì hiện tên và truyền id ẩn -->
-        <div th:unless="${isAdmin}">
-            <input type="text" th:value="${currentUser.username}" disabled class="form-control"/>
-            <input type="hidden" name="studentId" th:value="${currentUser.id}"/>
-        </div>
+        <!-- Ngày bắt đầu -->
 
+        <label>Ngày bắt đầu:</label>
+        <input type="datetime-local" th:value="${#temporals.format(contract.startDate, 'yyyy-MM-dd''T''HH:mm')}" name="startDate" required />
 
-        <input type="hidden" th:field="*{roomId}"/>
-
-        <label for="roomId">Mã phòng:</label>
-        <input type="text" id="roomName" th:value="${room.name}" readonly class="form-control"/>
-
-        <label for="startDate">Ngày bắt đầu:</label>
-        <input type="datetime-local" id="startDate" th:field="*{startDate}" required/>
-
-        <label for="endDate">Ngày kết thúc:</label>
-        <input type="datetime-local" id="endDate" th:field="*{endDate}" required/>
+        <label>Ngày kết thúc:</label>
+        <input type="datetime-local" th:value="${#temporals.format(contract.endDate, 'yyyy-MM-dd''T''HH:mm')}" name="endDate" required />
 
         <!-- Sau khi kết thúc endDate -->
         <label for="finalPrice">Giá cuối cùng (VNĐ):</label>
@@ -147,13 +116,31 @@
             <option value="EXPIRED">Hết hạn</option>
         </select>
 
-        <button type="submit" class="btn-create-contract">Tạo hợp đồng</button>
+        <button type="submit" class="btn-create-contract">Lưu hợp đồng</button>
     </form>
+    <div class="col-12 text-center">
+        <a th:href="@{/contracts/contract}" class="btn btn-secondary">← Quay lại danh sách</a>
+    </div>
 </div>
 
 <div th:insert="~{parts/footer::footer}"></div>
 
 <script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.bundle.min.js}"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const navLinks = document.querySelectorAll(".nav-link");
+        const currentPath = "/contracts/contract";
+
+        navLinks.forEach(link => {
+            if (link.getAttribute("href") === currentPath) {
+                link.classList.add("active");
+            } else {
+                link.classList.remove("active");
+            }
+        });
+    });
+</script>
 </body>
 </html>

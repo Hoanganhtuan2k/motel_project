@@ -1,8 +1,6 @@
 package com.springmvcapp.controller;
 
 import com.springmvcapp.dto.ContractModelDto;
-import com.springmvcapp.dto.PostModelDto;
-import com.springmvcapp.model.ContractModel;
 import com.springmvcapp.model.MotelModel;
 import com.springmvcapp.model.UserModel;
 import com.springmvcapp.service.ContractService;
@@ -11,14 +9,11 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,78 +27,77 @@ public class ContractController {
   @Autowired
   private ModelMapper modelMapper;
 
-  @GetMapping("/create/{postId}")
-  public String createContract(@PathVariable Long postId, Model model) {
-    PostModelDto post = postService.getPostDetailById(postId);
-    MotelModel room = contractService.getRoomFromPost(postId);
+  @GetMapping("/create")
+  public String createContract(Model model) {
+    List<UserModel> users = contractService.getAllUser();
+    List<MotelModel> motels = contractService.getAllRooms();
 
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String currentUsername = authentication.getName();
-    boolean isAdmin = authentication.getAuthorities().stream()
-            .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
-    System.out.println(isAdmin);
-    ContractModelDto contractDto = new ContractModelDto();
-    if (room != null) {
-      contractDto.setRoomId(String.valueOf(room.getId()));
-      contractDto.setFinalPrice(room.getActualPrice());
-    }
+    model.addAttribute("users", users);
+    model.addAttribute("rooms", motels);
+    model.addAttribute("contract", new ContractModelDto());
 
-    if (isAdmin) {
-      List<UserModel> users = contractService.getAllStudents();
-      model.addAttribute("users", users);
-    } else {
-      UserModel currentUser = contractService.getUserByUsername(currentUsername);
-      contractDto.setStudentId(String.valueOf(currentUser.getId()));
-      model.addAttribute("currentUser", currentUser);
-    }
-
-    model.addAttribute("contract", contractDto);
-    model.addAttribute("post", post);
-    model.addAttribute("room", room);
-    model.addAttribute("isAdmin", isAdmin);
-
-    return "contract_create";
+    return "contract_templates/contract_create";
   }
-
 
 
   @PostMapping("/save")
   public String saveContract(@ModelAttribute("contract") ContractModelDto contractDto,
                              Model model) {
     contractService.saveContract(contractDto);
-    return "redirect:/";
+    return "redirect:/contracts/contract";
   }
 
   @GetMapping("/contract")
-  public String redirectToContractPage() {
-    return "contract_templates/contract"; // Trả về tên file contract.html (đã cấu hình trong Thymeleaf)
+  public String getAllContracts(
+          @RequestParam(required = false) String searchKeyword,
+          @RequestParam(defaultValue = "0") int page,
+          @RequestParam(defaultValue = "10") int size,
+          Model model
+  ) {
+    Page<ContractModelDto> contracts = contractService.getAllContracts(searchKeyword, page, size);
+
+    model.addAttribute("contracts", contracts.getContent());
+    model.addAttribute("currentPage", page);
+    model.addAttribute("totalPages", contracts.getTotalPages());
+    model.addAttribute("searchKeyword", searchKeyword);
+
+    return "contract_templates/contract";
   }
 
-//  @GetMapping("/all")
-//  public String getAllContracts(Model model) {
-//    List<ContractModel> contracts = contractService.getAllContracts();
-////    List<ContractModelDto> contractDtos = contracts.stream()
-////            .map(contract -> modelMapper.map(contract, ContractModelDto.class))
-////            .collect(Collectors.toList());
-//
-//    model.addAttribute("contracts", contracts); // Truyền danh sách vào model
-//    return "contract_templates/contract"; // Hiển thị contract.html
-//  }
+  @GetMapping("/edit/{id}")
+  public String editContractForm(@PathVariable("id") Long id, Model model) {
+    ContractModelDto contractDto = contractService.getContractById(id);
+    List<UserModel> users = contractService.getAllUser();
+    List<MotelModel> motels = contractService.getAllRooms();
+    System.out.println(contractDto.getStartDate());
+
+    model.addAttribute("contract", contractDto);
+    model.addAttribute("users", users);
+    model.addAttribute("rooms", motels);
+
+    return "contract_templates/contract_edit";
+  }
 
 
-//@GetMapping
-//public String getAllContracts(
-//        @RequestParam(required = false) String searchKeyword,
-//        @RequestParam(defaultValue = "0") int page,
-//        @RequestParam(defaultValue = "10") int size,
-//        Model model) {
-//
-//  Page<ContractModelDto> contracts = contractService.getAllContracts(searchKeyword, page, size);
-//  model.addAttribute("contracts", contracts.getContent());
-//  model.addAttribute("currentPage", page);
-//  model.addAttribute("totalPages", contracts.getTotalPages());
-//  model.addAttribute("searchKeyword", searchKeyword);
-//    return "contract_templates/contract"; // Tên file Thymeleaf
-//  }
+  @PostMapping("/update")
+  public String updateContract(@ModelAttribute("contract") ContractModelDto contractDto) {
+    contractService.updateContract(contractDto);
+    return "redirect:/contracts/contract";
+  }
+
+
+  @GetMapping("/{id}")
+  public String viewContractDetail(@PathVariable("id") Long id, Model model) {
+    ContractModelDto contractDto = contractService.getContractById(id);
+    model.addAttribute("contract", contractDto);
+    return "contract_templates/contract_detail";
+  }
+
+  @GetMapping("/delete/{id}")
+  public String deleteContract(@PathVariable("id") Long id) {
+    contractService.deleteContractById(id);
+    return "redirect:/contracts/contract";
+  }
+
 
 }
