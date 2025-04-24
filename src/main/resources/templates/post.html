@@ -3,6 +3,8 @@
 <link rel="stylesheet" th:href="@{/webjars/font-awesome/6.7.2/css/all.min.css}"/>
 <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}"/>
 <link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/styles/style.css">
+
 
 <link rel="stylesheet" href="/styles/post.css">
 <!-- Bootstrap JS (đặt cuối trang, trước thẻ </body>) -->
@@ -80,12 +82,13 @@
 <script th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.bundle.min.js}"></script>
 <div th:insert="~{parts/footer::footer}"></div>
 
-<script>
+<script type="text/javascript">
     window.addEventListener('DOMContentLoaded', () => {
         const navLinks = document.querySelectorAll(".nav-link");
-        const currentPath = "/posts";
+        const currentPath = "/posts/create/motel";
+        console.log(currentPath)
         navLinks.forEach(link => {
-
+            console.log(link.getAttribute("href"));
             if (link.getAttribute("href") === currentPath) {
                 link.classList.add("active");
             } else {

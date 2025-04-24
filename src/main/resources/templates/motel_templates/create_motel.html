@@ -13,16 +13,19 @@
             background-color: white;
         }
 
-        .container-fluid {
-            max-width: 800px;
-            margin: auto;
-        }
+        /*.container-fluid {*/
+        /*    max-width: 800px;*/
+        /*    margin: auto;*/
+        /*}*/
 
         .form-wrapper {
             background: #f8f9fa;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+            padding-bottom: 100px;
         }
 
         .form-wrapper .row {
@@ -103,7 +106,8 @@
             <div class="row">
                 <div class="col-md-6">
                     <label for="name">Tên phòng trọ:</label>
-                    <input type="text" id="name" name="name" class="form-control" required placeholder="Nhập tên phòng trọ">
+                    <input type="text" id="name" name="name" class="form-control" required
+                           placeholder="Nhập tên phòng trọ">
                 </div>
 
                 <div class="col-md-6">
@@ -122,7 +126,8 @@
 
                 <div class="col-md-6">
                     <label for="description">Mô tả:</label>
-                    <input type="text" id="description" name="description" class="form-control" required placeholder="Nhập mô tả">
+                    <input type="text" id="description" name="description" class="form-control" required
+                           placeholder="Nhập mô tả">
                 </div>
 
                 <div class="col-md-6">
@@ -132,17 +137,20 @@
 
                 <div class="col-md-6">
                     <label for="originalPrice">Giá gốc (VND):</label>
-                    <input type="text" id="originalPrice" name="originalPrice" class="form-control" required placeholder="VD: 2500000">
+                    <input type="text" id="originalPrice" name="originalPrice" class="form-control" required
+                           placeholder="VD: 2500000">
                 </div>
 
                 <div class="col-md-6">
                     <label for="actualPrice">Giá hiện tại (VND):</label>
-                    <input type="text" id="actualPrice" name="actualPrice" class="form-control" required placeholder="VD: 2200000">
+                    <input type="text" id="actualPrice" name="actualPrice" class="form-control" required
+                           placeholder="VD: 2200000">
                 </div>
 
                 <div class="col-md-6">
                     <label for="address">Địa chỉ:</label>
-                    <input type="text" id="address" name="address" class="form-control" required placeholder="Nhập địa chỉ">
+                    <input type="text" id="address" name="address" class="form-control" required
+                           placeholder="Nhập địa chỉ">
                     <button type="button" class="btn btn-primary mt-2" onclick="fetchLocation()">Tìm tọa độ</button>
                 </div>
 
@@ -160,7 +168,7 @@
         </form>
 
         <div class="text-center mt-3">
-            <a th:href="@{/motels}" class="btn btn-outline-secondary">← Quay lại danh sách</a>
+            <a th:href="@{/motels}" class=" btn btn-primary">← Quay lại danh sách</a>
         </div>
     </div>
 </div>
