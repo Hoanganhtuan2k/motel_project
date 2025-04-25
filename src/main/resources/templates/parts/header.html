@@ -48,7 +48,7 @@
       <a class="nav-link active" href="/">Trang chủ</a>
       <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/motels">Nhà Trọ</a>
       <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/posts/create/motel">Bài đăng</a>
-      <a class="nav-link" th:href="@{/contracts/contract}">Quản lý hợp đồng</a>
+      <a sec:authorize="hasRole('ADMIN')"  class="nav-link" th:href="@{/contracts/contract}">Quản lý hợp đồng</a>
 
     </div>
 

@@ -1,107 +1,103 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Chi tiết hợp đồng</title>
-  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
-  <link rel="stylesheet" href="/styles/style.css">
-  <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>Chi tiết hợp đồng</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f8f9fa;
-    }
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
 
-    .contract-box {
-      max-width: 960px;
-      margin: 40px auto;
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    }
+        .contract-box {
+            max-width: 960px;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
 
-    .form-label {
-      font-weight: bold;
-    }
+        .form-label {
+            font-weight: bold;
+        }
 
-    .form-control-plaintext {
-      padding-top: 0.375rem;
-    }
+        .form-control-plaintext {
+            padding-top: 0.375rem;
+        }
 
-    .nav-link.active {
-      border-bottom: 3px solid #007bff;
-      font-weight: bold;
-    }
-  </style>
+        img {
+            border-radius: 10px;
+            object-fit: cover;
+        }
+        .form-label {
+            font-weight: 600;
+        }
+
+    </style>
 </head>
 <body>
 
 <div th:replace="~{parts/header :: header}"></div>
 
 <div class="container contract-box">
-  <h2 class="text-center mb-4">Chi tiết hợp đồng thuê phòng</h2>
-  <div class="row">
-    <!-- Người thuê + Phòng -->
-    <div class="col-md-6 mb-3 d-flex">
-      <label class="form-label col-4">Người thuê:</label>
-      <p class="form-control-plaintext col-8" th:text="${contract.studentName}"></p>
-    </div>
-    <div class="col-md-6 mb-3 d-flex">
-      <label class="form-label col-4">Phòng:</label>
-      <p class="form-control-plaintext col-8" th:text="${contract.roomName}"></p>
+    <h2 class="text-center mb-4">Chi tiết phòng trọ</h2>
+
+    <!-- Ảnh lớn ở trên cùng -->
+    <div class="text-center mb-4">
+        <img th:src="@{'/images/' + ${motel.imageName}}" alt="Ảnh phòng trọ"
+             class="img-fluid rounded shadow" style="max-height: 400px; width: auto;">
     </div>
 
-    <!-- Giá + Trạng thái -->
-    <div class="col-md-6 mb-3 d-flex">
-      <label class="form-label col-4">Giá thuê (VNĐ):</label>
-      <p class="form-control-plaintext col-8" th:text="${contract.finalPrice}"></p>
-    </div>
-    <div class="col-md-6 mb-3 d-flex">
-      <label class="form-label col-4">Trạng thái:</label>
-      <p class="form-control-plaintext col-8" th:text="${contract.statusVi}"></p>
-    </div>
+    <!-- Thông tin bên dưới -->
+    <div class="row g-4">
+        <div class="col-md-6">
+            <label class="form-label">Tiêu đề:</label>
+            <div class="form-control-plaintext" th:text="${motel.name}"></div>
+        </div>
 
-    <!-- Ngày bắt đầu + kết thúc -->
-    <div class="col-md-6 mb-3 d-flex">
-      <label class="form-label col-4">Ngày bắt đầu:</label>
-      <p class="form-control-plaintext col-8"
-         th:text="${#temporals.format(contract.startDate, 'dd/MM/yyyy HH:mm')}"></p>
-    </div>
-    <div class="col-md-6 mb-3 d-flex">
-      <label class="form-label col-4">Ngày kết thúc:</label>
-      <p class="form-control-plaintext col-8"
-         th:text="${#temporals.format(contract.endDate, 'dd/MM/yyyy HH:mm')}"></p>
-    </div>
+        <div class="col-md-6">
+            <label class="form-label">Trạng thái:</label>
+            <div class="form-control-plaintext" th:text="${motel.status.getStatusName()}"></div>
+        </div>
 
-    <!-- Mô tả -->
-    <div class="col-md-12 mb-4 d-flex">
-      <label class="form-label col-2">Mô tả:</label>
-      <p class="form-control-plaintext col-10" th:text="${contract.description}"></p>
+        <div class="col-md-6">
+            <label class="form-label">Người quản lý:</label>
+            <div class="form-control-plaintext" th:text="${motel.adminName}"></div>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Ngày tạo:</label>
+            <div class="form-control-plaintext"
+                 th:text="${#temporals.format(motel.createdAt, 'dd/MM/yyyy HH:mm')}"></div>
+        </div>
     </div>
 
     <!-- Nút quay lại -->
-    <div class="col-12 text-center">
-      <a th:href="@{/contracts/contract}" class="btn btn-primary">← Quay lại danh sách</a>
+    <div class="text-center mt-4">
+        <a th:href="@{/motels}" class="btn btn-primary">← Quay lại danh sách</a>
     </div>
-  </div>
 </div>
+
 
 <script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
 <script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const navLinks = document.querySelectorAll(".nav-link");
-    const currentPath = "/contracts/contract";
-    navLinks.forEach(link => {
-      if (link.getAttribute("href") === currentPath) {
-        link.classList.add("active");
-      } else {
-        link.classList.remove("active");
-      }
+    window.addEventListener('DOMContentLoaded', () => {
+        const navLinks = document.querySelectorAll(".nav-link");
+        const currentPath = "/contracts/contract";
+        navLinks.forEach(link => {
+            if (link.getAttribute("href") === currentPath) {
+                link.classList.add("active");
+            } else {
+                link.classList.remove("active");
+            }
+        });
     });
-  });
 </script>
 </body>
 </html>

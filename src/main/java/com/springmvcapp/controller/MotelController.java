@@ -134,14 +134,14 @@ public class MotelController {
     public String showMotelDetail(@PathVariable Long id, Model model) {
         MotelModel motel = motelService.getMotelById(id);
 
-        // Lấy user từ adminId (giả sử bạn dùng String, nếu Long thì ép kiểu nhé)
-        Optional<UserModel> adminUser = userModelRepository.findById(Long.valueOf(motel.getAdminId()));
-
-        adminUser.ifPresent(user -> model.addAttribute("adminName", user.getUsername()));
+        // Tìm admin theo ID và set vào motel
+        userModelRepository.findById(Long.valueOf(motel.getAdminId()))
+                .ifPresent(user -> motel.setAdminName(user.getUsername())); // <-- Sửa ở đây
 
         model.addAttribute("motel", motel);
         return "motel_templates/detail_motel";
     }
+
     @GetMapping("/edit/{id}")
     public String showMotelEdit(@PathVariable Long id, Model model) {
         MotelModel motel = motelService.getMotelById(id);
@@ -156,7 +156,7 @@ public class MotelController {
                              @AuthenticationPrincipal UserDetails userDetails) {
 
         motelService.deleteMotelById(id);
-        return "redirect:/";
+        return "redirect:/motels";
     }
 
     @PostMapping("/edit/save")

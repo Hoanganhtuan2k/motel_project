@@ -3,6 +3,7 @@ package com.springmvcapp.service;
 
 import com.springmvcapp.model.UserModel;
 import com.springmvcapp.service.repo.UserModelRepository;
+import com.springmvcapp.status.UserRole;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +30,8 @@ public class AuthService  {
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             return "Mật khẩu xác nhận không khớp";
         }
+        user.setRole(UserRole.valueOf("USER"));
+
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userModelRepository.save(user);

@@ -64,7 +64,7 @@
                 <a href="#" class="list-group-item list-group-item-action">Bài viết đã thích</a>
                 <a href="#" class="list-group-item list-group-item-action">Tin nhắn</a>
                 <a href="#" class="list-group-item list-group-item-action">Lịch sử giao dịch</a>
-                <a href="#" class="list-group-item list-group-item-action">Hợp đồng đã tạo</a>
+                <a href="#" sec:authorize="hasRole('ADMIN')" class="list-group-item list-group-item-action">Hợp đồng đã tạo</a>
             </div>
         </div>
 
@@ -103,10 +103,10 @@
                                 <i class="fas fa-trash-alt"></i> Xóa
                             </a>
 
-                            <a th:href="@{'/contracts/create/' + ${post.id}}"
-                               class="btn btn-sm btn-outline-success">
-                                <i class="fas fa-file-contract"></i> Hợp đồng
-                            </a>
+<!--                            <a th:href="@{'/contracts/create/' + ${post.id}}"-->
+<!--                               class="btn btn-sm btn-outline-success">-->
+<!--                                <i class="fas fa-file-contract"></i> Hợp đồng-->
+<!--                            </a>-->
 
                             <a th:href="@{'/comments/' + ${post.id}}"
                                class="btn btn-sm btn-outline-secondary">
@@ -182,6 +182,8 @@
         </div>
     </div>
 </div>
+<div th:insert="~{parts/footer::footer}"></div>
+
 
 <!-- Scripts -->
 <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>

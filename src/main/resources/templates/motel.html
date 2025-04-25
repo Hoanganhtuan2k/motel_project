@@ -4,13 +4,8 @@
     <meta charset="UTF-8">
     <title>Quản lý phòng trọ</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
-<!--    <link rel="stylesheet" href="/webjars/font-awesome/6.7.2/css/all.min.css">-->
     <link rel="stylesheet" th:href="@{/webjars/font-awesome/6.7.2/css/all.min.css}"/>
     <style>
-        /*.motel-container h1 {*/
-        /*    margin: 30px 0 20px;*/
-        /*}*/
-
         .btn-create, .btn-edit, .btn-delete, .btn-detail {
             margin: 3px;
             padding: 6px 10px;
@@ -56,11 +51,6 @@
             color: white;
         }
 
-        .disabled {
-            pointer-events: none;
-            color: #ccc;
-            border-color: #ccc;
-        }
     </style>
 </head>
 <!-- Bootstrap JS (đặt cuối trang, trước thẻ </body>) -->
@@ -126,7 +116,7 @@
         <tr>
             <th>Tiêu đề</th>
             <th>Trạng thái</th>
-            <th>Hợp đồng hiện tại</th>
+<!--            <th>Hợp đồng hiện tại</th>-->
             <th>Người quản lý</th>
             <th>Ảnh</th>
             <th>Ngày tạo</th>
@@ -137,7 +127,7 @@
         <tr th:each="motel : ${motels}">
             <td th:text="${motel.name}"></td>
             <td th:text="${motel.status.getStatusName()}"></td>
-            <td th:text="${motel.currentContractId}"></td>
+<!--            <td th:text="${motel.currentContractId}"></td>-->
             <td th:text="${motel.adminName}"></td>
             <td><img th:src="@{'/images/' + ${motel.imageName}}" alt="Ảnh phòng" width="100"/></td>
             <td th:text="${#temporals.format(motel.createdAt, 'dd/MM/yyyy')}"></td>
